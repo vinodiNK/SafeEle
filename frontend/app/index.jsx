@@ -11,12 +11,13 @@ export default function Index() {
         <Text style={styles.title}>SAFE ELE</Text>
         <Text style={styles.subtitle}>Making Your Experience Safer & Smarter</Text>
       </View>
-
-      <View style={styles.buttonContainer}>
-       <TouchableOpacity
-  style={styles.guestButton}
-  onPress={() => navigation.navigate("UploadLocation")} // 👈 navigate to page
-></TouchableOpacity>
+       <View style={styles.buttonContainer}>
+  <TouchableOpacity
+    style={styles.guestButton}
+    onPress={() => navigation.navigate("UploadLocation")}
+  >
+    <Text style={styles.guestButtonText}>Continue as Guest</Text>
+  </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.loginButton}
