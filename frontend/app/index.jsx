@@ -13,9 +13,10 @@ export default function Index() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.guestButton}>
-          <Text style={styles.guestButtonText}>Continue as Guest</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+  style={styles.guestButton}
+  onPress={() => navigation.navigate("UploadLocation")} // 👈 navigate to page
+></TouchableOpacity>
 
         <TouchableOpacity
           style={styles.loginButton}
