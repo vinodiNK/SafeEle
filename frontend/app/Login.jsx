@@ -1,4 +1,5 @@
 // app/Login.jsx
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -12,13 +13,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import LoginImage from "../assets/login.jpg"; // use your elephant + train image
+import LoginImage from "../assets/login.jpg"; // your elephant + train image
 import { auth, db } from "../firebaseConfig";
 
 export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👁 toggle
 
   // 🔹 Handle Login
   const handleLogin = async () => {
@@ -28,11 +30,9 @@ export default function Login() {
     }
 
     try {
-      // Firebase login
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Fetch role from Firestore
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
 
@@ -74,14 +74,24 @@ export default function Login() {
           onChangeText={(t) => setEmail(t)}
         />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#777"
-          secureTextEntry
-          value={password}
-          onChangeText={(t) => setPassword(t)}
-        />
+        {/* Password field with eye icon */}
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            placeholderTextColor="#777"
+            secureTextEntry={!showPassword}
+            value={password}
+            onChangeText={(t) => setPassword(t)}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Ionicons
+              name={showPassword ? "eye-off" : "eye"}
+              size={22}
+              color="#777"
+            />
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
@@ -106,7 +116,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     padding: 25,
     alignItems: "center",
-    marginTop: -30, // lift card into image
+    marginTop: -30,
   },
 
   title: {
@@ -131,6 +141,23 @@ const styles = StyleSheet.create({
     color: "#000",
   },
 
+  passwordContainer: {
+    width: "100%",
+    backgroundColor: "#f0f4f3",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 14,
+    color: "#000",
+  },
+
   loginButton: {
     width: "100%",
     padding: 15,
@@ -143,7 +170,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-
   loginButtonText: { color: "#fff", fontWeight: "600", fontSize: 16 },
 
   forgotPassword: { marginTop: 12, color: "#2d6a4f", fontSize: 13 },
