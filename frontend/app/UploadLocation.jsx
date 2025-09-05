@@ -1,9 +1,10 @@
 import * as Location from "expo-location";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { db } from "../firebaseConfig"; // 👈 your Firebase config
+import ElephantIcon from "../assets/elephant.png"; // 🐘 import icon
+import { db } from "../firebaseConfig";
 
 export default function UploadLocation() {
   const [location, setLocation] = useState(null);
@@ -66,8 +67,10 @@ export default function UploadLocation() {
               latitude: location.latitude,
               longitude: location.longitude,
             }}
-            title="You are here"
-          />
+            title="Elephant Location"
+          >
+            <Image source={ElephantIcon} style={{ width: 40, height: 40 }} /> 
+          </Marker>
         </MapView>
       ) : (
         <Text>No location available</Text>
@@ -85,29 +88,23 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
   button: {
     backgroundColor: "#28a745",
-    padding: 15,
+    paddingVertical: 15,
+    margin: 35,
+    borderRadius: 30,
     alignItems: "center",
-
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 6,
   },
-
-  button: {
-  backgroundColor: "#28a745",
-  paddingVertical: 15,
-  margin: 35,
-  borderRadius: 30,
-  alignItems: "center",
-  justifyContent: "center",
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.3,
-  shadowRadius: 4.65,
-  elevation: 6, // Android shadow
-},
-
   buttonText: {
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "500",
+    fontSize: 16,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    textTransform: "uppercase",
   },
   center: {
     flex: 1,
