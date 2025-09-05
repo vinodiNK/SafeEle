@@ -1,16 +1,37 @@
+// App.js
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Index from "./app/index";
-import Login from "./app/Login";
+
+// Screens
+import DriverDashboard from "./app/DriverDashboard";
+import Index from "./app/index"; // Landing page
+import LoginPage from "./app/Login"; // Login screen
+import StationDashboard from "./app/StationDashboard";
+import UploadLocation from "./app/UploadLocation"; // Location uploader
+import WildlifeDashboard from "./app/WildlifeDashboard";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={Index} />
-        <Stack.Screen name="Login" component={Login} />
+      <Stack.Navigator
+        initialRouteName="Index"
+        screenOptions={{ headerShown: false }}
+      >
+        {/* Landing Page */}
+        <Stack.Screen name="Index" component={Index} />
+
+        {/* Authentication */}
+        <Stack.Screen name="Login" component={LoginPage} />
+
+        {/* Dashboards */}
+        <Stack.Screen name="DriverDashboard" component={DriverDashboard} />
+        <Stack.Screen name="StationDashboard" component={StationDashboard} />
+        <Stack.Screen name="WildlifeDashboard" component={WildlifeDashboard} />
+
+        {/* Extra features */}
+        <Stack.Screen name="UploadLocation" component={UploadLocation} />
       </Stack.Navigator>
     </NavigationContainer>
   );
