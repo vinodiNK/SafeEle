@@ -6,13 +6,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
 import {
   Alert,
-  Image,
-  StyleSheet,
+  Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
-} from "react-native";
+  View
+} from "react-native"; // add this import
 import LoginImage from "../assets/login.jpg"; // your elephant + train image
 import { auth, db } from "../firebaseConfig";
 
@@ -57,51 +56,58 @@ export default function Login() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Top image */}
-      <Image source={LoginImage} style={styles.image} resizeMode="cover" />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // iOS uses padding, Android adjusts height
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          {/* Top image */}
+          <Image source={LoginImage} style={styles.image} resizeMode="cover" />
 
-      {/* Login card */}
-      <View style={styles.card}>
-        <Text style={styles.title}>Welcome Back!</Text>
-        <Text style={styles.subtitle}>Login to your account</Text>
+          {/* Login card */}
+          <View style={styles.card}>
+            <Text style={styles.title}>Welcome Back!</Text>
+            <Text style={styles.subtitle}>Login to your account</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Email address"
-          placeholderTextColor="#777"
-          value={email}
-          onChangeText={(t) => setEmail(t)}
-        />
-
-        {/* Password field with eye icon */}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder="Password"
-            placeholderTextColor="#777"
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={(t) => setPassword(t)}
-          />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Ionicons
-              name={showPassword ? "eye-off" : "eye"}
-              size={22}
-              color="#777"
+            <TextInput
+              style={styles.input}
+              placeholder="Email address"
+              placeholderTextColor="#777"
+              value={email}
+              onChangeText={(t) => setEmail(t)}
             />
-          </TouchableOpacity>
+
+            {/* Password field with eye icon */}
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder="Password"
+                placeholderTextColor="#777"
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={(t) => setPassword(t)}
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={22}
+                  color="#777"
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+              <Text style={styles.loginButtonText}>Login</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity>
+              <Text style={styles.forgotPassword}>Forgot password?</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Text style={styles.forgotPassword}>Forgot password?</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
