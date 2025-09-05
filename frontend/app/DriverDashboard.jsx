@@ -32,21 +32,8 @@ export default function DriverDashboard({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity>
-          <Ionicons name="home" size={24} color="#2d6a4f" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="settings" size={24} color="#2d6a4f" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="help-circle" size={24} color="#2d6a4f" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="person" size={24} color="#2d6a4f" />
-        </TouchableOpacity>
-      </View>
+     
+      
     </View>
   );
 }
@@ -91,12 +78,5 @@ const styles = StyleSheet.create({
   },
   cardText: { marginTop: 8, fontSize: 26, color: "#2d6a4f", fontWeight: "500" },
 
-  bottomNav: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 15,
-    borderTopWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "#fff",
-  },
+  
 });
