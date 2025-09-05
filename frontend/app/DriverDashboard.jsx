@@ -1,9 +1,12 @@
 // app/DriverDashboard.jsx
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native"; // ✅ import hook
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import TrainImage from "../assets/train.png"; // use your train illustration image
 
-export default function DriverDashboard({ navigation }) {
+export default function DriverDashboard() {
+  const navigation = useNavigation(); // ✅ get navigation reliably
+
   return (
     <View style={styles.container}>
       {/* Top Section */}
@@ -17,7 +20,7 @@ export default function DriverDashboard({ navigation }) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.card}
-          onPress={() => navigation.navigate("DriverMap")}
+          onPress={() => navigation.navigate("OpenMap")} // ✅ now works
         >
           <Ionicons name="map" size={28} color="#2d6a4f" />
           <Text style={styles.cardText}>Open Map</Text>
@@ -31,9 +34,6 @@ export default function DriverDashboard({ navigation }) {
           <Text style={styles.cardText}>Send News</Text>
         </TouchableOpacity>
       </View>
-
-     
-      
     </View>
   );
 }
@@ -48,16 +48,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
     alignItems: "center",
   },
-  welcome: { color: "#fff", fontSize: 16 },
-  role: { color: "#fff", fontSize: 22, fontWeight: "bold", marginTop: 4 },
-  trainImage: { width: 200, height: 120, marginTop: 20 },
-
+  welcome: { color: "#000", fontSize: 16 }, // changed to visible color
+  role: { color: "#000", fontSize: 22, fontWeight: "bold", marginTop: 4 }, // changed to visible color
   trainImage: { 
-  width: "115%", 
-  height: 450, 
-  marginTop: -90, 
-  resizeMode: "cover" 
-},
+    width: "115%", 
+    height: 450, 
+    marginTop: -90, 
+    resizeMode: "cover" 
+  },
 
   buttonContainer: {
     flex: 1,
@@ -77,6 +75,4 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardText: { marginTop: 8, fontSize: 26, color: "#2d6a4f", fontWeight: "500" },
-
-  
 });

@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DriverDashboard from "./app/DriverDashboard";
 import Index from "./app/index"; // Landing page
 import LoginPage from "./app/Login"; // Login screen
+import OpenMap from "./app/OpenMap"; // Map screen
 import StationDashboard from "./app/StationDashboard";
 import UploadLocation from "./app/UploadLocation"; // Location uploader
 import WildlifeDashboard from "./app/WildlifeDashboard";
@@ -29,6 +30,9 @@ export default function App() {
         <Stack.Screen name="DriverDashboard" component={DriverDashboard} />
         <Stack.Screen name="StationDashboard" component={StationDashboard} />
         <Stack.Screen name="WildlifeDashboard" component={WildlifeDashboard} />
+
+        {/* Map */}
+        <Stack.Screen name="OpenMap" component={OpenMap} />
 
         {/* Extra features */}
         <Stack.Screen name="UploadLocation" component={UploadLocation} />
