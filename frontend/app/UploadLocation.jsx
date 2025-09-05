@@ -87,11 +87,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#28a745",
     padding: 15,
     alignItems: "center",
+
   },
+
+  button: {
+  backgroundColor: "#28a745",
+  paddingVertical: 15,
+  margin: 35,
+  borderRadius: 30,
+  alignItems: "center",
+  justifyContent: "center",
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.3,
+  shadowRadius: 4.65,
+  elevation: 6, // Android shadow
+},
+
   buttonText: {
     color: "#fff",
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   center: {
     flex: 1,
