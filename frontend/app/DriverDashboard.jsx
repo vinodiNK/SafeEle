@@ -28,7 +28,7 @@ export default function DriverDashboard() {
 
         <TouchableOpacity
           style={styles.card}
-          onPress={() => navigation.navigate("DriverNews")}
+          onPress={() => navigation.navigate("SendNews")}
         >
           <Ionicons name="chatbubbles" size={28} color="#2d6a4f" />
           <Text style={styles.cardText}>Send News</Text>
