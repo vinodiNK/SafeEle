@@ -9,6 +9,7 @@ import { db } from "../firebaseConfig";
 export default function OpenMap() {
   const [location, setLocation] = useState(null);
   const [elephantLocations, setElephantLocations] = useState([]);
+  const [guestLocations, setGuestLocations] = useState([]);
 
   // Get user location
   useEffect(() => {
@@ -27,7 +28,16 @@ export default function OpenMap() {
       const locations = snapshot.docs.map((doc) => doc.data());
       setElephantLocations(locations);
     });
-    return unsubscribe; // cleanup
+    return unsubscribe;
+  }, []);
+
+  // Fetch guest locations in realtime
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "guestLocations"), (snapshot) => {
+      const locations = snapshot.docs.map((doc) => doc.data());
+      setGuestLocations(locations);
+    });
+    return unsubscribe;
   }, []);
 
   if (!location) {
@@ -59,7 +69,7 @@ export default function OpenMap() {
       {/* Elephant locations */}
       {elephantLocations.map((elephant, index) => (
         <Marker
-          key={index}
+          key={`elephant-${index}`}
           coordinate={{
             latitude: elephant.latitude,
             longitude: elephant.longitude,
@@ -68,8 +78,27 @@ export default function OpenMap() {
           description="Reported in Firestore"
         >
           <Image
-            source={require("../assets/elephant.png")} // 👈 put elephant.png in assets
+            source={require("../assets/elephant.png")}
             style={{ width: 40, height: 40 }}
+            resizeMode="contain"
+          />
+        </Marker>
+      ))}
+
+      {/* Guest locations */}
+      {guestLocations.map((guest, index) => (
+        <Marker
+          key={`guest-${index}`}
+          coordinate={{
+            latitude: guest.latitude,
+            longitude: guest.longitude,
+          }}
+          title="Guest Location"
+          description="Reported in Firestore"
+        >
+          <Image
+            source={require("../assets/elephant.png")} // 👈 Add guest.png in assets
+            style={{ width: 35, height: 35 }}
             resizeMode="contain"
           />
         </Marker>
