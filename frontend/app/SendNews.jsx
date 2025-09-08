@@ -6,15 +6,14 @@ import NewsImage from "../assets/news.png"; // top illustration
 export default function SendNews() {
   return (
     <ImageBackground source={BackgroundImage} style={styles.background} resizeMode="cover">
-      <View style={styles.container}>
-        {/* Top Image */}
-        <Image source={NewsImage} style={styles.image} resizeMode="contain" />
-
-        {/* Title */}
+      {/* Title at the top */}
+      <View style={styles.header}>
         <Text style={styles.title}>Send News</Text>
-        <Text style={styles.subtitle}>
-          Share important updates with the station and wildlife officers
-        </Text>
+      </View>
+
+      {/* Top Image below title */}
+      <View style={styles.container}>
+        <Image source={NewsImage} style={styles.image} resizeMode="contain" />
       </View>
     </ImageBackground>
   );
@@ -22,8 +21,31 @@ export default function SendNews() {
 
 const styles = StyleSheet.create({
   background: { flex: 1, width: "100%", height: "50%" },
-  container: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
-  image: { width: 750, height: 300, marginBottom: 170 },
-  title: { fontSize: 34, fontWeight: "bold", color: "#2d6a4f", marginBottom: 10 },
-  subtitle: { fontSize: 16, textAlign: "center", color: "#555" },
+  
+  header: { 
+    width: "100%", 
+    paddingTop: 60, 
+    paddingLeft: 20,  // ✅ add left padding
+    alignItems: "flex-start" // ✅ align text to the left
+  },
+
+  title: { 
+    fontSize: 34, 
+    fontWeight: "bold", 
+    color: "rgba(235, 243, 239, 1)" 
+  },
+
+  container: { 
+    flex: 1, 
+    justifyContent: "flex-start", 
+    alignItems: "center", 
+    paddingTop: 30 
+  },
+
+  image: { 
+    width: 750, 
+    height: 300,
+    marginBottom: 180 
+  },
 });
+
