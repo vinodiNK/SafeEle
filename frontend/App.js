@@ -1,6 +1,7 @@
 // App.js
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useEffect } from "react";
 
 // Screens
 import DriverDashboard from "./app/DriverDashboard";
@@ -12,9 +13,32 @@ import StationDashboard from "./app/StationDashboard";
 import UploadLocation from "./app/UploadLocation"; // Location uploader
 import WildlifeDashboard from "./app/WildlifeDashboard";
 
+// Notifications helper
+import { registerForPushNotificationsAsync } from "./app/notificationHelper";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    const setupNotifications = async () => {
+      const token = await registerForPushNotificationsAsync();
+      if (token) {
+        try {
+          // 👇 send token to backend
+          await fetch("http://10.0.2.2:5000/save-token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token, role: "driver" }),
+          });
+          console.log("Token sent to backend:", token);
+        } catch (err) {
+          console.error("Failed to send token:", err);
+        }
+      }
+    };
+    setupNotifications();
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
