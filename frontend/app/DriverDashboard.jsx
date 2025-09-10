@@ -1,11 +1,11 @@
 // app/DriverDashboard.jsx
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native"; // ✅ import hook
+import { useNavigation } from "@react-navigation/native";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import TrainImage from "../assets/train.png"; // use your train illustration image
+import TrainImage from "../assets/train.png";
 
 export default function DriverDashboard() {
-  const navigation = useNavigation(); // ✅ get navigation reliably
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ export default function DriverDashboard() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.card}
-          onPress={() => navigation.navigate("OpenMap")} // ✅ now works
+          onPress={() => navigation.navigate("OpenMap")}
         >
           <Ionicons name="map" size={28} color="#2d6a4f" />
           <Text style={styles.cardText}>Open Map</Text>
@@ -34,6 +34,14 @@ export default function DriverDashboard() {
           <Text style={styles.cardText}>Send News</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Back to Login Button */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text style={styles.backText}>Back to Login</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -48,8 +56,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 40,
     alignItems: "center",
   },
-  welcome: { color: "#000", fontSize: 16 }, // changed to visible color
-  role: { color: "#000", fontSize: 22, fontWeight: "bold", marginTop: 4 }, // changed to visible color
+  welcome: { color: "#000", fontSize: 16 },
+  role: { color: "#000", fontSize: 22, fontWeight: "bold", marginTop: 4 },
   trainImage: { 
     width: "115%", 
     height: 450, 
@@ -75,4 +83,23 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardText: { marginTop: 8, fontSize: 26, color: "#2d6a4f", fontWeight: "500" },
+
+  // ✅ Back Button
+  backButton: {
+    position: "absolute",
+    bottom: 30,
+    left: "10%",
+    right: "10%",
+    paddingVertical: 15,
+    backgroundColor: "#166826ff",
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10,
+  },
+  backText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
