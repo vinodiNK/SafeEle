@@ -76,9 +76,10 @@ export default function SendNews() {
             onValueChange={(value) => setTitle(value)}
           >
             <Picker.Item label="Title" value="" />
-            <Picker.Item label="Weather Alert" value="weather" />
+            <Picker.Item label="Train Delay" value="Train Delay" />
             <Picker.Item label="Accident Update" value="accident" />
-            <Picker.Item label="Schedule Change" value="schedule" />
+            <Picker.Item label="Technical Issue" value="Technical Issue" />
+            <Picker.Item label="Other Updates" value="Other Updates" />
           </Picker>
         </View>
 
