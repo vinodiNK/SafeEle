@@ -2,6 +2,7 @@
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ImageBackground,
   StyleSheet,
@@ -11,43 +12,62 @@ import {
   View,
 } from "react-native";
 
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebaseConfig"; // ✅ Import Firestore config
+
 import BackgroundImage from "../assets/Layer.png";
 import NewsImage from "../assets/news.png";
 
 export default function SendNews() {
   const [station, setStation] = useState("");
-  const [stations, setStations] = useState([]); // ✅ stations fetched from API
+  const [stations, setStations] = useState([]);
   const [title, setTitle] = useState("");
   const [news, setNews] = useState("");
-  const [useAltStyle, setUseAltStyle] = useState(false); // toggle styles
+  const [useAltStyle, setUseAltStyle] = useState(false);
 
-  // Fetch stations from online API (GitHub raw JSON)
+  // Fetch stations list
   useEffect(() => {
-    fetch("https://raw.githubusercontent.com/vinodiNK/sl-railway-api/main/stations.json") // replace <username> with your GitHub username
+    fetch("https://raw.githubusercontent.com/vinodiNK/sl-railway-api/main/stations.json")
       .then((res) => res.json())
       .then((data) => setStations(data))
       .catch((err) => console.error("Failed to fetch stations:", err));
   }, []);
 
-  const handleSend = () => {
-    console.log("Station:", station);
-    console.log("Title:", title);
-    console.log("News:", news);
-    // Here you can send data to your backend if needed
+  // ✅ Handle sending news to Firestore
+  const handleSend = async () => {
+    if (!station || !title || !news) {
+      Alert.alert("Error", "Please fill all fields before sending.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "news"), {
+        station,
+        title,
+        news,
+        createdAt: serverTimestamp(),
+      });
+
+      Alert.alert("Success", "News sent successfully!");
+      setStation("");
+      setTitle("");
+      setNews("");
+    } catch (error) {
+      console.error("Error adding news:", error);
+      Alert.alert("Error", "Failed to send news.");
+    }
   };
 
   return (
     <ImageBackground source={BackgroundImage} style={styles.background} resizeMode="cover">
-      {/* Title */}
       <View style={styles.header}>
         <Text style={useAltStyle ? styles.subtitleAlt : styles.subtitle}>Sending updates</Text>
         <Text style={useAltStyle ? styles.titleAlt : styles.title}>Send News</Text>
       </View>
 
-      {/* Illustration */}
       <View style={styles.container}>
         <Image
-          source={NewsImage} // you can add AlertImage if needed
+          source={NewsImage}
           style={useAltStyle ? styles.imageAlt : styles.image}
           resizeMode="contain"
         />
@@ -77,7 +97,7 @@ export default function SendNews() {
           >
             <Picker.Item label="Title" value="" />
             <Picker.Item label="Train Delay" value="Train Delay" />
-            <Picker.Item label="Accident Update" value="accident" />
+            <Picker.Item label="Accident Update" value="Accident Update" />
             <Picker.Item label="Technical Issue" value="Technical Issue" />
             <Picker.Item label="Other Updates" value="Other Updates" />
           </Picker>
@@ -106,7 +126,7 @@ export default function SendNews() {
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1, height:"50%", width: "100%", backgroundColor: "#e8f5e9" },
+  background: { flex: 1, height: "50%", width: "100%", backgroundColor: "#e8f5e9" },
   header: { marginTop: 10, marginLeft: 20 },
   subtitle: { fontSize: 16, color: "white" },
   title: { fontSize: 28, fontWeight: "bold", color: "white" },
