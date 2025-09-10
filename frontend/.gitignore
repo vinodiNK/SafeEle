@@ -42,7 +42,7 @@ firebase.js
 firebaseConfig.js
 .env
 
-/backend/serviceAccountKey.json
+backend/serviceAccountKey.json
 
 
 app-example
