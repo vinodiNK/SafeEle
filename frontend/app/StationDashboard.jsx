@@ -1,11 +1,13 @@
 // app/StationDashboard.jsx
+import { useNavigation } from "@react-navigation/native"; // ✅ for navigation
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { db } from "../firebaseConfig";
 
 export default function StationDashboard() {
   const [newsList, setNewsList] = useState([]);
+  const navigation = useNavigation(); // ✅ navigation hook
 
   useEffect(() => {
     const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
@@ -22,7 +24,13 @@ export default function StationDashboard() {
 
   return (
     <View style={styles.container}>
+      {/* ✅ Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.backText}>Back to Login</Text>
+      </TouchableOpacity>
+
       <Text style={styles.header}>Station News Updates</Text>
+
       <FlatList
         data={newsList}
         keyExtractor={(item) => item.id}
@@ -44,6 +52,19 @@ export default function StationDashboard() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 15, backgroundColor: "#f5f5f5" },
   header: { fontSize: 22, fontWeight: "bold", marginBottom: 15, textAlign: "center" },
+  backButton: {
+  position: "absolute",
+  bottom: 30,            // place near bottom (adjust as needed)
+  left: "10%",           // start 10% from left
+  right: "10%",          // end 10% from right → makes button long & centered
+  paddingVertical: 15,   // increase height
+  backgroundColor: "#208140ff",
+  borderRadius: 25,      // smooth rounded corners
+  alignItems: "center",  // center the text
+  justifyContent: "center",
+  zIndex: 10,
+},
+  backText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
   card: {
     backgroundColor: "#fff",
     padding: 15,
