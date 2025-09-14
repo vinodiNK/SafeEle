@@ -1,7 +1,7 @@
 // app/GuestLocation.jsx
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { db } from "../firebaseConfig";
 
 export default function GuestLocation() {
@@ -23,6 +23,11 @@ export default function GuestLocation() {
     return () => unsubscribe();
   }, []);
 
+  const openInMap = (lat, lng) => {
+    const url = `https://www.google.com/maps?q=${lat},${lng}`;
+    Linking.openURL(url);
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
   }
@@ -38,8 +43,18 @@ export default function GuestLocation() {
             <Text style={styles.locationName}>{item.locationName}</Text>
             
             <Text>
-              Timestamp: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
+              Timestamp:{" "}
+              {item.timestamp?.toDate
+                ? item.timestamp.toDate().toLocaleString()
+                : item.timestamp}
             </Text>
+
+            <TouchableOpacity
+              style={styles.mapButton}
+              onPress={() => openInMap(item.latitude, item.longitude)}
+            >
+              <Text style={styles.mapButtonText}>Open in Map</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -57,4 +72,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
+  mapButton: {
+    marginTop: 10,
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 6,
+    alignItems: "center",
+  },
+  mapButtonText: { color: "white", fontWeight: "bold" },
 });

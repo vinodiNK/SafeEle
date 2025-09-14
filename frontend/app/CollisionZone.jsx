@@ -1,7 +1,7 @@
 // app/CollisionZone.jsx
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { db } from "../firebaseConfig";
 
 export default function CollisionZone() {
@@ -23,6 +23,12 @@ export default function CollisionZone() {
     return () => unsubscribe(); // cleanup listener
   }, []);
 
+  // Open location in Google Maps
+  const openInMap = (latitude, longitude) => {
+    const url = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    Linking.openURL(url);
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
   }
@@ -36,11 +42,18 @@ export default function CollisionZone() {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.locationName}>{item.locationName}</Text>
-            <Text>Latitude: {item.latitude}</Text>
-            <Text>Longitude: {item.longitude}</Text>
+            
             <Text>
-              Timestamp: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
+              Date & Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
             </Text>
+
+            {/* Open Map Button */}
+            <TouchableOpacity
+              style={styles.mapButton}
+              onPress={() => openInMap(item.latitude, item.longitude)}
+            >
+              <Text style={styles.mapButtonText}>Open in Map</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -58,4 +71,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
+  mapButton: {
+    marginTop: 10,
+    backgroundColor: "#2e8b57",
+    padding: 8,
+    borderRadius: 6,
+    alignItems: "center",
+  },
+  mapButtonText: { color: "#fff", fontWeight: "bold" },
 });

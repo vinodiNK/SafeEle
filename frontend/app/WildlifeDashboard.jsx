@@ -52,7 +52,7 @@ export default function WildLifeDashboard() {
         {/* ✅ Back to Login button */}
         <TouchableOpacity
           style={[styles.button, styles.backButton]}
-          onPress={() => navigation.navigate("Login")}
+          onPress={() => navigation.navigate("index")}
         >
           <Text style={styles.buttonText}>Back to Login</Text>
         </TouchableOpacity>
