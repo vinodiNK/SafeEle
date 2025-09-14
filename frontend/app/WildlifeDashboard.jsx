@@ -48,6 +48,14 @@ export default function WildLifeDashboard() {
         >
           <Text style={styles.buttonText}>View Report</Text>
         </TouchableOpacity>
+
+        {/* ✅ Back to Login button */}
+        <TouchableOpacity
+          style={[styles.button, styles.backButton]}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>Back to Login</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -62,6 +70,9 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 8,
     alignItems: "center",
+  },
+  backButton: {
+    backgroundColor: "#008b48ff", // 🔴 Different color for "Back to Login"
   },
   buttonText: { color: "#fff", fontWeight: "bold" },
 });

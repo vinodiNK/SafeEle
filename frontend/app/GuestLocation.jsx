@@ -36,8 +36,7 @@ export default function GuestLocation() {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.locationName}>{item.locationName}</Text>
-            <Text>Latitude: {item.latitude}</Text>
-            <Text>Longitude: {item.longitude}</Text>
+            
             <Text>
               Timestamp: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
             </Text>
