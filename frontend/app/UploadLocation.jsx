@@ -23,13 +23,16 @@ export default function UploadLocation() {
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation.coords);
 
-      // 🔄 Reverse geocoding
+      // 🔄 Reverse geocoding (skip place.name to avoid "6GCG+54")
       let reverseGeocode = await Location.reverseGeocodeAsync(currentLocation.coords);
       if (reverseGeocode.length > 0) {
         const place = reverseGeocode[0];
-        setLocationName(
-          `${place.name || ""}, ${place.street || ""}, ${place.city || ""}, ${place.region || ""}, ${place.country || ""}`
-        );
+
+        // Collect non-empty values
+        const parts = [place.street, place.city, place.region, place.country].filter(Boolean);
+
+        // Join nicely with commas or spaces
+        setLocationName(parts.join(", "));
       }
 
       setLoading(false);
