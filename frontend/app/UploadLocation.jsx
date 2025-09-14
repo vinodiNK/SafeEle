@@ -3,11 +3,12 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import ElephantIcon from "../assets/elephant.png"; // 🐘 import icon
+import ElephantIcon from "../assets/elephant.png";
 import { db } from "../firebaseConfig";
 
 export default function UploadLocation() {
   const [location, setLocation] = useState(null);
+  const [locationName, setLocationName] = useState(""); // 📍 store location name
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,6 +22,16 @@ export default function UploadLocation() {
 
       let currentLocation = await Location.getCurrentPositionAsync({});
       setLocation(currentLocation.coords);
+
+      // 🔄 Reverse geocoding
+      let reverseGeocode = await Location.reverseGeocodeAsync(currentLocation.coords);
+      if (reverseGeocode.length > 0) {
+        const place = reverseGeocode[0];
+        setLocationName(
+          `${place.name || ""}, ${place.street || ""}, ${place.city || ""}, ${place.region || ""}, ${place.country || ""}`
+        );
+      }
+
       setLoading(false);
     })();
   }, []);
@@ -32,6 +43,7 @@ export default function UploadLocation() {
       await addDoc(collection(db, "guestLocations"), {
         latitude: location.latitude,
         longitude: location.longitude,
+        locationName: locationName || "Unknown Location", // 📍 save location name
         timestamp: Timestamp.now(),
       });
       Alert.alert("Success", "Location uploaded successfully!");
@@ -68,6 +80,7 @@ export default function UploadLocation() {
               longitude: location.longitude,
             }}
             title="Elephant Location"
+            description={locationName} // 📍 show location name on marker
           >
             <Image source={ElephantIcon} style={{ width: 40, height: 40 }} /> 
           </Marker>
