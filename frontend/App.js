@@ -13,7 +13,6 @@ import OpenMap from "./app/OpenMap"; // Map screen
 import SendNews from "./app/SendNews"; // Driver send news
 import StationDashboard from "./app/StationDashboard";
 import StationViewNews from "./app/StationViewNews";
-import TrackTrainScreen from "./app/TrackTrainScreen"; // Track train screen
 import UploadLocation from "./app/UploadLocation"; // Location uploader
 import ViewReport from "./app/ViewReport";
 import WildlifeDashboard from "./app/WildlifeDashboard";
@@ -58,7 +57,7 @@ export default function App() {
         <Stack.Screen name="DriverDashboard" component={DriverDashboard} />
         <Stack.Screen name="StationDashboard" component={StationDashboard} />
         <Stack.Screen name="StationViewNews" component={StationViewNews} />
-        <Stack.Screen name="TrackTrainScreen" component={TrackTrainScreen} />
+        <Stack.Screen name="TrackTrainScreen" component={TrackTrain} />
         <Stack.Screen name="WildlifeDashboard" component={WildlifeDashboard} />
 
         {/* Data & Maps */}

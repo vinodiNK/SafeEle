@@ -20,7 +20,7 @@ export default function StationDashboard() {
       {/* Track Train Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("TrackTrainScreen")}
+        onPress={() => navigation.navigate("TrackTrain")}
       >
         <Text style={styles.buttonText}>Track Train</Text>
       </TouchableOpacity>
