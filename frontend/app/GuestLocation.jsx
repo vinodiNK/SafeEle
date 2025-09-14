@@ -1,15 +1,28 @@
 // app/GuestLocation.jsx
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Linking,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { db } from "../firebaseConfig";
 
 export default function GuestLocation() {
   const [locations, setLocations] = useState([]);
+  const [filteredLocations, setFilteredLocations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [areaFilter, setAreaFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
-    // Fetch the guestLocations collection, ordered by timestamp
     const q = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
@@ -17,15 +30,40 @@ export default function GuestLocation() {
         locs.push({ id: doc.id, ...doc.data() });
       });
       setLocations(locs);
+      setFilteredLocations(locs); // initial = all
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  const openInMap = (lat, lng) => {
-    const url = `https://www.google.com/maps?q=${lat},${lng}`;
+  const openInMap = (latitude, longitude) => {
+    const url = `https://www.google.com/maps?q=${latitude},${longitude}`;
     Linking.openURL(url);
+  };
+
+  const applyFilter = () => {
+    let filtered = locations;
+
+    // Area filter
+    if (areaFilter.trim() !== "") {
+      filtered = filtered.filter((loc) =>
+        loc.locationName?.toLowerCase().includes(areaFilter.toLowerCase())
+      );
+    }
+
+    // Date filter
+    if (dateFilter) {
+      const selectedDate = new Date(dateFilter).toDateString();
+      filtered = filtered.filter((loc) => {
+        if (loc.timestamp?.toDate) {
+          return loc.timestamp.toDate().toDateString() === selectedDate;
+        }
+        return false;
+      });
+    }
+
+    setFilteredLocations(filtered);
   };
 
   if (loading) {
@@ -35,15 +73,54 @@ export default function GuestLocation() {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Guest Updated Locations</Text>
+
+      {/* Filters */}
+      <TextInput
+        placeholder="Search by area..."
+        style={styles.input}
+        value={areaFilter}
+        onChangeText={setAreaFilter}
+      />
+
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={styles.dateButtonText}>
+          {dateFilter ? new Date(dateFilter).toDateString() : "Filter by Date"}
+        </Text>
+      </TouchableOpacity>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={dateFilter ? new Date(dateFilter) : new Date()}
+          mode="date"
+          display="default"
+          onChange={(event, selectedDate) => {
+            setShowDatePicker(false);
+            if (selectedDate) setDateFilter(selectedDate);
+          }}
+        />
+      )}
+
+      <TouchableOpacity style={styles.filterButton} onPress={applyFilter}>
+        <Text style={styles.filterButtonText}>Apply Filter</Text>
+      </TouchableOpacity>
+
+      {/* List of guest locations */}
       <FlatList
-        data={locations}
+        data={filteredLocations}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={() => (
+          <Text style={styles.noDataText}>No data found</Text>
+        )}
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.locationName}>{item.locationName}</Text>
-            
+            <Text>Latitude: {item.latitude}</Text>
+            <Text>Longitude: {item.longitude}</Text>
             <Text>
-              Timestamp:{" "}
+              Date & Time:{" "}
               {item.timestamp?.toDate
                 ? item.timestamp.toDate().toLocaleString()
                 : item.timestamp}
@@ -64,7 +141,30 @@ export default function GuestLocation() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10 },
-  header: { fontSize: 20, fontWeight: "bold", marginBottom: 15 },
+  header: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 8,
+    borderRadius: 6,
+    marginBottom: 10,
+  },
+  dateButton: {
+    backgroundColor: "#2e8b57",
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  dateButtonText: { color: "#fff", fontWeight: "bold" },
+  filterButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 15,
+    alignItems: "center",
+  },
+  filterButtonText: { color: "#fff", fontWeight: "bold" },
   item: {
     backgroundColor: "#f2f2f2",
     padding: 15,
@@ -74,10 +174,17 @@ const styles = StyleSheet.create({
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
   mapButton: {
     marginTop: 10,
-    backgroundColor: "#4CAF50",
-    padding: 10,
+    backgroundColor: "#2e8b57",
+    padding: 8,
     borderRadius: 6,
     alignItems: "center",
   },
-  mapButtonText: { color: "white", fontWeight: "bold" },
+  mapButtonText: { color: "#fff", fontWeight: "bold" },
+  noDataText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#888",
+  },
 });
