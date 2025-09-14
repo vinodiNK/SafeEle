@@ -1,8 +1,20 @@
 // app/CollisionZone.jsx
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Linking, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Linking,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { db } from "../firebaseConfig";
 
 export default function CollisionZone() {
@@ -34,30 +46,74 @@ export default function CollisionZone() {
     Linking.openURL(url);
   };
 
- const applyFilter = () => {
-  let filtered = locations;
+  const applyFilter = () => {
+    let filtered = locations;
 
-  // Filter by area if entered
-  if (areaFilter.trim() !== "") {
-    filtered = filtered.filter((loc) =>
-      loc.locationName.toLowerCase().includes(areaFilter.toLowerCase())
-    );
-  }
+    // Filter by area if entered
+    if (areaFilter.trim() !== "") {
+      filtered = filtered.filter((loc) =>
+        loc.locationName?.toLowerCase().includes(areaFilter.toLowerCase())
+      );
+    }
 
-  // Filter by date if selected
-  if (dateFilter) {
-    const selectedDate = new Date(dateFilter).toDateString();
-    filtered = filtered.filter((loc) => {
-      if (loc.timestamp?.toDate) {
-        return loc.timestamp.toDate().toDateString() === selectedDate;
+    // Filter by date if selected
+    if (dateFilter) {
+      const selectedDate = new Date(dateFilter).toDateString();
+      filtered = filtered.filter((loc) => {
+        if (loc.timestamp?.toDate) {
+          return loc.timestamp.toDate().toDateString() === selectedDate;
+        }
+        return false;
+      });
+    }
+
+    setFilteredLocations(filtered);
+  };
+
+  // ✅ Generate PDF Report
+  const generatePDF = async () => {
+    try {
+      const html = `
+        <h1>Elephant Collision Zones Report</h1>
+        <p>Total Records: ${filteredLocations.length}</p>
+        <table border="1" cellspacing="0" cellpadding="5">
+          <tr>
+            <th>Location</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Date & Time</th>
+          </tr>
+          ${filteredLocations
+            .map(
+              (loc) => `
+            <tr>
+              <td>${loc.locationName || "Unknown"}</td>
+              <td>${loc.latitude}</td>
+              <td>${loc.longitude}</td>
+              <td>${
+                loc.timestamp?.toDate
+                  ? loc.timestamp.toDate().toLocaleString()
+                  : loc.timestamp
+              }</td>
+            </tr>
+          `
+            )
+            .join("")}
+        </table>
+      `;
+
+      const { uri } = await Print.printToFileAsync({ html });
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(uri);
+      } else {
+        Alert.alert("Success", "PDF generated successfully ✅");
       }
-      return false;
-    });
-  }
-
-  // If no filters, filtered = all locations (already default)
-  setFilteredLocations(filtered);
-};
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Failed to generate PDF");
+    }
+  };
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
@@ -100,32 +156,39 @@ export default function CollisionZone() {
         <Text style={styles.filterButtonText}>Apply Filter</Text>
       </TouchableOpacity>
 
+      {/* PDF Button */}
+      <TouchableOpacity style={styles.pdfButton} onPress={generatePDF}>
+        <Text style={styles.pdfButtonText}>Download PDF Report</Text>
+      </TouchableOpacity>
+
       {/* List of locations */}
       <FlatList
-  data={filteredLocations}
-  keyExtractor={(item) => item.id}
-  ListEmptyComponent={() => (
-    <Text style={styles.noDataText}>No data found</Text>
-  )}
-  renderItem={({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.locationName}>{item.locationName}</Text>
-      <Text>Latitude: {item.latitude}</Text>
-      <Text>Longitude: {item.longitude}</Text>
-      <Text>
-        Date & Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
-      </Text>
+        data={filteredLocations}
+        keyExtractor={(item) => item.id}
+        ListEmptyComponent={() => (
+          <Text style={styles.noDataText}>No data found</Text>
+        )}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.locationName}>{item.locationName}</Text>
+            <Text>Latitude: {item.latitude}</Text>
+            <Text>Longitude: {item.longitude}</Text>
+            <Text>
+              Date & Time:{" "}
+              {item.timestamp?.toDate
+                ? item.timestamp.toDate().toLocaleString()
+                : item.timestamp}
+            </Text>
 
-      <TouchableOpacity
-        style={styles.mapButton}
-        onPress={() => openInMap(item.latitude, item.longitude)}
-      >
-        <Text style={styles.mapButtonText}>Open in Map</Text>
-      </TouchableOpacity>
-    </View>
-  )}
-/>
-
+            <TouchableOpacity
+              style={styles.mapButton}
+              onPress={() => openInMap(item.latitude, item.longitude)}
+            >
+              <Text style={styles.mapButtonText}>Open in Map</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
     </View>
   );
 }
@@ -156,6 +219,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   filterButtonText: { color: "#fff", fontWeight: "bold" },
+  pdfButton: {
+    backgroundColor: "#FF5722",
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 15,
+    alignItems: "center",
+  },
+  pdfButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
   item: {
     backgroundColor: "#f2f2f2",
     padding: 15,
@@ -170,14 +244,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: "center",
   },
-
-  noDataText: {
-  textAlign: "center",
-  marginTop: 20,
-  fontSize: 16,
-  fontWeight: "bold",
-  color: "#888",
-},
-
   mapButtonText: { color: "#fff", fontWeight: "bold" },
+  noDataText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#888",
+  },
 });
