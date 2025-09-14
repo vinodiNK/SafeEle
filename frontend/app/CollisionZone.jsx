@@ -34,30 +34,30 @@ export default function CollisionZone() {
     Linking.openURL(url);
   };
 
-  // Filter locations by area and/or date
-  const applyFilter = () => {
-    let filtered = locations;
+ const applyFilter = () => {
+  let filtered = locations;
 
-    // Filter by area
-    if (areaFilter.trim() !== "") {
-      filtered = filtered.filter((loc) =>
-        loc.locationName.toLowerCase().includes(areaFilter.toLowerCase())
-      );
-    }
+  // Filter by area if entered
+  if (areaFilter.trim() !== "") {
+    filtered = filtered.filter((loc) =>
+      loc.locationName.toLowerCase().includes(areaFilter.toLowerCase())
+    );
+  }
 
-    // Filter by date
-    if (dateFilter) {
-      const selectedDate = new Date(dateFilter).toDateString();
-      filtered = filtered.filter((loc) => {
-        if (loc.timestamp?.toDate) {
-          return loc.timestamp.toDate().toDateString() === selectedDate;
-        }
-        return false;
-      });
-    }
+  // Filter by date if selected
+  if (dateFilter) {
+    const selectedDate = new Date(dateFilter).toDateString();
+    filtered = filtered.filter((loc) => {
+      if (loc.timestamp?.toDate) {
+        return loc.timestamp.toDate().toDateString() === selectedDate;
+      }
+      return false;
+    });
+  }
 
-    setFilteredLocations(filtered);
-  };
+  // If no filters, filtered = all locations (already default)
+  setFilteredLocations(filtered);
+};
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
