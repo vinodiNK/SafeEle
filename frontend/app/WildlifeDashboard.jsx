@@ -10,7 +10,8 @@ export default function WildLifeDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const q1 = query(collection(db, "elephants_locations"), orderBy("timestamp", "desc"));
+    // ✅ Fix collection name: elephant_locations (not elephants_locations)
+    const q1 = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
     const unsubscribe1 = onSnapshot(q1, (snapshot) => {
       const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setElephants(data);
@@ -33,31 +34,40 @@ export default function WildLifeDashboard() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Elephant Locations</Text>
+      <Text style={styles.header}>Past Elephant Collision Zone</Text>
       <FlatList
         data={elephants}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Text style={styles.title}>Elephant spotted at:</Text>
-            <Text style={styles.location}>{item.locationName}</Text>
+            {/* ✅ Show new locationName field */}
+            <Text style={styles.location}>
+              {item.locationName ? item.locationName : "Unknown location"}
+            </Text>
             <Text style={styles.date}>
-              {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
+              {item.timestamp?.seconds
+                ? new Date(item.timestamp.seconds * 1000).toLocaleString()
+                : "No time"}
             </Text>
           </View>
         )}
       />
 
-      <Text style={styles.header}>Guest Locations</Text>
+      <Text style={styles.header}>Guest Updated Elephants Locations</Text>
       <FlatList
         data={guests}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Text style={styles.title}>Guest at:</Text>
-            <Text style={styles.location}>{item.locationName}</Text>
+            <Text style={styles.location}>
+              {item.locationName ? item.locationName : "Unknown location"}
+            </Text>
             <Text style={styles.date}>
-              {new Date(item.timestamp?.seconds * 1000).toLocaleString()}
+              {item.timestamp?.seconds
+                ? new Date(item.timestamp.seconds * 1000).toLocaleString()
+                : "No time"}
             </Text>
           </View>
         )}
@@ -68,8 +78,20 @@ export default function WildLifeDashboard() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 15, backgroundColor: "#f5f5f5" },
-  header: { fontSize: 22, fontWeight: "bold", marginVertical: 10, textAlign: "center", color: "#1e88e5" },
-  card: { backgroundColor: "#fff", padding: 15, marginBottom: 10, borderRadius: 12, elevation: 3 },
+  header: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginVertical: 10,
+    textAlign: "center",
+    color: "#1e88e5",
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 12,
+    elevation: 3,
+  },
   title: { fontSize: 16, fontWeight: "bold" },
   location: { fontSize: 16, marginTop: 4, color: "#2d6a4f" },
   date: { fontSize: 12, color: "gray", marginTop: 6 },
