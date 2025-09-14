@@ -1,101 +1,62 @@
 // app/StationDashboard.jsx
 import { useNavigation } from "@react-navigation/native";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { db } from "../firebaseConfig";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function StationDashboard() {
-  const [newsList, setNewsList] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setNewsList(data);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1000); // simulate refresh
-  };
-
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.station}>Station: {item.station}</Text>
-      <Text style={styles.news}>{item.news}</Text>
-      <Text style={styles.date}>
-        {item.createdAt?.toDate().toLocaleString() || "Just now"}
-      </Text>
-    </View>
-  );
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <Text style={styles.header}>Station News Updates</Text>
+      <Text style={styles.header}>Station Master Dashboard</Text>
 
-      {/* News List */}
-      <FlatList
-        data={newsList}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        contentContainerStyle={{ paddingBottom: 100 }}
-      />
-
-      {/* Back Button */}
+      {/* News Update Button */}
       <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.navigate("Login")}
-        activeOpacity={0.8}
+        style={styles.button}
+        onPress={() => navigation.navigate("StationViewNews")}
       >
-        <Text style={styles.backText}>Back to Login</Text>
+        <Text style={styles.buttonText}>News Update</Text>
+      </TouchableOpacity>
+
+      {/* Track Train Button */}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("TrackTrainScreen")}
+      >
+        <Text style={styles.buttonText}>Track Train</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: "#f5f5f5" },
-  header: { fontSize: 22, fontWeight: "bold", marginBottom: 15, textAlign: "center", color: "#1e88e5" },
-  backButton: {
-    position: "absolute",
-    bottom: 30,
-    left: "10%",
-    right: "10%",
-    paddingVertical: 15,
-    backgroundColor: "#208140",
-    borderRadius: 25,
-    alignItems: "center",
+  container: {
+    flex: 1,
     justifyContent: "center",
-    zIndex: 10,
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: "#f5f5f5",
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 40,
+  },
+  button: {
+    width: "80%",
+    padding: 15,
+    backgroundColor: "#2e8b57",
+    borderRadius: 10,
+    alignItems: "center",
+    marginVertical: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
     elevation: 5,
   },
-  backText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
-  card: {
-    backgroundColor: "#fff",
-    padding: 15,
-    marginBottom: 12,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  title: { fontSize: 18, fontWeight: "bold", color: "#1e88e5" },
-  station: { fontSize: 14, color: "#444", marginTop: 5 },
-  news: { fontSize: 16, marginTop: 8 },
-  date: { fontSize: 12, color: "gray", marginTop: 6, textAlign: "right" },
 });

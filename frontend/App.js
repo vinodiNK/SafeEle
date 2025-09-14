@@ -10,8 +10,10 @@ import GuestLocation from "./app/GuestLocation";
 import Index from "./app/index"; // Landing page
 import LoginPage from "./app/Login"; // Login screen
 import OpenMap from "./app/OpenMap"; // Map screen
-import SendNews from "./app/SendNews"; // ✅ new import
+import SendNews from "./app/SendNews"; // Driver send news
 import StationDashboard from "./app/StationDashboard";
+import StationViewNews from "./app/StationViewNews";
+import TrackTrainScreen from "./app/TrackTrainScreen"; // Track train screen
 import UploadLocation from "./app/UploadLocation"; // Location uploader
 import ViewReport from "./app/ViewReport";
 import WildlifeDashboard from "./app/WildlifeDashboard";
@@ -27,7 +29,7 @@ export default function App() {
       const token = await registerForPushNotificationsAsync();
       if (token) {
         try {
-          // 👇 send token to backend
+          // Send token to backend
           await fetch("http://10.0.2.2:5000/save-token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -48,26 +50,26 @@ export default function App() {
         initialRouteName="Index"
         screenOptions={{ headerShown: false }}
       >
-        {/* Landing Page */}
+        {/* Landing & Auth */}
         <Stack.Screen name="Index" component={Index} />
-
-        {/* Authentication */}
         <Stack.Screen name="Login" component={LoginPage} />
 
         {/* Dashboards */}
         <Stack.Screen name="DriverDashboard" component={DriverDashboard} />
         <Stack.Screen name="StationDashboard" component={StationDashboard} />
+        <Stack.Screen name="StationViewNews" component={StationViewNews} />
+        <Stack.Screen name="TrackTrainScreen" component={TrackTrainScreen} />
         <Stack.Screen name="WildlifeDashboard" component={WildlifeDashboard} />
+
+        {/* Data & Maps */}
         <Stack.Screen name="CollisionZone" component={CollisionZone} />
         <Stack.Screen name="GuestLocation" component={GuestLocation} />
         <Stack.Screen name="ViewReport" component={ViewReport} />
-        {/* Map */}
         <Stack.Screen name="OpenMap" component={OpenMap} />
-
-        {/* Extra features */}
         <Stack.Screen name="UploadLocation" component={UploadLocation} />
-        <Stack.Screen name="DriverNews" component={SendNews} /> 
-        {/* ✅ added SendNews screen */}
+
+        {/* Driver news */}
+        <Stack.Screen name="DriverNews" component={SendNews} />
       </Stack.Navigator>
     </NavigationContainer>
   );
