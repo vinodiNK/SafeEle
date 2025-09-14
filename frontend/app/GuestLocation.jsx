@@ -1,16 +1,17 @@
 // app/GuestLocation.jsx
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as Print from "expo-print"; // ✅ PDF generation
+import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
+  ActivityIndicator, Alert, FlatList,
   Linking,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { db } from "../firebaseConfig";
 
@@ -45,14 +46,12 @@ export default function GuestLocation() {
   const applyFilter = () => {
     let filtered = locations;
 
-    // Area filter
     if (areaFilter.trim() !== "") {
       filtered = filtered.filter((loc) =>
         loc.locationName?.toLowerCase().includes(areaFilter.toLowerCase())
       );
     }
 
-    // Date filter
     if (dateFilter) {
       const selectedDate = new Date(dateFilter).toDateString();
       filtered = filtered.filter((loc) => {
@@ -65,6 +64,53 @@ export default function GuestLocation() {
 
     setFilteredLocations(filtered);
   };
+
+  // ✅ Generate PDF Report
+  const generatePDF = async () => {
+  try {
+    const html = `
+      <h1>Guest Elephant Sightings Report</h1>
+      <p>Total Records: ${filteredLocations.length}</p>
+      <table border="1" cellspacing="0" cellpadding="5">
+        <tr>
+          <th>Location</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Date & Time</th>
+        </tr>
+        ${filteredLocations
+          .map(
+            (loc) => `
+          <tr>
+            <td>${loc.locationName || "Unknown"}</td>
+            <td>${loc.latitude}</td>
+            <td>${loc.longitude}</td>
+            <td>${
+              loc.timestamp?.toDate
+                ? loc.timestamp.toDate().toLocaleString()
+                : loc.timestamp
+            }</td>
+          </tr>
+        `
+          )
+          .join("")}
+      </table>
+    `;
+
+    const { uri } = await Print.printToFileAsync({ html });
+
+    // ✅ Open Share Menu → user can pick Google Drive
+    if (await Sharing.isAvailableAsync()) {
+      await Sharing.shareAsync(uri);
+    } else {
+      Alert.alert("Saved", "PDF generated but sharing is not available.");
+    }
+  } catch (err) {
+    console.error("PDF error:", err);
+    Alert.alert("Error", "Failed to generate PDF");
+  }
+};
+
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
@@ -105,6 +151,11 @@ export default function GuestLocation() {
 
       <TouchableOpacity style={styles.filterButton} onPress={applyFilter}>
         <Text style={styles.filterButtonText}>Apply Filter</Text>
+      </TouchableOpacity>
+
+      {/* ✅ Download PDF Button */}
+      <TouchableOpacity style={styles.pdfButton} onPress={generatePDF}>
+        <Text style={styles.pdfButtonText}>Download PDF Report</Text>
       </TouchableOpacity>
 
       {/* List of guest locations */}
@@ -165,6 +216,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   filterButtonText: { color: "#fff", fontWeight: "bold" },
+  pdfButton: {
+    backgroundColor: "#1E90FF",
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 15,
+    alignItems: "center",
+  },
+  pdfButtonText: { color: "#fff", fontWeight: "bold" },
   item: {
     backgroundColor: "#f2f2f2",
     padding: 15,
