@@ -1,98 +1,67 @@
-// app/WildLifeDashboard.jsx
+import { useNavigation } from "@react-navigation/native"; // ✅ Import navigation hook
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { db } from "../firebaseConfig";
 
 export default function WildLifeDashboard() {
-  const [elephants, setElephants] = useState([]);
-  const [guests, setGuests] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const navigation = useNavigation(); // ✅ Initialize navigation
+
   useEffect(() => {
-    // ✅ Fix collection name: elephant_locations (not elephants_locations)
-    const q1 = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
-    const unsubscribe1 = onSnapshot(q1, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setElephants(data);
+    const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const locs = [];
+      querySnapshot.forEach((doc) => {
+        locs.push({ id: doc.id, ...doc.data() });
+      });
+      setLocations(locs);
       setLoading(false);
     });
 
-    const q2 = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
-    const unsubscribe2 = onSnapshot(q2, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setGuests(data);
-    });
-
-    return () => {
-      unsubscribe1();
-      unsubscribe2();
-    };
+    return () => unsubscribe();
   }, []);
-
-  if (loading) return <ActivityIndicator size="large" color="#1e88e5" style={{ flex: 1 }} />;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Past Elephant Collision Zone</Text>
-      <FlatList
-        data={elephants}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.title}>Elephant spotted at:</Text>
-            {/* ✅ Show new locationName field */}
-            <Text style={styles.location}>
-              {item.locationName ? item.locationName : "Unknown location"}
-            </Text>
-            <Text style={styles.date}>
-              {item.timestamp?.seconds
-                ? new Date(item.timestamp.seconds * 1000).toLocaleString()
-                : "No time"}
-            </Text>
-          </View>
-        )}
-      />
+      {/* Buttons */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("CollisionZone")}
+        >
+          <Text style={styles.buttonText}>Past Elephant Collision Zone</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.header}>Guest Updated Elephants Locations</Text>
-      <FlatList
-        data={guests}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.title}>Guest at:</Text>
-            <Text style={styles.location}>
-              {item.locationName ? item.locationName : "Unknown location"}
-            </Text>
-            <Text style={styles.date}>
-              {item.timestamp?.seconds
-                ? new Date(item.timestamp.seconds * 1000).toLocaleString()
-                : "No time"}
-            </Text>
-          </View>
-        )}
-      />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("GuestLocation")}
+        >
+          <Text style={styles.buttonText}>Guest Updated Location</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("ViewReport")}
+        >
+          <Text style={styles.buttonText}>View Report</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: "#f5f5f5" },
-  header: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginVertical: 10,
-    textAlign: "center",
-    color: "#1e88e5",
+  container: { flex: 1, padding: 10 },
+  buttonContainer: { marginBottom: 20 },
+  button: {
+    backgroundColor: "#2e8b57",
+    padding: 12,
+    marginVertical: 5,
+    borderRadius: 8,
+    alignItems: "center",
   },
-  card: {
-    backgroundColor: "#fff",
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 12,
-    elevation: 3,
-  },
-  title: { fontSize: 16, fontWeight: "bold" },
-  location: { fontSize: 16, marginTop: 4, color: "#2d6a4f" },
-  date: { fontSize: 12, color: "gray", marginTop: 6 },
+  buttonText: { color: "#fff", fontWeight: "bold" },
 });
