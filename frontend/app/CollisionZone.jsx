@@ -102,26 +102,30 @@ export default function CollisionZone() {
 
       {/* List of locations */}
       <FlatList
-        data={filteredLocations}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.locationName}>{item.locationName}</Text>
-            <Text>Latitude: {item.latitude}</Text>
-            <Text>Longitude: {item.longitude}</Text>
-            <Text>
-              Date & Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
-            </Text>
+  data={filteredLocations}
+  keyExtractor={(item) => item.id}
+  ListEmptyComponent={() => (
+    <Text style={styles.noDataText}>No data found</Text>
+  )}
+  renderItem={({ item }) => (
+    <View style={styles.item}>
+      <Text style={styles.locationName}>{item.locationName}</Text>
+      <Text>Latitude: {item.latitude}</Text>
+      <Text>Longitude: {item.longitude}</Text>
+      <Text>
+        Date & Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleString() : item.timestamp}
+      </Text>
 
-            <TouchableOpacity
-              style={styles.mapButton}
-              onPress={() => openInMap(item.latitude, item.longitude)}
-            >
-              <Text style={styles.mapButtonText}>Open in Map</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      <TouchableOpacity
+        style={styles.mapButton}
+        onPress={() => openInMap(item.latitude, item.longitude)}
+      >
+        <Text style={styles.mapButtonText}>Open in Map</Text>
+      </TouchableOpacity>
+    </View>
+  )}
+/>
+
     </View>
   );
 }
@@ -166,5 +170,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: "center",
   },
+
+  noDataText: {
+  textAlign: "center",
+  marginTop: 20,
+  fontSize: 16,
+  fontWeight: "bold",
+  color: "#888",
+},
+
   mapButtonText: { color: "#fff", fontWeight: "bold" },
 });
