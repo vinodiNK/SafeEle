@@ -17,14 +17,7 @@ export default function StationDashboard() {
         <Text style={styles.buttonText}>News Update</Text>
       </TouchableOpacity>
 
-      {/* Track Train Button */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("TrackTrain")}
-      >
-        <Text style={styles.buttonText}>Track Train</Text>
-      </TouchableOpacity>
-
+      
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("index")}
