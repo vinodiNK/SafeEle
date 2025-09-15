@@ -25,7 +25,7 @@ export default function TrackTrain() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleTrainPress("Rajarata Rajini/රජරට රැජිණි")}
+        onPress={() => handleTrainPress("Rajarata Rejini/රජරට රැජිණි")}
       >
         <Text style={styles.buttonText}>Rajarata Rajini / රජරට රැජිණි</Text>
       </TouchableOpacity>

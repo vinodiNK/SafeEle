@@ -44,6 +44,7 @@ export default function StationViewNews({ route }) {
         ListEmptyComponent={() => <Text style={styles.noDataText}>No news found</Text>}
         renderItem={({ item }) => (
           <View style={styles.item}>
+            <Text style={styles.trainName}>{item.trainName}</Text>
             <Text style={styles.title}>{item.title}</Text>
             <Text style={styles.station}>Station: {item.station}</Text>
             <Text style={styles.news}>{item.news}</Text>
@@ -61,7 +62,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 15, backgroundColor: "#f5f5f5" },
   header: { fontSize: 22, fontWeight: "bold", marginBottom: 20, textAlign: "center", color: "#2e8b57" },
   item: { backgroundColor: "#fff", padding: 15, borderRadius: 10, marginBottom: 10, elevation: 2 },
-  title: { fontWeight: "bold", fontSize: 18, marginBottom: 5 },
+  trainName: { fontWeight: "bold", fontSize: 18, marginBottom: 5 },
+  title: { fontWeight: "bold", fontSize: 18, marginBottom: 5, color: "#3080dbff" },
   station: { fontStyle: "italic", marginBottom: 5 },
   news: { marginBottom: 5 },
   date: { fontSize: 12, color: "#888" },

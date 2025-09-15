@@ -24,6 +24,14 @@ export default function StationDashboard() {
       >
         <Text style={styles.buttonText}>Track Train</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("index")}
+      >
+        <Text style={styles.buttonText}>Back to Login</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

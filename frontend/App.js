@@ -10,6 +10,7 @@ import GuestLocation from "./app/GuestLocation";
 import Index from "./app/index"; // Landing page
 import LoginPage from "./app/Login"; // Login screen
 import OpenMap from "./app/OpenMap"; // Map screen
+import TrainMapYalDevi from "./app/rainMapYalDevi";
 import SendNews from "./app/SendNews"; // Driver send news
 import StationDashboard from "./app/StationDashboard";
 import StationViewNews from "./app/StationViewNews";
@@ -58,6 +59,7 @@ export default function App() {
         <Stack.Screen name="StationDashboard" component={StationDashboard} />
         <Stack.Screen name="StationViewNews" component={StationViewNews} />
         <Stack.Screen name="TrackTrainScreen" component={TrackTrain} />
+                <Stack.Screen name="TrainMapYalDevi" component={TrainMapYalDevi } />
         <Stack.Screen name="WildlifeDashboard" component={WildlifeDashboard} />
 
         {/* Data & Maps */}

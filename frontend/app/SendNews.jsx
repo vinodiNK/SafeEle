@@ -20,6 +20,7 @@ import NewsImage from "../assets/news.png";
 
 export default function SendNews() {
   const [station, setStation] = useState("");
+  const [trainName, setTrainName] = useState("");
   const [stations, setStations] = useState([]);
   const [title, setTitle] = useState("");
   const [news, setNews] = useState("");
@@ -35,13 +36,14 @@ export default function SendNews() {
 
   // ✅ Handle sending news to Firestore
   const handleSend = async () => {
-    if (!station || !title || !news) {
+    if (!trainName ||!station || !title || !news) {
       Alert.alert("Error", "Please fill all fields before sending.");
       return;
     }
 
     try {
       await addDoc(collection(db, "news"), {
+        trainName,
         station,
         title,
         news,
@@ -49,6 +51,7 @@ export default function SendNews() {
       });
 
       Alert.alert("Success", "News sent successfully!");
+      setTrainName("");
       setStation("");
       setTitle("");
       setNews("");
@@ -71,6 +74,19 @@ export default function SendNews() {
           style={useAltStyle ? styles.imageAlt : styles.image}
           resizeMode="contain"
         />
+         {/* Train Names  Dropdown */}
+        <View style={useAltStyle ? styles.dropdownContainerAlt : styles.dropdownContainer}>
+          <Picker
+            selectedValue={trainName}
+            style={styles.dropdown}
+            dropdownIconColor={useAltStyle ? "#1e88e5" : "#2e7d32"}
+            onValueChange={(value) => setTrainName(value)}
+          >
+            <Picker.Item label="Train Name" value="Yal Devi" />
+            <Picker.Item label="Yal Devi" value="Yal Devi" />
+            <Picker.Item label="Udarata Rejina" value="Udarata Rejina" />
+           </Picker>
+        </View>
 
         {/* Station Dropdown */}
         <View style={useAltStyle ? styles.dropdownContainerAlt : styles.dropdownContainer}>
