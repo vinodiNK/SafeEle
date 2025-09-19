@@ -2,27 +2,18 @@
 import * as Location from "expo-location";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { db } from "../firebaseConfig";
 
-const COLLISION_RADIUS = 500; // meters
+const COLLISION_RADIUS = 1000; // meters
 const ALERT_INTERVAL = 10000; // 10 seconds
 
 export default function OpenMap() {
   const [location, setLocation] = useState(null);
   const [elephantLocations, setElephantLocations] = useState([]);
   const [guestLocations, setGuestLocations] = useState([]);
-  const [cameraLocations, setCameraLocations] = useState([]);
   const intervalRef = useRef(null);
-  const lastAlertRef = useRef(null);
 
   // Get user location
   useEffect(() => {
@@ -43,57 +34,19 @@ export default function OpenMap() {
 
   // Fetch elephant locations in realtime
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "elephant_locations"),
-      (snapshot) => {
-        const locations = snapshot.docs.map((doc) => doc.data());
-        setElephantLocations(locations);
-      }
-    );
+    const unsubscribe = onSnapshot(collection(db, "elephant_locations"), (snapshot) => {
+      const locations = snapshot.docs.map((doc) => doc.data());
+      setElephantLocations(locations);
+    });
     return unsubscribe;
   }, []);
 
   // Fetch guest locations in realtime
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "guestLocations"),
-      (snapshot) => {
-        const locations = snapshot.docs.map((doc) => doc.data());
-        setGuestLocations(locations);
-      }
-    );
-    return unsubscribe;
-  }, []);
-
-  // Fetch camera detections in realtime + alert driver
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "cameraLocation"),
-      (snapshot) => {
-        const locations = snapshot.docs.map((doc) => doc.data());
-        setCameraLocations(locations);
-
-        if (locations.length > 0) {
-          // Get latest detection
-          const latest = locations.sort(
-            (a, b) => b.dateTime.seconds - a.dateTime.seconds
-          )[0];
-
-          if (latest && latest.dateTime?.seconds !== lastAlertRef.current) {
-            lastAlertRef.current = latest.dateTime?.seconds;
-
-            Alert.alert(
-              "🐘 Real-Time Elephant Detection",
-              `📍 Location: ${latest.locationName}\n🕒 Time: ${new Date(
-                latest.dateTime.seconds * 1000
-              ).toLocaleString()}`,
-              [{ text: "OK" }]
-            );
-          }
-        }
-      }
-    );
-
+    const unsubscribe = onSnapshot(collection(db, "guestLocations"), (snapshot) => {
+      const locations = snapshot.docs.map((doc) => doc.data());
+      setGuestLocations(locations);
+    });
     return unsubscribe;
   }, []);
 
@@ -117,7 +70,6 @@ export default function OpenMap() {
     return () => clearInterval(intervalRef.current);
   }, [location, elephantLocations]);
 
-  // Distance calculator
   const getDistance = (loc1, loc2) => {
     const toRad = (v) => (v * Math.PI) / 180;
     const R = 6371000; // meters
@@ -187,26 +139,8 @@ export default function OpenMap() {
           description="Reported in Firestore"
         >
           <Image
-            source={require("../assets/elephant.png")}
+            source={require("../assets/elephant.png")} // replace with guest.png if needed
             style={{ width: 35, height: 35 }}
-            resizeMode="contain"
-          />
-        </Marker>
-      ))}
-
-      {/* Camera detections (red elephants) */}
-      {cameraLocations.map((cam, index) => (
-        <Marker
-          key={`camera-${index}`}
-          coordinate={{ latitude: cam.latitude, longitude: cam.longitude }}
-          title={`Camera: ${cam.cameraId}`}
-          description={`${cam.locationName} - ${new Date(
-            cam.dateTime?.seconds * 1000
-          ).toLocaleString()}`}
-        >
-          <Image
-            source={require("../assets/elephantRed.png")} // 👈 red icon
-            style={{ width: 45, height: 45 }}
             resizeMode="contain"
           />
         </Marker>
