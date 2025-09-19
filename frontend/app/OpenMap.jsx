@@ -7,19 +7,23 @@ import MapView, { Marker } from "react-native-maps";
 import { db } from "../firebaseConfig";
 
 const COLLISION_RADIUS = 1000; // meters
-const ALERT_INTERVAL = 10000; // 10 seconds
 
 export default function OpenMap() {
   const [location, setLocation] = useState(null);
   const [elephantLocations, setElephantLocations] = useState([]);
   const [guestLocations, setGuestLocations] = useState([]);
-  const intervalRef = useRef(null);
+  const [cameraLocations, setCameraLocations] = useState([]);
 
-  // Get user location
+  const lastCollisionAlertRef = useRef({}); // store last alert per elephant
+
+  // Get driver location
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") return;
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
 
       const loc = await Location.getCurrentPositionAsync({});
       setLocation(loc.coords);
@@ -32,7 +36,7 @@ export default function OpenMap() {
     })();
   }, []);
 
-  // Fetch elephant locations in realtime
+  // Fetch elephant locations
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "elephant_locations"), (snapshot) => {
       const locations = snapshot.docs.map((doc) => doc.data());
@@ -41,7 +45,7 @@ export default function OpenMap() {
     return unsubscribe;
   }, []);
 
-  // Fetch guest locations in realtime
+  // Fetch guest locations
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "guestLocations"), (snapshot) => {
       const locations = snapshot.docs.map((doc) => doc.data());
@@ -50,26 +54,54 @@ export default function OpenMap() {
     return unsubscribe;
   }, []);
 
-  // Collision alert every 10 seconds
+  // Fetch camera detections + alert driver
   useEffect(() => {
-    if (!location || elephantLocations.length === 0) return;
+    const unsubscribe = onSnapshot(collection(db, "cameraLocation"), (snapshot) => {
+      const locations = snapshot.docs.map((doc) => doc.data());
+      setCameraLocations(locations);
 
-    intervalRef.current = setInterval(() => {
-      elephantLocations.forEach((ele) => {
-        const distance = getDistance(location, ele);
-        if (distance <= COLLISION_RADIUS) {
+      if (locations.length > 0) {
+        const latest = locations.sort((a, b) => b.dateTime.seconds - a.dateTime.seconds)[0];
+
+        if (latest && latest.dateTime?.seconds !== lastCollisionAlertRef.current["camera"]) {
+          lastCollisionAlertRef.current["camera"] = latest.dateTime.seconds;
+
           Alert.alert(
-            "⚠️ Collision Warning!",
-            `Elephant detected within ${Math.floor(distance)} meters!`,
+            "🐘 Real-Time Elephant Detection",
+            `📍 Location: ${latest.locationName}\n🕒 Time: ${new Date(
+              latest.dateTime.seconds * 1000
+            ).toLocaleString()}`,
             [{ text: "OK" }]
           );
         }
-      });
-    }, ALERT_INTERVAL);
+      }
+    });
 
-    return () => clearInterval(intervalRef.current);
+    return unsubscribe;
+  }, []);
+
+  // Collision alert real-time
+  useEffect(() => {
+    if (!location) return;
+    elephantLocations.forEach((ele, idx) => {
+      const distance = getDistance(location, ele);
+
+      // Alert if within radius and last alert > 10 seconds ago
+      const lastAlert = lastCollisionAlertRef.current[ele.id] || 0;
+      const now = Date.now();
+      if (distance <= COLLISION_RADIUS && now - lastAlert > 10000) {
+        lastCollisionAlertRef.current[ele.id] = now;
+
+        Alert.alert(
+          "⚠️ Collision Warning!",
+          `Elephant detected within ${Math.floor(distance)} meters!`,
+          [{ text: "OK" }]
+        );
+      }
+    });
   }, [location, elephantLocations]);
 
+  // Distance calculator (Haversine)
   const getDistance = (loc1, loc2) => {
     const toRad = (v) => (v * Math.PI) / 180;
     const R = 6371000; // meters
@@ -106,10 +138,7 @@ export default function OpenMap() {
     >
       {/* Driver location */}
       <Marker
-        coordinate={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-        }}
+        coordinate={{ latitude: location.latitude, longitude: location.longitude }}
         title="You are here"
         pinColor="#2d6a4f"
       />
@@ -139,8 +168,24 @@ export default function OpenMap() {
           description="Reported in Firestore"
         >
           <Image
-            source={require("../assets/elephant.png")} // replace with guest.png if needed
+            source={require("../assets/elephant.png")}
             style={{ width: 35, height: 35 }}
+            resizeMode="contain"
+          />
+        </Marker>
+      ))}
+
+      {/* Camera detections */}
+      {cameraLocations.map((cam, index) => (
+        <Marker
+          key={`camera-${index}`}
+          coordinate={{ latitude: cam.latitude, longitude: cam.longitude }}
+          title={`Camera: ${cam.cameraId}`}
+          description={`${cam.locationName} - ${new Date(cam.dateTime?.seconds * 1000).toLocaleString()}`}
+        >
+          <Image
+            source={require("../assets/elephantRed.png")}
+            style={{ width: 45, height: 45 }}
             resizeMode="contain"
           />
         </Marker>
