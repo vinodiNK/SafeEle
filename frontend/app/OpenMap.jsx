@@ -1,7 +1,8 @@
 // app/OpenMap.jsx
+import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { collection, onSnapshot } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert, Image, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { db } from "../firebaseConfig";
@@ -13,9 +14,13 @@ export default function OpenMap() {
   const [elephantLocations, setElephantLocations] = useState([]);
   const [guestLocations, setGuestLocations] = useState([]);
   const [cameraLocations, setCameraLocations] = useState([]);
-
   const lastCollisionAlertRef = useRef({}); // store last alert per elephant
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   // Get driver location
   useEffect(() => {
     (async () => {
