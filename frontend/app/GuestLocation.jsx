@@ -5,14 +5,18 @@ import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
-  ActivityIndicator, Alert, FlatList,
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  FlatList,
   Linking,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
+import { PieChart } from "react-native-chart-kit"; // ✅ For Pie Chart
 import { db } from "../firebaseConfig";
 
 export default function GuestLocation() {
@@ -22,6 +26,8 @@ export default function GuestLocation() {
   const [areaFilter, setAreaFilter] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showChart, setShowChart] = useState(false); // ✅ State for chart visibility
+  const [chartData, setChartData] = useState([]); // ✅ For pie chart data
 
   useEffect(() => {
     const q = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
@@ -67,50 +73,82 @@ export default function GuestLocation() {
 
   // ✅ Generate PDF Report
   const generatePDF = async () => {
-  try {
-    const html = `
-      <h1>Guest Elephant Sightings Report</h1>
-      <p>Total Records: ${filteredLocations.length}</p>
-      <table border="1" cellspacing="0" cellpadding="5">
-        <tr>
-          <th>Location</th>
-          <th>Latitude</th>
-          <th>Longitude</th>
-          <th>Date & Time</th>
-        </tr>
-        ${filteredLocations
-          .map(
-            (loc) => `
+    try {
+      const html = `
+        <h1>Guest Elephant Sightings Report</h1>
+        <p>Total Records: ${filteredLocations.length}</p>
+        <table border="1" cellspacing="0" cellpadding="5">
           <tr>
-            <td>${loc.locationName || "Unknown"}</td>
-            <td>${loc.latitude}</td>
-            <td>${loc.longitude}</td>
-            <td>${
-              loc.timestamp?.toDate
-                ? loc.timestamp.toDate().toLocaleString()
-                : loc.timestamp
-            }</td>
+            <th>Location</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Date & Time</th>
           </tr>
-        `
-          )
-          .join("")}
-      </table>
-    `;
+          ${filteredLocations
+            .map(
+              (loc) => `
+            <tr>
+              <td>${loc.locationName || "Unknown"}</td>
+              <td>${loc.latitude}</td>
+              <td>${loc.longitude}</td>
+              <td>${
+                loc.timestamp?.toDate
+                  ? loc.timestamp.toDate().toLocaleString()
+                  : loc.timestamp
+              }</td>
+            </tr>
+          `
+            )
+            .join("")}
+        </table>
+      `;
 
-    const { uri } = await Print.printToFileAsync({ html });
+      const { uri } = await Print.printToFileAsync({ html });
 
-    // ✅ Open Share Menu → user can pick Google Drive
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(uri);
-    } else {
-      Alert.alert("Saved", "PDF generated but sharing is not available.");
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(uri);
+      } else {
+        Alert.alert("Saved", "PDF generated but sharing is not available.");
+      }
+    } catch (err) {
+      console.error("PDF error:", err);
+      Alert.alert("Error", "Failed to generate PDF");
     }
-  } catch (err) {
-    console.error("PDF error:", err);
-    Alert.alert("Error", "Failed to generate PDF");
-  }
-};
+  };
 
+  // ✅ Analyze Data (Show Pie Chart)
+  const analyzeData = () => {
+    if (filteredLocations.length === 0) {
+      Alert.alert("No Data", "No records available for analysis");
+      return;
+    }
+
+    // Group data by location name
+    const counts = {};
+    filteredLocations.forEach((loc) => {
+      const area = loc.locationName || "Unknown";
+      counts[area] = (counts[area] || 0) + 1;
+    });
+
+    // Convert to chart-friendly format
+    const data = Object.keys(counts).map((area, index) => ({
+      name: area,
+      population: counts[area],
+      color: [
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56",
+        "#4BC0C0",
+        "#9966FF",
+        "#FF9F40",
+      ][index % 6],
+      legendFontColor: "#333",
+      legendFontSize: 14,
+    }));
+
+    setChartData(data);
+    setShowChart(true);
+  };
 
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
@@ -158,7 +196,35 @@ export default function GuestLocation() {
         <Text style={styles.pdfButtonText}>Download PDF Report</Text>
       </TouchableOpacity>
 
-      {/* List of guest locations */}
+      {/* ✅ Analyze Data Button */}
+      <TouchableOpacity style={styles.analyzeButton} onPress={analyzeData}>
+        <Text style={styles.analyzeButtonText}>Analyze Data</Text>
+      </TouchableOpacity>
+
+      {/* ✅ Pie Chart appears after clicking Analyze */}
+      {showChart && chartData.length > 0 && (
+        <View style={styles.chartContainer}>
+          <Text style={styles.chartTitle}>Sightings by Area</Text>
+          <PieChart
+            data={chartData}
+            width={Dimensions.get("window").width - 40}
+            height={250}
+            chartConfig={{
+              backgroundColor: "#ffffff",
+              backgroundGradientFrom: "#ffffff",
+              backgroundGradientTo: "#ffffff",
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            }}
+            accessor={"population"}
+            backgroundColor={"transparent"}
+            paddingLeft={"15"}
+            absolute
+          />
+        </View>
+      )}
+
+      {/* ✅ FlatList */}
       <FlatList
         data={filteredLocations}
         keyExtractor={(item) => item.id}
@@ -220,10 +286,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E90FF",
     padding: 10,
     borderRadius: 6,
-    marginBottom: 15,
+    marginBottom: 10,
     alignItems: "center",
   },
   pdfButtonText: { color: "#fff", fontWeight: "bold" },
+  analyzeButton: {
+    backgroundColor: "#FFA500",
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  analyzeButtonText: { color: "#fff", fontWeight: "bold" },
+  chartContainer: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  chartTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 10,
+  },
   item: {
     backgroundColor: "#f2f2f2",
     padding: 15,
