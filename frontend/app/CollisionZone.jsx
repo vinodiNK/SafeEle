@@ -29,7 +29,10 @@ export default function CollisionZone() {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
+    const q = query(
+      collection(db, "elephant_locations"),
+      orderBy("timestamp", "desc")
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
       querySnapshot.forEach((doc) => {
@@ -68,7 +71,7 @@ export default function CollisionZone() {
     }
 
     setFilteredLocations(filtered);
-    setShowChart(false);
+    setShowChart(false); // Hide chart after applying filter
   };
 
   const generatePDF = async () => {
@@ -103,6 +106,7 @@ export default function CollisionZone() {
       `;
 
       const { uri } = await Print.printToFileAsync({ html });
+
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri);
       } else {
@@ -114,7 +118,13 @@ export default function CollisionZone() {
     }
   };
 
+  // ✅ Toggle pie chart visibility
   const handleDataAnalysis = () => {
+    if (showChart) {
+      setShowChart(false); // If chart is visible, hide it
+      return;
+    }
+
     const locationCounts = {};
     filteredLocations.forEach((loc) => {
       const name = loc.locationName || "Unknown";
@@ -141,7 +151,7 @@ export default function CollisionZone() {
     }));
 
     setChartData(chartEntries);
-    setShowChart(true);
+    setShowChart(true); // Show chart
   };
 
   if (loading) {
@@ -194,7 +204,9 @@ export default function CollisionZone() {
 
       {/* Analyze Data Button */}
       <TouchableOpacity style={styles.analysisButton} onPress={handleDataAnalysis}>
-        <Text style={styles.analysisButtonText}>Analyze Data</Text>
+        <Text style={styles.analysisButtonText}>
+          {showChart ? "Hide Chart" : "Analyze Data"}
+        </Text>
       </TouchableOpacity>
 
       {/* Pie Chart */}
