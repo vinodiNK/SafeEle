@@ -1,10 +1,14 @@
 // app/StationDashboard.jsx
 import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function StationDashboard() {
   const navigation = useNavigation();
-
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Station Master Dashboard</Text>
