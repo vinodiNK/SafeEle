@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   Alert,
   Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet,
@@ -21,7 +21,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // 👁 toggle
+  
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
   // 🔹 Handle Login
   const handleLogin = async () => {
     if (!email || !password) {
