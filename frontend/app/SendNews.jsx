@@ -15,6 +15,8 @@ import {
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebaseConfig"; // ✅ Import Firestore config
 
+import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 import BackgroundImage from "../assets/Layer.png";
 import NewsImage from "../assets/news.png";
 
@@ -25,7 +27,12 @@ export default function SendNews() {
   const [title, setTitle] = useState("");
   const [news, setNews] = useState("");
   const [useAltStyle, setUseAltStyle] = useState(false);
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   // Fetch stations list
   useEffect(() => {
     fetch("https://raw.githubusercontent.com/vinodiNK/sl-railway-api/main/stations.json")
@@ -206,4 +213,45 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
+
+
+  header: {
+    alignItems: "center",       // Center text horizontally
+    marginBottom: 20,           // Add spacing below the header
+    paddingVertical: 10,        // Vertical padding inside the header
+    borderRadius: 8,  
+    marginTop:25,          // Rounded corners for modern look
+  },
+
+  // 🔹 Default subtitle style
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 4,
+    alignItems:"left"
+  },
+
+  // 🔸 Alternate subtitle style (for dark mode or emphasis)
+  subtitleAlt: {
+    fontSize: 26,
+    color: "#113f20ff",
+    marginBottom: 4,
+  },
+
+  // 🔹 Default title style
+  title: {
+    fontSize: 44,
+    fontWeight: "bold",
+    color: "#e1eee6ff",
+  },
+
+  // 🔸 Alternate title style
+  titleAlt: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFD700", // gold/yellow for dark theme
+  },
+
+
+
 });
