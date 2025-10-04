@@ -1,6 +1,6 @@
 // app/GuestLocation.jsx
 import DateTimePicker from "@react-native-community/datetimepicker";
-import * as Print from "expo-print"; // ✅ PDF generation
+import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { PieChart } from "react-native-chart-kit"; // ✅ For Pie Chart
+import { PieChart } from "react-native-chart-kit";
 import { db } from "../firebaseConfig";
 
 export default function GuestLocation() {
@@ -26,8 +26,8 @@ export default function GuestLocation() {
   const [areaFilter, setAreaFilter] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showChart, setShowChart] = useState(false); // ✅ State for chart visibility
-  const [chartData, setChartData] = useState([]); // ✅ For pie chart data
+  const [showChart, setShowChart] = useState(false); // Pie chart visibility
+  const [chartData, setChartData] = useState([]); // Pie chart data
 
   useEffect(() => {
     const q = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
@@ -37,7 +37,7 @@ export default function GuestLocation() {
         locs.push({ id: doc.id, ...doc.data() });
       });
       setLocations(locs);
-      setFilteredLocations(locs); // initial = all
+      setFilteredLocations(locs); 
       setLoading(false);
     });
 
@@ -69,9 +69,9 @@ export default function GuestLocation() {
     }
 
     setFilteredLocations(filtered);
+    setShowChart(false); // hide chart after filtering
   };
 
-  // ✅ Generate PDF Report
   const generatePDF = async () => {
     try {
       const html = `
@@ -116,8 +116,13 @@ export default function GuestLocation() {
     }
   };
 
-  // ✅ Analyze Data (Show Pie Chart)
+  // Toggle Pie Chart on button click
   const analyzeData = () => {
+    if (showChart) {
+      setShowChart(false); // Hide chart on second click
+      return;
+    }
+
     if (filteredLocations.length === 0) {
       Alert.alert("No Data", "No records available for analysis");
       return;
@@ -147,7 +152,7 @@ export default function GuestLocation() {
     }));
 
     setChartData(data);
-    setShowChart(true);
+    setShowChart(true); // Show chart
   };
 
   if (loading) {
@@ -191,17 +196,19 @@ export default function GuestLocation() {
         <Text style={styles.filterButtonText}>Apply Filter</Text>
       </TouchableOpacity>
 
-      {/* ✅ Download PDF Button */}
+      {/* Download PDF */}
       <TouchableOpacity style={styles.pdfButton} onPress={generatePDF}>
         <Text style={styles.pdfButtonText}>Download PDF Report</Text>
       </TouchableOpacity>
 
-      {/* ✅ Analyze Data Button */}
+      {/* Analyze Data */}
       <TouchableOpacity style={styles.analyzeButton} onPress={analyzeData}>
-        <Text style={styles.analyzeButtonText}>Analyze Data</Text>
+        <Text style={styles.analyzeButtonText}>
+          {showChart ? "Hide Chart" : "Analyze Data"}
+        </Text>
       </TouchableOpacity>
 
-      {/* ✅ Pie Chart appears after clicking Analyze */}
+      {/* Pie Chart */}
       {showChart && chartData.length > 0 && (
         <View style={styles.chartContainer}>
           <Text style={styles.chartTitle}>Sightings by Area</Text>
@@ -224,7 +231,7 @@ export default function GuestLocation() {
         </View>
       )}
 
-      {/* ✅ FlatList */}
+      {/* FlatList */}
       <FlatList
         data={filteredLocations}
         keyExtractor={(item) => item.id}
