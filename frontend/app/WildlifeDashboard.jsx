@@ -44,9 +44,9 @@ export default function WildLifeDashboard() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("ViewReport")}
+          onPress={() => navigation.navigate("AddCollision")}
         >
-          <Text style={styles.buttonText}>View Report</Text>
+          <Text style={styles.buttonText}>Add New Collision Zone</Text>
         </TouchableOpacity>
 
         {/* ✅ Back to Login button */}

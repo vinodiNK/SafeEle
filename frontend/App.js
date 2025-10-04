@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 
 // Screens
+import AddCollision from "./app/";
 import CollisionZone from "./app/CollisionZone";
 import DriverDashboard from "./app/DriverDashboard";
 import GuestLocation from "./app/GuestLocation";
@@ -15,7 +16,6 @@ import SendNews from "./app/SendNews"; // Driver send news
 import StationDashboard from "./app/StationDashboard";
 import StationViewNews from "./app/StationViewNews";
 import UploadLocation from "./app/UploadLocation"; // Location uploader
-import ViewReport from "./app/ViewReport";
 import WildlifeDashboard from "./app/WildlifeDashboard";
 
 // Notifications helper
@@ -65,7 +65,7 @@ export default function App() {
         {/* Data & Maps */}
         <Stack.Screen name="CollisionZone" component={CollisionZone} />
         <Stack.Screen name="GuestLocation" component={GuestLocation} />
-        <Stack.Screen name="ViewReport" component={ViewReport} />
+        <Stack.Screen name="AddCollision" component={AddCollision} />
         <Stack.Screen name="OpenMap" component={OpenMap} />
         <Stack.Screen name="UploadLocation" component={UploadLocation} />
 
