@@ -1,13 +1,20 @@
 // app/StationViewNews.jsx
+import { useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 import { db } from "../firebaseConfig";
+
 
 export default function StationViewNews({ route }) {
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   // Optional: if you want to filter by station
   const stationName = route?.params?.station || null;
 
@@ -36,7 +43,9 @@ export default function StationViewNews({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Station News</Text>
+     <Text style={{ fontSize: 35,marginTop:25,marginBottom:15, color: "#2E8B57", textAlign: "center", fontWeight: "bold" }}>
+  Engine Driver News
+</Text>
 
       <FlatList
         data={newsList}
