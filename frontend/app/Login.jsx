@@ -102,9 +102,7 @@ export default function Login() {
               <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity>
-              <Text style={styles.forgotPassword}>Forgot password?</Text>
-            </TouchableOpacity>
+            
           </View>
         </View>
       </ScrollView>

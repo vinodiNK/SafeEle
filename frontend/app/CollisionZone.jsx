@@ -1,4 +1,3 @@
-// app/CollisionZone.jsx
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
@@ -7,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   FlatList,
   Linking,
   StyleSheet,
@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { PieChart } from "react-native-chart-kit";
 import { db } from "../firebaseConfig";
 
 export default function CollisionZone() {
@@ -24,6 +25,8 @@ export default function CollisionZone() {
   const [areaFilter, setAreaFilter] = useState("");
   const [dateFilter, setDateFilter] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showChart, setShowChart] = useState(false);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
@@ -33,14 +36,13 @@ export default function CollisionZone() {
         locs.push({ id: doc.id, ...doc.data() });
       });
       setLocations(locs);
-      setFilteredLocations(locs); // initial filtered = all
+      setFilteredLocations(locs);
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  // Open location in Google Maps
   const openInMap = (latitude, longitude) => {
     const url = `https://www.google.com/maps?q=${latitude},${longitude}`;
     Linking.openURL(url);
@@ -49,14 +51,12 @@ export default function CollisionZone() {
   const applyFilter = () => {
     let filtered = locations;
 
-    // Filter by area if entered
     if (areaFilter.trim() !== "") {
       filtered = filtered.filter((loc) =>
         loc.locationName?.toLowerCase().includes(areaFilter.toLowerCase())
       );
     }
 
-    // Filter by date if selected
     if (dateFilter) {
       const selectedDate = new Date(dateFilter).toDateString();
       filtered = filtered.filter((loc) => {
@@ -68,9 +68,9 @@ export default function CollisionZone() {
     }
 
     setFilteredLocations(filtered);
+    setShowChart(false);
   };
 
-  // ✅ Generate PDF Report
   const generatePDF = async () => {
     try {
       const html = `
@@ -103,7 +103,6 @@ export default function CollisionZone() {
       `;
 
       const { uri } = await Print.printToFileAsync({ html });
-
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri);
       } else {
@@ -115,9 +114,41 @@ export default function CollisionZone() {
     }
   };
 
+  const handleDataAnalysis = () => {
+    const locationCounts = {};
+    filteredLocations.forEach((loc) => {
+      const name = loc.locationName || "Unknown";
+      locationCounts[name] = (locationCounts[name] || 0) + 1;
+    });
+
+    const colors = [
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56",
+      "#8BC34A",
+      "#FF9800",
+      "#9C27B0",
+      "#00BCD4",
+      "#E91E63",
+    ];
+
+    const chartEntries = Object.keys(locationCounts).map((name, i) => ({
+      name,
+      population: locationCounts[name],
+      color: colors[i % colors.length],
+      legendFontColor: "#333",
+      legendFontSize: 13,
+    }));
+
+    setChartData(chartEntries);
+    setShowChart(true);
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
   }
+
+  const screenWidth = Dimensions.get("window").width - 20;
 
   return (
     <View style={styles.container}>
@@ -161,7 +192,32 @@ export default function CollisionZone() {
         <Text style={styles.pdfButtonText}>Download PDF Report</Text>
       </TouchableOpacity>
 
-      {/* List of locations */}
+      {/* Analyze Data Button */}
+      <TouchableOpacity style={styles.analysisButton} onPress={handleDataAnalysis}>
+        <Text style={styles.analysisButtonText}>Analyze Data</Text>
+      </TouchableOpacity>
+
+      {/* Pie Chart */}
+      {showChart && chartData.length > 0 && (
+        <View style={styles.chartContainer}>
+          <Text style={styles.chartTitle}>Elephant Sightings by Location</Text>
+          <PieChart
+            data={chartData}
+            width={screenWidth}
+            height={220}
+            accessor={"population"}
+            backgroundColor={"transparent"}
+            paddingLeft={"10"}
+            absolute
+            chartConfig={{
+              backgroundColor: "#fff",
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            }}
+          />
+        </View>
+      )}
+
+      {/* List of Locations */}
       <FlatList
         data={filteredLocations}
         keyExtractor={(item) => item.id}
@@ -194,7 +250,7 @@ export default function CollisionZone() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10 },
+  container: { flex: 1, padding: 10, backgroundColor: "#fff" },
   header: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
   input: {
     borderWidth: 1,
@@ -226,9 +282,23 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     alignItems: "center",
   },
-  pdfButtonText: {
-    color: "#fff",
+  pdfButtonText: { color: "#fff", fontWeight: "bold" },
+  analysisButton: {
+    backgroundColor: "#3F51B5",
+    padding: 10,
+    borderRadius: 6,
+    marginBottom: 15,
+    alignItems: "center",
+  },
+  analysisButtonText: { color: "#fff", fontWeight: "bold" },
+  chartContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  chartTitle: {
+    fontSize: 16,
     fontWeight: "bold",
+    marginBottom: 10,
   },
   item: {
     backgroundColor: "#f2f2f2",
