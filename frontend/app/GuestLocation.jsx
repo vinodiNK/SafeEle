@@ -1,9 +1,10 @@
 // app/GuestLocation.jsx
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -19,6 +20,7 @@ import {
 import { PieChart } from "react-native-chart-kit";
 import { db } from "../firebaseConfig";
 
+
 export default function GuestLocation() {
   const [locations, setLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState([]);
@@ -28,6 +30,12 @@ export default function GuestLocation() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showChart, setShowChart] = useState(false); // Pie chart visibility
   const [chartData, setChartData] = useState([]); // Pie chart data
+
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false });
+  }, [navigation]);
 
   useEffect(() => {
     const q = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
@@ -161,7 +169,10 @@ export default function GuestLocation() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Guest Updated Locations</Text>
+      <Text style={{ fontSize: 34, color: "#0e1411ff",marginTop:25, marginBottom:25, textAlign: "center", fontWeight: "bold" }}>
+  Past Elephant Collision Zones
+</Text>
+
 
       {/* Filters */}
       <TextInput
