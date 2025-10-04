@@ -1,6 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import ElephantIcon from "../assets/elephant.png";
@@ -10,7 +11,12 @@ export default function UploadLocation() {
   const [location, setLocation] = useState(null);
   const [locationName, setLocationName] = useState(""); // 📍 store location name
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
