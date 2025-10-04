@@ -34,84 +34,99 @@ export default function AddCollision() {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [time, setTime] = useState("");
   const [loading, setLoading] = useState(false);
-  const [collisionZones, setCollisionZones] = useState([]);
-  const [editId, setEditId] = useState(null); // Track zone being edited
+  const [elephantLocations, setElephantLocations] = useState([]);
+  const [editId, setEditId] = useState(null);
 
-  // ✅ Fetch existing zones
-  const fetchZones = async () => {
+  // Fetch existing elephant locations
+  const fetchLocations = async () => {
     try {
       setLoading(true);
-      const q = query(collection(db, "collisionZones"), orderBy("createdAt", "desc"));
+      const q = query(
+        collection(db, "elephant_locations"),
+        orderBy("timestamp", "desc")
+      );
       const querySnapshot = await getDocs(q);
-      const zones = [];
-      querySnapshot.forEach((doc) => zones.push({ id: doc.id, ...doc.data() }));
-      setCollisionZones(zones);
+      const locations = [];
+      querySnapshot.forEach((doc) =>
+        locations.push({ id: doc.id, ...doc.data() })
+      );
+      setElephantLocations(locations);
       setLoading(false);
     } catch (error) {
       console.error("Fetch error:", error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchZones();
+    fetchLocations();
   }, []);
 
-  // ✅ Create or Update collision zone
-  const saveCollisionZone = async () => {
-    if (!locationName || !latitude || !longitude || !date || !time) {
-      Alert.alert("Error", "Please fill all fields!");
-      return;
+  // Create or Update location
+ const saveLocation = async () => {
+  if (!locationName || !latitude || !longitude || !date || !time) {
+    Alert.alert("Error", "Please fill all fields!");
+    return;
+  }
+
+  try {
+    // Parse time (assuming format "HH:MM AM/PM")
+    const [timePart, modifier] = time.split(" ");
+    let [hours, minutes] = timePart.split(":").map(Number);
+
+    if (modifier === "PM" && hours < 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+
+    const timestamp = new Date(date);
+    timestamp.setHours(hours);
+    timestamp.setMinutes(minutes);
+    timestamp.setSeconds(0);
+    timestamp.setMilliseconds(0);
+
+    if (editId) {
+      const docRef = doc(db, "elephant_locations", editId);
+      await updateDoc(docRef, {
+        locationName,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
+        timestamp,
+      });
+      Alert.alert("Success", "Location updated!");
+      setEditId(null);
+    } else {
+      await addDoc(collection(db, "elephant_locations"), {
+        locationName,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
+        timestamp,
+        createdAt: serverTimestamp(),
+      });
+      Alert.alert("Success", "New location added!");
     }
 
-    try {
-      if (editId) {
-        // Update
-        const docRef = doc(db, "collisionZones", editId);
-        await updateDoc(docRef, {
-          locationName,
-          latitude: parseFloat(latitude),
-          longitude: parseFloat(longitude),
-          date: date.toDateString(),
-          time,
-        });
-        Alert.alert("Success", "Collision zone updated!");
-        setEditId(null);
-      } else {
-        // Create
-        await addDoc(collection(db, "collisionZones"), {
-          locationName,
-          latitude: parseFloat(latitude),
-          longitude: parseFloat(longitude),
-          date: date.toDateString(),
-          time,
-          createdAt: serverTimestamp(),
-        });
-        Alert.alert("Success", "New collision zone added!");
-      }
+    // Reset form
+    setLocationName("");
+    setLatitude("");
+    setLongitude("");
+    setTime("");
+    fetchLocations();
+  } catch (error) {
+    console.error("Save error:", error);
+    Alert.alert("Error", "Failed to save data");
+  }
+};
 
-      // Reset form
-      setLocationName("");
-      setLatitude("");
-      setLongitude("");
-      setTime("");
-      fetchZones();
-    } catch (error) {
-      console.error("Save error:", error);
-      Alert.alert("Error", "Failed to save data");
-    }
-  };
-
-  // ✅ Delete a zone
-  const deleteZone = async (id) => {
-    Alert.alert("Confirm Delete", "Are you sure you want to delete this zone?", [
+  // Delete location
+  const deleteLocation = async (id) => {
+    Alert.alert("Confirm Delete", "Are you sure you want to delete?", [
       { text: "Cancel", style: "cancel" },
       {
         text: "Delete",
         style: "destructive",
         onPress: async () => {
           try {
-            await deleteDoc(doc(db, "collisionZones", id));
-            fetchZones();
+            await deleteDoc(doc(db, "elephant_locations", id));
+            fetchLocations();
           } catch (error) {
             console.error("Delete error:", error);
           }
@@ -120,18 +135,21 @@ export default function AddCollision() {
     ]);
   };
 
-  // ✅ Edit a zone (populate form)
- const editZone = (zone) => {
-  setLocationName(zone.locationName || "");
-  setLatitude(zone.latitude !== undefined ? zone.latitude.toString() : "");
-  setLongitude(zone.longitude !== undefined ? zone.longitude.toString() : "");
-  setDate(zone.date ? new Date(zone.date) : new Date());
-  setTime(zone.time || "");
-  setEditId(zone.id);
-};
+  // Edit location
+  const editLocation = (loc) => {
+    setLocationName(loc.locationName || "");
+    setLatitude(loc.latitude !== undefined ? loc.latitude.toString() : "");
+    setLongitude(loc.longitude !== undefined ? loc.longitude.toString() : "");
+    setDate(loc.timestamp ? loc.timestamp.toDate() || new Date(loc.timestamp) : new Date());
+    setTime(
+      loc.timestamp
+        ? `${loc.timestamp.toDate().getHours()}:${loc.timestamp.toDate().getMinutes()}`
+        : ""
+    );
+    setEditId(loc.id);
+  };
 
-
-  // ✅ Open in Google Maps
+  // Open in Google Maps
   const openInMap = (lat, lng) => {
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
     Linking.openURL(url).catch((err) => console.error("Failed to open map:", err));
@@ -140,7 +158,7 @@ export default function AddCollision() {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>
-        {editId ? "✏️ Edit Elephant Collision Zone" : "🚨 Add Elephant Collision Zone"}
+        {editId ? "✏️ Edit Elephant Collision Location" : "🚨 Add Elephant Collision Location"}
       </Text>
 
       <TextInput
@@ -165,7 +183,10 @@ export default function AddCollision() {
       />
 
       {/* Date Picker */}
-      <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
         <Text style={styles.dateButtonText}>
           {date ? date.toDateString() : "Select Date"}
         </Text>
@@ -183,7 +204,10 @@ export default function AddCollision() {
       )}
 
       {/* Time Picker */}
-      <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowTimePicker(true)}
+      >
         <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
       </TouchableOpacity>
       {showTimePicker && (
@@ -206,19 +230,19 @@ export default function AddCollision() {
         />
       )}
 
-      <TouchableOpacity style={styles.addButton} onPress={saveCollisionZone}>
+      <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
         <Text style={styles.addButtonText}>
-          {editId ? "Update Collision Zone" : "Add Collision Zone"}
+          {editId ? "Update Location" : "Add Location"}
         </Text>
       </TouchableOpacity>
 
-      <Text style={styles.subHeader}>📍 Existing Collision Zones</Text>
+      <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
 
       {loading ? (
         <ActivityIndicator size="large" style={{ marginTop: 20 }} />
       ) : (
         <FlatList
-          data={collisionZones}
+          data={elephantLocations}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.item}>
@@ -227,25 +251,29 @@ export default function AddCollision() {
               </Text>
               <Text>Latitude: {item.latitude}</Text>
               <Text>Longitude: {item.longitude}</Text>
-              <Text>Date: {item.date}</Text>
-              <Text>Time: {item.time}</Text>
+              <Text>
+                Date: {item.timestamp?.toDate ? item.timestamp.toDate().toDateString() : ""}
+              </Text>
+              <Text>
+                Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleTimeString() : ""}
+              </Text>
 
               <View style={{ flexDirection: "row", marginTop: 8, justifyContent: "space-between" }}>
                 <TouchableOpacity style={styles.mapButton} onPress={() => openInMap(item.latitude, item.longitude)}>
                   <Text style={styles.mapButtonText}>Open in Map</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => editZone(item)}>
+                <TouchableOpacity style={styles.editButton} onPress={() => editLocation(item)}>
                   <Text style={styles.editButtonText}>Edit</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteZone(item.id)}>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => deleteLocation(item.id)}>
                   <Text style={styles.deleteButtonText}>Delete</Text>
                 </TouchableOpacity>
               </View>
             </View>
           )}
-          ListEmptyComponent={() => <Text style={styles.emptyText}>No collision zones found</Text>}
+          ListEmptyComponent={() => <Text style={styles.emptyText}>No locations found</Text>}
         />
       )}
     </View>
