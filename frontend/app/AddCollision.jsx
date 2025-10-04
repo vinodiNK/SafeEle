@@ -63,25 +63,23 @@ export default function AddCollision() {
   }, []);
 
   // Create or Update location
- const saveLocation = async () => {
+  const saveLocation = async () => {
   if (!locationName || !latitude || !longitude || !date || !time) {
     Alert.alert("Error", "Please fill all fields!");
     return;
   }
 
   try {
-    // Parse time (assuming format "HH:MM AM/PM")
-    const [timePart, modifier] = time.split(" ");
+    // Parse hours and minutes from the time string
+    let [timePart, meridiem] = time.split(" "); // ["3:30", "PM"]
     let [hours, minutes] = timePart.split(":").map(Number);
 
-    if (modifier === "PM" && hours < 12) hours += 12;
-    if (modifier === "AM" && hours === 12) hours = 0;
+    if (meridiem === "PM" && hours < 12) hours += 12;
+    if (meridiem === "AM" && hours === 12) hours = 0;
 
+    // Create a valid timestamp
     const timestamp = new Date(date);
-    timestamp.setHours(hours);
-    timestamp.setMinutes(minutes);
-    timestamp.setSeconds(0);
-    timestamp.setMilliseconds(0);
+    timestamp.setHours(hours, minutes, 0, 0); // set HH:MM:SS:MS
 
     if (editId) {
       const docRef = doc(db, "elephant_locations", editId);
@@ -91,7 +89,7 @@ export default function AddCollision() {
         longitude: parseFloat(longitude),
         timestamp,
       });
-      Alert.alert("Success", "Location updated!");
+      Alert.alert("✅ Updated", `Location "${locationName}" has been updated!`);
       setEditId(null);
     } else {
       await addDoc(collection(db, "elephant_locations"), {
@@ -101,7 +99,7 @@ export default function AddCollision() {
         timestamp,
         createdAt: serverTimestamp(),
       });
-      Alert.alert("Success", "New location added!");
+      Alert.alert("🎉 Added", `New location "${locationName}" has been added!`);
     }
 
     // Reset form

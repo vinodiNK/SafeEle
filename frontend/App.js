@@ -63,7 +63,7 @@ export default function App() {
         <Stack.Screen name="WildlifeDashboard" component={WildlifeDashboard} />
 
         {/* Data & Maps */}
-        <Stack.Screen name="CollisionZone" component={CollisionZone} />
+        <Stack.Screen name="CollisionZone" component={CollisionZone} options={{ headerShown: false }} />
         <Stack.Screen name="GuestLocation" component={GuestLocation} />
         <Stack.Screen name="AddCollision" component={AddCollision} />
         <Stack.Screen name="OpenMap" component={OpenMap} />

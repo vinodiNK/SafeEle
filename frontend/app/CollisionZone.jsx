@@ -1,8 +1,9 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -27,7 +28,13 @@ export default function CollisionZone() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showChart, setShowChart] = useState(false);
   const [chartData, setChartData] = useState([]);
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false });
+  }, [navigation]);
+  
   useEffect(() => {
     const q = query(
       collection(db, "elephant_locations"),
@@ -162,7 +169,11 @@ export default function CollisionZone() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Past Elephant Collision Zones</Text>
+      
+      <Text style={{ fontSize: 34, color: "#030e07ff",marginBottom: 25,marginTop:35, textAlign: "center", fontWeight: "bold" }}>
+  Past Elephant Collision Zones
+</Text>
+
 
       {/* Filters */}
       <TextInput
