@@ -1,10 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import SplashImage from "../assets/home.png";
 
 export default function Index() {
   const navigation = useNavigation();
-
+  
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   return (
     <ImageBackground source={SplashImage} style={styles.background}>
       <View style={styles.header}>
