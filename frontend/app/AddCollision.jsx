@@ -1,5 +1,6 @@
 // app/AddCollision.jsx
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
 import {
   addDoc,
   collection,
@@ -11,7 +12,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -36,7 +37,12 @@ export default function AddCollision() {
   const [loading, setLoading] = useState(false);
   const [elephantLocations, setElephantLocations] = useState([]);
   const [editId, setEditId] = useState(null);
+  const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   // Fetch existing elephant locations
   const fetchLocations = async () => {
     try {
@@ -155,7 +161,7 @@ export default function AddCollision() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
+      <Text style={{ fontSize: 34, color: "#0b0d0cff",marginTop:25, marginBottom:15, textAlign: "center", fontWeight: "bold" }}>
         {editId ? "✏️ Edit Elephant Collision Location" : "🚨 Add Elephant Collision Location"}
       </Text>
 
