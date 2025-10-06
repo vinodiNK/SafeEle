@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   },
   filterButtonText: { color: "#fff", fontWeight: "bold" },
   pdfButton: {
-    backgroundColor: "#FF5722",
+    backgroundColor: "#22bdffff",
     padding: 10,
     borderRadius: 6,
     marginBottom: 15,
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   },
   pdfButtonText: { color: "#fff", fontWeight: "bold" },
   analysisButton: {
-    backgroundColor: "#3F51B5",
+    backgroundColor: "#FFA500",
     padding: 10,
     borderRadius: 6,
     marginBottom: 15,

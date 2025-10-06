@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
+  Dimensions,
   ImageBackground,
   ScrollView,
   StyleSheet,
@@ -11,19 +12,25 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { db } from "../firebaseConfig";
+
+const { width } = Dimensions.get("window");
 
 export default function WildLifeDashboard() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-  
+
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
-  
+
   useEffect(() => {
-    const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
+    const q = query(
+      collection(db, "elephant_locations"),
+      orderBy("timestamp", "desc")
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
       querySnapshot.forEach((doc) => {
@@ -44,51 +51,106 @@ export default function WildLifeDashboard() {
     >
       <View style={styles.overlay}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={{ fontSize: 35,marginTop:30, marginBottom:1, color: "#d9e4deff", textAlign: "center", fontWeight: "bold" }}>
-            Wildlife Dashboard
-</Text>
-
-          
+          {/* Header */}
+          <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
           <Text style={styles.subHeader}>Monitor and Manage Elephant Data</Text>
 
+          {/* Cards */}
           <View style={styles.cardsContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate("CollisionZone")}>
-              <LinearGradient colors={["#34ace0", "#33d9b2"]} style={styles.card}>
-                <MaterialCommunityIcons name="map-marker-alert" size={40} color="#fff" />
-                <Text style={styles.cardTitle}>Past Collision Zones</Text>
-                <Text style={styles.cardSubtitle}>
-                  Historical elephant collision records
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            {/* Past Collision Zones */}
+            <Animatable.View animation="fadeInUp" delay={100} duration={800}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("CollisionZone")}
+                activeOpacity={0.8}
+              >
+                <Animatable.View animation="bounceIn" delay={200} duration={1000}>
+                  <LinearGradient
+                    colors={["#34ace0", "#33d9b2"]}
+                    style={styles.card}
+                  >
+                    <MaterialCommunityIcons
+                      name="map-marker-alert"
+                      size={40}
+                      color="#fff"
+                    />
+                    <Text style={styles.cardTitle}>Past Collision Zones</Text>
+                    <Text style={styles.cardSubtitle}>
+                      Historical elephant collision records
+                    </Text>
+                  </LinearGradient>
+                </Animatable.View>
+              </TouchableOpacity>
+            </Animatable.View>
 
-            <TouchableOpacity onPress={() => navigation.navigate("GuestLocation")}>
-              <LinearGradient colors={["#ff793f", "#ffb142"]} style={styles.card}>
-                <MaterialCommunityIcons name="account-group" size={40} color="#fff" />
-                <Text style={styles.cardTitle}>Guest Locations</Text>
-                <Text style={styles.cardSubtitle}>
-                  View locations updated by guests
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            {/* Guest Locations */}
+            <Animatable.View animation="fadeInUp" delay={200} duration={800}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("GuestLocation")}
+                activeOpacity={0.8}
+              >
+                <Animatable.View animation="bounceIn" delay={300} duration={1000}>
+                  <LinearGradient
+                    colors={["#ff793f", "#ffb142"]}
+                    style={styles.card}
+                  >
+                    <MaterialCommunityIcons
+                      name="account-group"
+                      size={40}
+                      color="#fff"
+                    />
+                    <Text style={styles.cardTitle}>Guest Locations</Text>
+                    <Text style={styles.cardSubtitle}>
+                      View locations updated by guests
+                    </Text>
+                  </LinearGradient>
+                </Animatable.View>
+              </TouchableOpacity>
+            </Animatable.View>
 
-            <TouchableOpacity onPress={() => navigation.navigate("AddCollision")}>
-              <LinearGradient colors={["#70a1ff", "#5352ed"]} style={styles.card}>
-                <MaterialCommunityIcons name="plus-box" size={40} color="#fff" />
-                <Text style={styles.cardTitle}>Add Collision Zone</Text>
-                <Text style={styles.cardSubtitle}>Report new collision zone</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            {/* Add Collision Zone - Primary Action */}
+            <Animatable.View animation="fadeInUp" delay={300} duration={800}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("AddCollision")}
+                activeOpacity={0.8}
+              >
+                <Animatable.View animation="bounceIn" delay={400} duration={1000}>
+                  <LinearGradient
+                    colors={["#70a1ff", "#5352ed"]}
+                    style={[styles.card, styles.primaryCard]}
+                  >
+                    <MaterialCommunityIcons
+                      name="plus-box"
+                      size={45}
+                      color="#fff"
+                    />
+                    <Text style={styles.cardTitle}>Add Collision Zone</Text>
+                    <Text style={styles.cardSubtitle}>
+                      Report new collision zone
+                    </Text>
+                  </LinearGradient>
+                </Animatable.View>
+              </TouchableOpacity>
+            </Animatable.View>
           </View>
 
-          {/* ✅ Moved Back button closer to footer */}
+          {/* Footer */}
           <View style={styles.footerContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate("index")}>
-              <LinearGradient colors={["#38ff59", "#6bff70"]} style={styles.smallCard}>
-                <MaterialCommunityIcons name="logout" size={28} color="#fff" />
-                <Text style={styles.cardTitle}>Back to Login</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            <Animatable.View animation="fadeInUp" delay={500} duration={800}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("index")}
+                activeOpacity={0.8}
+              >
+                <Animatable.View animation="pulse" iterationCount="infinite" easing="ease-in-out">
+                  <LinearGradient
+                    colors={["#38ff59", "#6bff70"]}
+                    style={styles.footerButton}
+                  >
+                    <MaterialCommunityIcons name="logout" size={28} color="#fff" />
+                    <Text style={styles.footerButtonText}>Back to Login</Text>
+                  </LinearGradient>
+                </Animatable.View>
+              </TouchableOpacity>
+            </Animatable.View>
 
             <Text style={styles.footerText}>Wildlife Conservation App</Text>
           </View>
@@ -101,54 +163,38 @@ export default function WildLifeDashboard() {
 const styles = StyleSheet.create({
   background: { flex: 1 },
   overlay: { flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" },
-  scrollContainer: { padding: 15 },
-  header: {
-    fontSize: 30,
+  scrollContainer: { padding: 15, paddingBottom: 40 },
+  headerTitle: {
+    fontSize: 32,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 20,
-    color: "#fff",
+    marginTop: 40,
+    color: "#d9e4deff",
     letterSpacing: 1,
   },
   subHeader: {
     fontSize: 16,
     textAlign: "center",
-    marginBottom: 85,
+    marginBottom: 30,
     color: "#dcdde1",
   },
   cardsContainer: {
-    marginBottom: 20, // reduced gap before footer section
+    marginBottom: 20,
   },
   card: {
-    padding: 60,
+    padding: 50,
     borderRadius: 20,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 8,
+    elevation: 6,
     alignItems: "center",
   },
-  footerContainer: {
-    alignItems: "center",
-    marginTop: 20, // smaller spacing to bring closer
+  primaryCard: {
+    transform: [{ scale: 1.05 }],
   },
-smallCard: {
-  paddingVertical: 5,
-  paddingHorizontal: 20,
-  borderRadius: 30,
-  alignItems: "center",
-  justifyContent: "center",
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 4 },
-  shadowOpacity: 0.25,
-  shadowRadius: 6,
-  elevation: 6,
-  width: 360,        // ✅ Increased width from 180 → 260
-  alignSelf: "center", // ✅ Keeps button centered on screen
-},
-
   cardTitle: {
     fontSize: 18,
     fontWeight: "bold",
@@ -161,12 +207,36 @@ smallCard: {
     marginTop: 5,
     textAlign: "center",
   },
+  footerContainer: {
+    alignItems: "center",
+    marginTop: 10,
+  },
+  footerButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 6,
+    width: width * 0.9,
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: -5,
+  },
+  footerButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    marginLeft: 8,
+  },
   footerText: {
-  textAlign: "center",
-  marginTop: 20,
-  fontSize: 14,
-  color: "#dcdde1",
-  width: "100%",       // ✅ makes text span full width of container
-},
-
+    textAlign: "center",
+    marginTop: 8,
+    fontSize: 14,
+    color: "#dcdde1",
+  },
 });

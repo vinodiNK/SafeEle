@@ -170,7 +170,7 @@ export default function GuestLocation() {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 34, color: "#0e1411ff",marginTop:25, marginBottom:25, textAlign: "center", fontWeight: "bold" }}>
-  Past Elephant Collision Zones
+  Guest Updated Locations
 </Text>
 
 
