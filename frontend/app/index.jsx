@@ -1,36 +1,73 @@
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ImageBackground, StyleSheet, TouchableOpacity, View } from "react-native";
+import * as Animatable from "react-native-animatable";
 import SplashImage from "../assets/home.png";
 
 export default function Index() {
   const navigation = useNavigation();
-  
+
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
-  
+
   return (
     <ImageBackground source={SplashImage} style={styles.background}>
+      {/* Header Section with Animated Title */}
       <View style={styles.header}>
-        <Text style={styles.title}>SAFE ELE</Text>
-        <Text style={styles.subtitle}>Making Your Experience Safer & Smarter</Text>
+        <Animatable.Text
+          animation="pulse"
+          easing="ease-out"
+          iterationCount="infinite"
+          duration={2000}
+          style={styles.title}
+        >
+          SAFE ELE
+        </Animatable.Text>
+
+        <Animatable.Text
+          animation="fadeIn"
+          delay={400}
+          duration={1500}
+          style={styles.subtitle}
+        >
+          Making Your Experience Safer & Smarter
+        </Animatable.Text>
       </View>
-       <View style={styles.buttonContainer}>
-  <TouchableOpacity
-    style={styles.guestButton}
-    onPress={() => navigation.navigate("UploadLocation")}
-  >
-    <Text style={styles.guestButtonText}>Continue as Guest</Text>
-  </TouchableOpacity>
+
+      {/* Button Section */}
+      <Animatable.View
+        animation="fadeInUp"
+        delay={800}
+        duration={1500}
+        style={styles.buttonContainer}
+      >
+        <TouchableOpacity
+          style={styles.guestButton}
+          onPress={() => navigation.navigate("UploadLocation")}
+        >
+          <Animatable.Text
+            animation="fadeIn"
+            delay={1000}
+            style={styles.guestButtonText}
+          >
+            Continue as Guest
+          </Animatable.Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.loginButton}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text style={styles.loginButtonText}>Login</Text>
+          <Animatable.Text
+            animation="fadeIn"
+            delay={1200}
+            style={styles.loginButtonText}
+          >
+            Login
+          </Animatable.Text>
         </TouchableOpacity>
-      </View>
+      </Animatable.View>
     </ImageBackground>
   );
 }

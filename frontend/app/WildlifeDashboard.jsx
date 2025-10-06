@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ImageBackground,
   ScrollView,
@@ -17,7 +17,11 @@ export default function WildLifeDashboard() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
-
+  
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+  
   useEffect(() => {
     const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -40,8 +44,11 @@ export default function WildLifeDashboard() {
     >
       <View style={styles.overlay}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.header}> Wildlife </Text>
-          <Text style={styles.header}>  Dashboard</Text>
+          <Text style={{ fontSize: 35,marginTop:30, marginBottom:1, color: "#d9e4deff", textAlign: "center", fontWeight: "bold" }}>
+            Wildlife Dashboard
+</Text>
+
+          
           <Text style={styles.subHeader}>Monitor and Manage Elephant Data</Text>
 
           <View style={styles.cardsContainer}>

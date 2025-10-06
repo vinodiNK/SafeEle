@@ -37,7 +37,7 @@ export default function CollisionZone() {
   
   useEffect(() => {
     const q = query(
-      collection(db, "elephant_locations"),
+      collection(db, "collisionZones"),
       orderBy("timestamp", "desc")
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
