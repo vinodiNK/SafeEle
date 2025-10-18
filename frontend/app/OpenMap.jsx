@@ -1,9 +1,19 @@
 // app/OpenMap.jsx
+import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { db } from "../firebaseConfig";
 
@@ -14,13 +24,13 @@ export default function OpenMap() {
   const [elephantLocations, setElephantLocations] = useState([]);
   const [guestLocations, setGuestLocations] = useState([]);
   const [cameraLocations, setCameraLocations] = useState([]);
-  const lastCollisionAlertRef = useRef({}); // store last alert per elephant
+  const lastCollisionAlertRef = useRef({});
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
-  
+
   // Get driver location
   useEffect(() => {
     (async () => {
@@ -33,7 +43,6 @@ export default function OpenMap() {
       const loc = await Location.getCurrentPositionAsync({});
       setLocation(loc.coords);
 
-      // Watch driver location continuously
       await Location.watchPositionAsync(
         { accuracy: Location.Accuracy.High, distanceInterval: 1 },
         (locUpdate) => setLocation(locUpdate.coords)
@@ -90,8 +99,6 @@ export default function OpenMap() {
     if (!location) return;
     elephantLocations.forEach((ele, idx) => {
       const distance = getDistance(location, ele);
-
-      // Alert if within radius and last alert > 10 seconds ago
       const lastAlert = lastCollisionAlertRef.current[ele.id] || 0;
       const now = Date.now();
       if (distance <= COLLISION_RADIUS && now - lastAlert > 10000) {
@@ -109,7 +116,7 @@ export default function OpenMap() {
   // Distance calculator (Haversine)
   const getDistance = (loc1, loc2) => {
     const toRad = (v) => (v * Math.PI) / 180;
-    const R = 6371000; // meters
+    const R = 6371000;
     const dLat = toRad(loc2.latitude - loc1.latitude);
     const dLon = toRad(loc2.longitude - loc1.longitude);
     const lat1 = toRad(loc1.latitude);
@@ -132,74 +139,159 @@ export default function OpenMap() {
   }
 
   return (
-    <MapView
-      style={styles.map}
-      initialRegion={{
-        latitude: location.latitude,
-        longitude: location.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      }}
-    >
-      {/* Driver location */}
-      <Marker
-        coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-        title="You are here"
-        pinColor="#2d6a4f"
-      />
+    <View style={styles.container}>
+      {/* 🔹 Header */}
+      <LinearGradient colors={["#006400", "#228B22"]} style={styles.header}>
+        <View style={styles.headerTop}>
+          <Text style={styles.headerTextLeft}>Train ID: 1234</Text>
+          <Text style={styles.headerTextRight}>Lakshman</Text>
+        </View>
+        <Text style={styles.subtitle}>Real-Time Monitoring</Text>
+        <Text style={styles.title}>Live Map</Text>
+      </LinearGradient>
 
-      {/* Elephant locations */}
-      {elephantLocations.map((ele, index) => (
+      {/* 🔹 Map Section */}
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+        }}
+      >
+        {/* Driver location */}
         <Marker
-          key={`elephant-${index}`}
-          coordinate={{ latitude: ele.latitude, longitude: ele.longitude }}
-          title="Elephant Location"
-          description="Reported in Firestore"
-        >
-          <Image
-            source={require("../assets/elephant.png")}
-            style={{ width: 40, height: 40 }}
-            resizeMode="contain"
-          />
-        </Marker>
-      ))}
+          coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+          title="You are here"
+          pinColor="#2d6a4f"
+        />
 
-      {/* Guest locations */}
-      {guestLocations.map((guest, index) => (
-        <Marker
-          key={`guest-${index}`}
-          coordinate={{ latitude: guest.latitude, longitude: guest.longitude }}
-          title="Guest Location"
-          description="Reported in Firestore"
-        >
-          <Image
-            source={require("../assets/elephant.png")}
-            style={{ width: 35, height: 35 }}
-            resizeMode="contain"
-          />
-        </Marker>
-      ))}
+        {/* Elephant locations */}
+        {elephantLocations.map((ele, index) => (
+          <Marker
+            key={`elephant-${index}`}
+            coordinate={{ latitude: ele.latitude, longitude: ele.longitude }}
+            title="Elephant Location"
+            description="Reported in Firestore"
+          >
+            <Image
+              source={require("../assets/elephant.png")}
+              style={{ width: 40, height: 40 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        ))}
 
-      {/* Camera detections */}
-      {cameraLocations.map((cam, index) => (
-        <Marker
-          key={`camera-${index}`}
-          coordinate={{ latitude: cam.latitude, longitude: cam.longitude }}
-          title={`Camera: ${cam.cameraId}`}
-          description={`${cam.locationName} - ${new Date(cam.dateTime?.seconds * 1000).toLocaleString()}`}
+        {/* Guest locations */}
+        {guestLocations.map((guest, index) => (
+          <Marker
+            key={`guest-${index}`}
+            coordinate={{ latitude: guest.latitude, longitude: guest.longitude }}
+            title="Guest Location"
+            description="Reported in Firestore"
+          >
+            <Image
+              source={require("../assets/elephant.png")}
+              style={{ width: 35, height: 35 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        ))}
+
+        {/* Camera detections */}
+        {cameraLocations.map((cam, index) => (
+          <Marker
+            key={`camera-${index}`}
+            coordinate={{ latitude: cam.latitude, longitude: cam.longitude }}
+            title={`Camera: ${cam.cameraId}`}
+            description={`${cam.locationName} - ${new Date(
+              cam.dateTime?.seconds * 1000
+            ).toLocaleString()}`}
+          >
+            <Image
+              source={require("../assets/elephantRed.png")}
+              style={{ width: 45, height: 45 }}
+              resizeMode="contain"
+            />
+          </Marker>
+        ))}
+      </MapView>
+
+      {/* 🔹 Footer Navigation */}
+      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("index")}
+          style={styles.navButton}
         >
-          <Image
-            source={require("../assets/elephantRed.png")}
-            style={{ width: 45, height: 45 }}
-            resizeMode="contain"
-          />
-        </Marker>
-      ))}
-    </MapView>
+          <Entypo name="home" size={22} color="#c8e6c9" />
+          <Text style={styles.footerText}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("OpenMap")}
+          style={styles.navButton}
+        >
+          <Entypo name="location-pin" size={26} color="white" />
+          <Text style={styles.footerTextActive}>Map</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("SendNews")}
+          style={styles.navButton}
+        >
+          <MaterialIcons name="message" size={22} color="#fff" />
+          <Text style={styles.footerText}>Message</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Profile")}
+          style={styles.navButton}
+        >
+          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
+          <Text style={styles.footerText}>Profile</Text>
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  map: { flex: 1 },
+  container: { flex: 1, backgroundColor: "#e8f5e9" },
+
+  header: {
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    paddingVertical: 25,
+    paddingHorizontal: 20,
+    elevation: 5,
+  },
+  headerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  headerTextLeft: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
+  headerTextRight: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
+  subtitle: { color: "#dff5df", fontSize: 16, textAlign: "center", marginTop: 10 },
+  title: { color: "white", fontSize: 34, fontWeight: "bold", textAlign: "center" },
+
+  map: { flex: 1, marginBottom: 70 },
   loading: { flex: 1, justifyContent: "center", alignItems: "center" },
+
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+    width: "90%",
+    alignSelf: "center",
+    paddingVertical: 10,
+    borderRadius: 30,
+    marginBottom: 35,
+    elevation: 10,
+  },
+  navButton: { alignItems: "center" },
+  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
+  footerTextActive: { color: "white", fontSize: 12, fontWeight: "bold", marginTop: 2 },
 });
