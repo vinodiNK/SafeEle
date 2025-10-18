@@ -2,7 +2,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import SplashImage from "../assets/login.jpg"; // Add your background image here
+import SplashImage from "../assets/wild.png"; // Add your background image here
 
 export default function StationDashboard() {
   const navigation = useNavigation();
