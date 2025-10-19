@@ -1,32 +1,23 @@
-// app/AddCollision.jsx
+// app/CollisionZone.jsx
+import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  serverTimestamp,
-  updateDoc,
+  addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, serverTimestamp, updateDoc
 } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
+  ActivityIndicator, Alert,
   FlatList,
   Linking,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+  StyleSheet, Text,
+  TextInput, TouchableOpacity,
+  View
 } from "react-native";
 import { db } from "../firebaseConfig";
 
-export default function AddCollision() {
+export default function CollisionZone() {
   const [locationName, setLocationName] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -37,25 +28,21 @@ export default function AddCollision() {
   const [loading, setLoading] = useState(false);
   const [elephantLocations, setElephantLocations] = useState([]);
   const [editId, setEditId] = useState(null);
+
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
-  
-  // Fetch existing elephant locations
+
+  // Fetch locations
   const fetchLocations = async () => {
     try {
       setLoading(true);
-      const q = query(
-        collection(db, "elephant_locations"),
-        orderBy("timestamp", "desc")
-      );
+      const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
       const querySnapshot = await getDocs(q);
       const locations = [];
-      querySnapshot.forEach((doc) =>
-        locations.push({ id: doc.id, ...doc.data() })
-      );
+      querySnapshot.forEach((doc) => locations.push({ id: doc.id, ...doc.data() }));
       setElephantLocations(locations);
       setLoading(false);
     } catch (error) {
@@ -68,57 +55,53 @@ export default function AddCollision() {
     fetchLocations();
   }, []);
 
-  // Create or Update location
+  // Save or update location
   const saveLocation = async () => {
-  if (!locationName || !latitude || !longitude || !date || !time) {
-    Alert.alert("Error", "Please fill all fields!");
-    return;
-  }
-
-  try {
-    // Parse hours and minutes from the time string
-    let [timePart, meridiem] = time.split(" "); // ["3:30", "PM"]
-    let [hours, minutes] = timePart.split(":").map(Number);
-
-    if (meridiem === "PM" && hours < 12) hours += 12;
-    if (meridiem === "AM" && hours === 12) hours = 0;
-
-    // Create a valid timestamp
-    const timestamp = new Date(date);
-    timestamp.setHours(hours, minutes, 0, 0); // set HH:MM:SS:MS
-
-    if (editId) {
-      const docRef = doc(db, "elephant_locations", editId);
-      await updateDoc(docRef, {
-        locationName,
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
-        timestamp,
-      });
-      Alert.alert("✅ Updated", `Location "${locationName}" has been updated!`);
-      setEditId(null);
-    } else {
-      await addDoc(collection(db, "elephant_locations"), {
-        locationName,
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
-        timestamp,
-        createdAt: serverTimestamp(),
-      });
-      Alert.alert("🎉 Added", `New location "${locationName}" has been added!`);
+    if (!locationName || !latitude || !longitude || !date || !time) {
+      Alert.alert("Error", "Please fill all fields!");
+      return;
     }
 
-    // Reset form
-    setLocationName("");
-    setLatitude("");
-    setLongitude("");
-    setTime("");
-    fetchLocations();
-  } catch (error) {
-    console.error("Save error:", error);
-    Alert.alert("Error", "Failed to save data");
-  }
-};
+    try {
+      let [timePart, meridiem] = time.split(" "); 
+      let [hours, minutes] = timePart.split(":").map(Number);
+      if (meridiem === "PM" && hours < 12) hours += 12;
+      if (meridiem === "AM" && hours === 12) hours = 0;
+
+      const timestamp = new Date(date);
+      timestamp.setHours(hours, minutes, 0, 0);
+
+      if (editId) {
+        const docRef = doc(db, "elephant_locations", editId);
+        await updateDoc(docRef, {
+          locationName,
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+          timestamp,
+        });
+        Alert.alert("✅ Updated", `Location "${locationName}" has been updated!`);
+        setEditId(null);
+      } else {
+        await addDoc(collection(db, "elephant_locations"), {
+          locationName,
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+          timestamp,
+          createdAt: serverTimestamp(),
+        });
+        Alert.alert("🎉 Added", `New location "${locationName}" has been added!`);
+      }
+
+      setLocationName("");
+      setLatitude("");
+      setLongitude("");
+      setTime("");
+      fetchLocations();
+    } catch (error) {
+      console.error("Save error:", error);
+      Alert.alert("Error", "Failed to save data");
+    }
+  };
 
   // Delete location
   const deleteLocation = async (id) => {
@@ -161,39 +144,16 @@ export default function AddCollision() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 34, color: "#0b0d0cff",marginTop:25, marginBottom:15, textAlign: "center", fontWeight: "bold" }}>
+      <Text style={styles.header}>
         {editId ? "✏️ Edit Elephant Collision Location" : "🚨 Add Elephant Collision Location"}
       </Text>
 
-      <TextInput
-        placeholder="Location name"
-        value={locationName}
-        onChangeText={setLocationName}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Latitude"
-        value={latitude}
-        onChangeText={setLatitude}
-        keyboardType="numeric"
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Longitude"
-        value={longitude}
-        onChangeText={setLongitude}
-        keyboardType="numeric"
-        style={styles.input}
-      />
+      <TextInput placeholder="Location name" value={locationName} onChangeText={setLocationName} style={styles.input} />
+      <TextInput placeholder="Latitude" value={latitude} onChangeText={setLatitude} keyboardType="numeric" style={styles.input} />
+      <TextInput placeholder="Longitude" value={longitude} onChangeText={setLongitude} keyboardType="numeric" style={styles.input} />
 
-      {/* Date Picker */}
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text style={styles.dateButtonText}>
-          {date ? date.toDateString() : "Select Date"}
-        </Text>
+      <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+        <Text style={styles.dateButtonText}>{date ? date.toDateString() : "Select Date"}</Text>
       </TouchableOpacity>
       {showDatePicker && (
         <DateTimePicker
@@ -207,11 +167,7 @@ export default function AddCollision() {
         />
       )}
 
-      {/* Time Picker */}
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowTimePicker(true)}
-      >
+      <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
         <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
       </TouchableOpacity>
       {showTimePicker && (
@@ -225,9 +181,7 @@ export default function AddCollision() {
             if (selectedTime) {
               const hours = selectedTime.getHours();
               const minutes = selectedTime.getMinutes();
-              const formattedTime = `${hours % 12 || 12}:${minutes
-                .toString()
-                .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
+              const formattedTime = `${hours % 12 || 12}:${minutes.toString().padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
               setTime(formattedTime);
             }
           }}
@@ -235,9 +189,7 @@ export default function AddCollision() {
       )}
 
       <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
-        <Text style={styles.addButtonText}>
-          {editId ? "Update Location" : "Add Location"}
-        </Text>
+        <Text style={styles.addButtonText}>{editId ? "Update Location" : "Add Location"}</Text>
       </TouchableOpacity>
 
       <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
@@ -250,27 +202,19 @@ export default function AddCollision() {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.item}>
-              <Text style={styles.itemText}>
-                <Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}
-              </Text>
+              <Text style={styles.itemText}><Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}</Text>
               <Text>Latitude: {item.latitude}</Text>
               <Text>Longitude: {item.longitude}</Text>
-              <Text>
-                Date: {item.timestamp?.toDate ? item.timestamp.toDate().toDateString() : ""}
-              </Text>
-              <Text>
-                Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleTimeString() : ""}
-              </Text>
+              <Text>Date: {item.timestamp?.toDate ? item.timestamp.toDate().toDateString() : ""}</Text>
+              <Text>Time: {item.timestamp?.toDate ? item.timestamp.toDate().toLocaleTimeString() : ""}</Text>
 
               <View style={{ flexDirection: "row", marginTop: 8, justifyContent: "space-between" }}>
                 <TouchableOpacity style={styles.mapButton} onPress={() => openInMap(item.latitude, item.longitude)}>
                   <Text style={styles.mapButtonText}>Open in Map</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity style={styles.editButton} onPress={() => editLocation(item)}>
                   <Text style={styles.editButtonText}>Edit</Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity style={styles.deleteButton} onPress={() => deleteLocation(item.id)}>
                   <Text style={styles.deleteButtonText}>Delete</Text>
                 </TouchableOpacity>
@@ -280,37 +224,41 @@ export default function AddCollision() {
           ListEmptyComponent={() => <Text style={styles.emptyText}>No locations found</Text>}
         />
       )}
+
+      {/* Footer */}
+      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+          <Entypo name="home" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
+          <Text style={styles.footerText}>Add Data</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Message</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
+          <Ionicons name="arrow-back" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Back</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: "#f9f9f9" },
-  header: { fontSize: 22, fontWeight: "bold", marginBottom: 15, textAlign: "center" },
+  container: { flex: 1, padding: 15, backgroundColor: "#f9f9f9", paddingBottom: 90 },
+  header: { fontSize: 30, fontWeight: "bold", marginTop: 25, marginBottom: 15, textAlign: "center" },
   subHeader: { fontSize: 18, fontWeight: "bold", marginTop: 25, marginBottom: 10 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 10,
-    backgroundColor: "#fff",
-  },
-  dateButton: {
-    backgroundColor: "#1E90FF",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
+  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 8, marginBottom: 10, backgroundColor: "#fff" },
+  dateButton: { backgroundColor: "#1E90FF", padding: 10, borderRadius: 8, alignItems: "center", marginBottom: 10 },
   dateButtonText: { color: "#fff", fontWeight: "bold" },
-  addButton: {
-    backgroundColor: "#32CD32",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
+  addButton: { backgroundColor: "#32CD32", padding: 12, borderRadius: 8, alignItems: "center", marginTop: 10 },
   addButtonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
   item: { backgroundColor: "#f0f0f0", padding: 12, borderRadius: 8, marginBottom: 8 },
   itemText: { fontSize: 15 },
@@ -321,4 +269,17 @@ const styles = StyleSheet.create({
   editButtonText: { color: "#000", fontWeight: "bold" },
   deleteButton: { backgroundColor: "#DC143C", padding: 8, borderRadius: 6, flex: 1, alignItems: "center" },
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 70,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
+  navButton: { justifyContent: "center", alignItems: "center" },
+  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
 });
