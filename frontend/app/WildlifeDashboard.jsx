@@ -73,12 +73,8 @@ export default function WildLifeDashboard() {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Parallax image */}
         <View style={styles.topHalf}>
-          <Animated.Image
-            source={require("../assets/wild.png")}
-            style={[styles.image, { transform: [{ translateY: parallaxAnim }] }]}
-            resizeMode="cover"
-          />
-          <View style={styles.overlay} />
+          
+         
         </View>
 
         {/* 🔹 Cards Section */}
@@ -187,7 +183,7 @@ const styles = StyleSheet.create({
 
   cardsContainer: { paddingHorizontal: 15, marginTop: 20 },
   card: {
-    padding: 45,
+    padding: 35,
     borderRadius: 20,
     marginVertical: 12,
     shadowColor: "#000",
@@ -201,18 +197,16 @@ const styles = StyleSheet.create({
   cardSubtitle: { fontSize: 14, color: "#fff", marginTop: 5, textAlign: "center" },
 
   footer: {
+    position: "absolute",
+    bottom: 35,
+    left: 0,
+    right: 0,
+    height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0,
-    width: "90%",
-    alignSelf: "center",
-    paddingVertical: 10,
-    borderRadius: 30,
-    marginBottom: 10,
-    elevation: 10,
+    paddingHorizontal: 10,
   },
-  navButton: { alignItems: "center" },
+  navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
 });

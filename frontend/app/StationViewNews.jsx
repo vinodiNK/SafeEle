@@ -59,7 +59,7 @@ export default function StationViewNews({ route }) {
 
       {/* Footer */}
       <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Index")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#c8e6c9" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>

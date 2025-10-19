@@ -37,7 +37,10 @@ export default function GuestLocation() {
   }, [navigation]);
 
   useEffect(() => {
-    const q = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
+    const q = query(
+      collection(db, "guestLocations"),
+      orderBy("timestamp", "desc")
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
       querySnapshot.forEach((doc) => locs.push({ id: doc.id, ...doc.data() }));
@@ -125,7 +128,9 @@ export default function GuestLocation() {
     const data = Object.keys(counts).map((area, index) => ({
       name: area,
       population: counts[area],
-      color: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"][index % 6],
+      color: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"][
+        index % 6
+      ],
       legendFontColor: "#333",
       legendFontSize: 14,
     }));
@@ -134,7 +139,8 @@ export default function GuestLocation() {
     setShowChart(true);
   };
 
-  if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
+  if (loading)
+    return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
 
   const screenWidth = Dimensions.get("window").width - 20;
 
@@ -162,7 +168,9 @@ export default function GuestLocation() {
         >
           <Ionicons name="calendar-outline" size={20} color="#fff" />
           <Text style={styles.dateButtonText}>
-            {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
+            {dateFilter
+              ? new Date(dateFilter).toDateString()
+              : "Search by Date"}
           </Text>
         </TouchableOpacity>
 
@@ -191,7 +199,9 @@ export default function GuestLocation() {
 
           <TouchableOpacity style={styles.actionButton} onPress={analyzeData}>
             <Ionicons name="analytics-outline" size={22} color="#fff" />
-            <Text style={styles.actionText}>{showChart ? "Hide" : "Analyze"}</Text>
+            <Text style={styles.actionText}>
+              {showChart ? "Hide" : "Analyze"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -247,22 +257,42 @@ export default function GuestLocation() {
 
       {/* Footer */}
       <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("index")}
+          style={styles.navButton}
+        >
           <Entypo name="home" size={24} color="#c8e6c9" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
-          <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AddCollision")}
+          style={styles.navButton}
+        >
+          <MaterialCommunityIcons
+            name="plus-circle"
+            size={26}
+            color="#c8e6c9"
+          />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Message")}
+          style={styles.navButton}
+        >
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            size={24}
+            color="#c8e6c9"
+          />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("WildlifeDashboard")}
+          style={styles.navButton}
+        >
           <Ionicons name="arrow-back" size={24} color="#c8e6c9" />
           <Text style={styles.footerText}>Back</Text>
         </TouchableOpacity>
@@ -272,7 +302,12 @@ export default function GuestLocation() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10, backgroundColor: "#fff", paddingBottom: 90 },
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#fff",
+    paddingBottom: 90,
+  },
   headerTitle: {
     fontSize: 26,
     color: "#0a3d0a",
@@ -308,8 +343,17 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 10,
   },
-  dateButtonText: { color: "#fff", marginLeft: 8, fontWeight: "bold", fontSize: 15 },
-  actionRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 12 },
+  dateButtonText: {
+    color: "#fff",
+    marginLeft: 8,
+    fontWeight: "bold",
+    fontSize: 15,
+  },
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 12,
+  },
   actionButton: {
     flex: 1,
     flexDirection: "row",
@@ -321,10 +365,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     elevation: 2,
   },
-  actionText: { color: "#fff", fontWeight: "bold", fontSize: 14, marginLeft: 6 },
+  actionText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+    marginLeft: 6,
+  },
   chartContainer: { alignItems: "center", marginBottom: 20 },
   chartTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10 },
-  item: { backgroundColor: "#f2f2f2", padding: 15, marginVertical: 6, borderRadius: 10 },
+  item: {
+    backgroundColor: "#f2f2f2",
+    padding: 15,
+    marginVertical: 6,
+    borderRadius: 10,
+  },
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
   mapButton: {
     marginTop: 8,
@@ -336,20 +390,24 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   mapButtonText: { color: "#2e8b57", fontWeight: "bold", marginLeft: 5 },
-  noDataText: { textAlign: "center", marginTop: 20, fontSize: 16, fontWeight: "bold", color: "#888" },
+  noDataText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#888",
+  },
   footer: {
+    position: "absolute",
+    bottom: 35,
+    left: 0,
+    right: 0,
+    height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0,
-    width: "90%",
-    alignSelf: "center",
-    paddingVertical: 12,
-    borderRadius: 30,
-    marginBottom: 10,
-    elevation: 10,
+    paddingHorizontal: 10,
   },
-  navButton: { alignItems: "center" },
+  navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
 });
