@@ -1,5 +1,7 @@
+import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
@@ -31,15 +33,11 @@ export default function CollisionZone() {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false });
+    navigation.setOptions({ headerShown: false });
   }, [navigation]);
-  
+
   useEffect(() => {
-    const q = query(
-      collection(db, "collisionZones"),
-      orderBy("timestamp", "desc")
-    );
+    const q = query(collection(db, "collisionZones"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
       querySnapshot.forEach((doc) => {
@@ -49,7 +47,6 @@ export default function CollisionZone() {
       setFilteredLocations(locs);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -60,13 +57,11 @@ export default function CollisionZone() {
 
   const applyFilter = () => {
     let filtered = locations;
-
     if (areaFilter.trim() !== "") {
       filtered = filtered.filter((loc) =>
         loc.locationName?.toLowerCase().includes(areaFilter.toLowerCase())
       );
     }
-
     if (dateFilter) {
       const selectedDate = new Date(dateFilter).toDateString();
       filtered = filtered.filter((loc) => {
@@ -76,9 +71,8 @@ export default function CollisionZone() {
         return false;
       });
     }
-
     setFilteredLocations(filtered);
-    setShowChart(false); // Hide chart after applying filter
+    setShowChart(false);
   };
 
   const generatePDF = async () => {
@@ -111,9 +105,7 @@ export default function CollisionZone() {
             .join("")}
         </table>
       `;
-
       const { uri } = await Print.printToFileAsync({ html });
-
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri);
       } else {
@@ -125,30 +117,20 @@ export default function CollisionZone() {
     }
   };
 
-  // ✅ Toggle pie chart visibility
   const handleDataAnalysis = () => {
     if (showChart) {
-      setShowChart(false); // If chart is visible, hide it
+      setShowChart(false);
       return;
     }
-
     const locationCounts = {};
     filteredLocations.forEach((loc) => {
       const name = loc.locationName || "Unknown";
       locationCounts[name] = (locationCounts[name] || 0) + 1;
     });
-
     const colors = [
-      "#FF6384",
-      "#36A2EB",
-      "#FFCE56",
-      "#8BC34A",
-      "#FF9800",
-      "#9C27B0",
-      "#00BCD4",
-      "#E91E63",
+      "#FF6384", "#36A2EB", "#FFCE56", "#8BC34A",
+      "#FF9800", "#9C27B0", "#00BCD4", "#E91E63",
     ];
-
     const chartEntries = Object.keys(locationCounts).map((name, i) => ({
       name,
       population: locationCounts[name],
@@ -156,9 +138,8 @@ export default function CollisionZone() {
       legendFontColor: "#333",
       legendFontSize: 13,
     }));
-
     setChartData(chartEntries);
-    setShowChart(true); // Show chart
+    setShowChart(true);
   };
 
   if (loading) {
@@ -169,11 +150,7 @@ export default function CollisionZone() {
 
   return (
     <View style={styles.container}>
-      
-      <Text style={{ fontSize: 34, color: "#030e07ff",marginBottom: 25,marginTop:35, textAlign: "center", fontWeight: "bold" }}>
-  Past Elephant Collision Zones
-</Text>
-
+      <Text style={styles.headerTitle}>Past Elephant Collision Zones</Text>
 
       {/* Filters */}
       <TextInput
@@ -208,19 +185,16 @@ export default function CollisionZone() {
         <Text style={styles.filterButtonText}>Apply Filter</Text>
       </TouchableOpacity>
 
-      {/* PDF Button */}
       <TouchableOpacity style={styles.pdfButton} onPress={generatePDF}>
         <Text style={styles.pdfButtonText}>Download PDF Report</Text>
       </TouchableOpacity>
 
-      {/* Analyze Data Button */}
       <TouchableOpacity style={styles.analysisButton} onPress={handleDataAnalysis}>
         <Text style={styles.analysisButtonText}>
           {showChart ? "Hide Chart" : "Analyze Data"}
         </Text>
       </TouchableOpacity>
 
-      {/* Pie Chart */}
       {showChart && chartData.length > 0 && (
         <View style={styles.chartContainer}>
           <Text style={styles.chartTitle}>Elephant Sightings by Location</Text>
@@ -240,7 +214,6 @@ export default function CollisionZone() {
         </View>
       )}
 
-      {/* List of Locations */}
       <FlatList
         data={filteredLocations}
         keyExtractor={(item) => item.id}
@@ -258,7 +231,6 @@ export default function CollisionZone() {
                 ? item.timestamp.toDate().toLocaleString()
                 : item.timestamp}
             </Text>
-
             <TouchableOpacity
               style={styles.mapButton}
               onPress={() => openInMap(item.latitude, item.longitude)}
@@ -268,13 +240,47 @@ export default function CollisionZone() {
           </View>
         )}
       />
+
+      {/* 🔹 Footer Navigation */}
+      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+        {/* Home */}
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+          <Entypo name="home" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Home</Text>
+        </TouchableOpacity>
+
+        {/* Add Data */}
+        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
+          <Text style={styles.footerText}>Add Data</Text>
+        </TouchableOpacity>
+
+        {/* Message */}
+        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Message</Text>
+        </TouchableOpacity>
+
+        {/* Profile */}
+        <TouchableOpacity onPress={() => navigation.navigate("WildProfile")} style={styles.navButton}>
+          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
+          <Text style={styles.footerText}>Profile</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10, backgroundColor: "#fff" },
-  header: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  container: { flex: 1, padding: 10, backgroundColor: "#fff", paddingBottom: 80 },
+  headerTitle: {
+    fontSize: 28,
+    color: "#0a3d0aff",
+    marginBottom: 20,
+    marginTop: 35,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -299,7 +305,7 @@ const styles = StyleSheet.create({
   },
   filterButtonText: { color: "#fff", fontWeight: "bold" },
   pdfButton: {
-    backgroundColor: "#22bdffff",
+    backgroundColor: "#22bdff",
     padding: 10,
     borderRadius: 6,
     marginBottom: 15,
@@ -314,15 +320,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   analysisButtonText: { color: "#fff", fontWeight: "bold" },
-  chartContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  chartTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
+  chartContainer: { alignItems: "center", marginBottom: 20 },
+  chartTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10 },
   item: {
     backgroundColor: "#f2f2f2",
     padding: 15,
@@ -332,12 +331,12 @@ const styles = StyleSheet.create({
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
   mapButton: {
     marginTop: 10,
-    backgroundColor: "#2e8b57",
+    backgroundColor: "#f0ebebff",
     padding: 8,
     borderRadius: 6,
-    alignItems: "center",
+    alignItems: "left",
   },
-  mapButtonText: { color: "#fff", fontWeight: "bold" },
+  mapButtonText: { color: "#141414ff", fontWeight: "bold" },
   noDataText: {
     textAlign: "center",
     marginTop: 20,
@@ -345,4 +344,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#888",
   },
+
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+    width: "90%",
+    alignSelf: "center",
+    paddingVertical: 10,
+    borderRadius: 30,
+    marginBottom: 10,
+    elevation: 10,
+  },
+  navButton: { alignItems: "center" },
+  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
 });
