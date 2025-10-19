@@ -1,5 +1,5 @@
 // app/WildLifeDashboard.jsx
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { db } from "../firebaseConfig";
@@ -22,11 +22,8 @@ const { width, height } = Dimensions.get("window");
 export default function WildLifeDashboard() {
   const navigation = useNavigation();
   const [locations, setLocations] = useState([]);
-
-  // Animation refs
   const parallaxAnim = useRef(new Animated.Value(0)).current;
 
-  // Parallax slow floating animation
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -64,39 +61,48 @@ export default function WildLifeDashboard() {
 
   return (
     <View style={styles.container}>
-      {/* Scrollable content */}
+      {/* 🔹 Header */}
+      <LinearGradient colors={["#006400", "#228B22"]} style={styles.header}>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
+          <Text style={styles.headerSubtitle}>Manage & analyze elephant activity</Text>
+        </View>
+      </LinearGradient>
+
+      {/* 🔹 Scrollable content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Top section with parallax image */}
+        {/* Parallax image */}
         <View style={styles.topHalf}>
           <Animated.Image
             source={require("../assets/wild.png")}
             style={[styles.image, { transform: [{ translateY: parallaxAnim }] }]}
             resizeMode="cover"
           />
-
-          {/* Dark overlay to make text readable */}
           <View style={styles.overlay} />
-
-          {/* Header Text */}
-          
         </View>
 
-        {/* Cards Section */}
+        {/* 🔹 Cards Section */}
         <View style={styles.cardsContainer}>
-          {/* Past Collision Zones */}
           <Animatable.View animation="fadeInUp" delay={100} duration={800}>
-            <TouchableOpacity onPress={() => navigation.navigate("CollisionZone")} activeOpacity={0.8}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("CollisionZone")}
+              activeOpacity={0.8}
+            >
               <LinearGradient colors={["#56ab2f", "#a8e063"]} style={styles.card}>
                 <MaterialCommunityIcons name="map-marker-alert" size={40} color="#fff" />
                 <Text style={styles.cardTitle}>Past Collision Zones</Text>
-                <Text style={styles.cardSubtitle}>Historical elephant collision records</Text>
+                <Text style={styles.cardSubtitle}>
+                  Historical elephant collision records
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
           </Animatable.View>
 
-          {/* Guest Locations */}
           <Animatable.View animation="fadeInUp" delay={200} duration={800}>
-            <TouchableOpacity onPress={() => navigation.navigate("GuestLocation")} activeOpacity={0.8}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("GuestLocation")}
+              activeOpacity={0.8}
+            >
               <LinearGradient colors={["#f7971e", "#ffd200"]} style={styles.card}>
                 <MaterialCommunityIcons name="account-group" size={40} color="#fff" />
                 <Text style={styles.cardTitle}>Guest Locations</Text>
@@ -105,71 +111,81 @@ export default function WildLifeDashboard() {
             </TouchableOpacity>
           </Animatable.View>
 
-          {/* Add Collision Zone */}
-          <Animatable.View animation="fadeInUp" delay={300} duration={800}>
-            <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} activeOpacity={0.8}>
-              <LinearGradient colors={["#36d1dc", "#5b86e5"]} style={[styles.card, styles.primaryCard]}>
-                <MaterialCommunityIcons name="plus-box" size={45} color="#fff" />
-                <Text style={styles.cardTitle}>Add Collision Zone</Text>
-                <Text style={styles.cardSubtitle}>Report new collision zone</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </Animatable.View>
-        </View>
-
-        {/* Footer */}
-        <View style={styles.footerContainer}>
-          <Animatable.View animation="fadeInUp" delay={400} duration={800}>
-            <TouchableOpacity onPress={() => navigation.navigate("index")} activeOpacity={0.8}>
-              <Animatable.View animation="pulse" iterationCount="infinite" easing="ease-in-out">
-                <LinearGradient colors={["#2f803eff", "#1daf38ff"]} style={styles.footerButton}>
-                  <MaterialCommunityIcons name="logout" size={28} color="#fff" />
-                  <Text style={styles.footerButtonText}>Back to Login</Text>
-                </LinearGradient>
-              </Animatable.View>
-            </TouchableOpacity>
-          </Animatable.View>
-          <Text style={styles.footerText}>Wildlife Conservation App</Text>
+          
         </View>
       </ScrollView>
+
+      {/* 🔹 Footer Navigation */}
+      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+        {/* Home */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("index")}
+          style={styles.navButton}
+        >
+          <Entypo name="home" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Home</Text>
+        </TouchableOpacity>
+
+        {/* Add Data */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AddCollision")}
+          style={styles.navButton}
+        >
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
+          <Text style={styles.footerText}>Add Data</Text>
+        </TouchableOpacity>
+
+        {/* Message */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Message")}
+          style={styles.navButton}
+        >
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
+          <Text style={styles.footerText}>Message</Text>
+        </TouchableOpacity>
+
+        {/* Profile */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("WildProfile")}
+          style={styles.navButton}
+        >
+          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
+          <Text style={styles.footerText}>Profile</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "transparent" },
-  scrollContainer: { paddingBottom: 60 },
+  container: { flex: 1, backgroundColor: "#f5fdf6" },
+  header: {
+    paddingVertical: 25,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    elevation: 5,
+  },
+  headerContent: { alignItems: "center" },
+  headerTitle: {
+    color: "#fff",
+    fontSize: 28,
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  headerSubtitle: { color: "#e0f7e9", fontSize: 14, marginTop: 4 },
+
+  scrollContainer: { paddingBottom: 100 },
   topHalf: {
     width: "100%",
-    height: height * 0.45,
+    height: height * 0.35,
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
   },
-  image: {
-    position: "absolute",
-    top: 0,
-    width: "100%",
-    height: "100%",
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.35)", // dark layer for contrast
-  },
-  headerContainer: { alignItems: "center", paddingHorizontal: 20 },
-  headerTitle: {
-    fontSize: 34,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
-    letterSpacing: 1,
-  },
-  subHeader: { fontSize: 16, color: "#fff", textAlign: "center", marginTop: 6 },
-  cardsContainer: {
-    paddingHorizontal: 15,
-    marginTop: 20,
-    zIndex: 5,
-  },
+  image: { position: "absolute", top: 0, width: "100%", height: "100%" },
+  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.3)" },
+
+  cardsContainer: { paddingHorizontal: 15, marginTop: 20 },
   card: {
     padding: 45,
     borderRadius: 20,
@@ -181,26 +197,22 @@ const styles = StyleSheet.create({
     elevation: 6,
     alignItems: "center",
   },
-  primaryCard: { transform: [{ scale: 1.05 }] },
   cardTitle: { fontSize: 18, fontWeight: "bold", color: "#fff", marginTop: 6 },
   cardSubtitle: { fontSize: 14, color: "#fff", marginTop: 5, textAlign: "center" },
-  footerContainer: { alignItems: "center", marginTop: 15 },
-  footerButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    width: width * 0.9,
+
+  footer: {
     flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 6,
+    justifyContent: "space-around",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+    width: "90%",
+    alignSelf: "center",
+    paddingVertical: 10,
+    borderRadius: 30,
+    marginBottom: 10,
+    elevation: 10,
   },
-  footerButtonText: { color: "#fff", fontSize: 16, fontWeight: "600", marginLeft: 8 },
-  footerText: { textAlign: "center", marginTop: 8, fontSize: 14, color: "#333" },
+  navButton: { alignItems: "center" },
+  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
 });

@@ -65,7 +65,7 @@ export default function SendNews() {
 
   return (
     <View style={styles.container}>
-      {/* 🔹 Gradient Header */}
+      {/* 🔹 Header */}
       <LinearGradient colors={["#006400", "#228B22"]} style={styles.header}>
         <View style={styles.headerTop}>
           <Text style={styles.headerTextLeft}>Train ID: 1234</Text>
@@ -136,30 +136,30 @@ export default function SendNews() {
         </TouchableOpacity>
       </View>
 
-      {/* 🔹 Floating Footer Navigation */}
+      {/* 🔹 Footer Navigation */}
       <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
         <TouchableOpacity
           onPress={() => navigation.navigate("index")}
           style={styles.navButton}
         >
           <Entypo name="home" size={22} color="#c8e6c9" />
-          <Text style={styles.footerTextActive}>Home</Text>
+          <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Map")}
+          onPress={() => navigation.navigate("OpenMap")}
           style={styles.navButton}
         >
-          <Entypo name="location-pin" size={26} color="white" />
+          <Entypo name="location-pin" size={26} color="#c8e6c9" />
           <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Messages")}
+          onPress={() => navigation.navigate("SendNews")}
           style={styles.navButton}
         >
           <MaterialIcons name="message" size={22} color="#fff" />
-          <Text style={styles.footerText}>Message</Text>
+          <Text style={styles.footerTextActive}>Message</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -190,7 +190,12 @@ const styles = StyleSheet.create({
   },
   headerTextLeft: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
   headerTextRight: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
-  subtitle: { color: "#dff5df", fontSize: 16, textAlign: "center", marginTop: 10 },
+  subtitle: {
+    color: "#dff5df",
+    fontSize: 16,
+    textAlign: "center",
+    marginTop: 10,
+  },
   title: { color: "white", fontSize: 34, fontWeight: "bold", textAlign: "center" },
 
   image: { width: "100%", height: 230, marginTop: 5 },
@@ -224,7 +229,7 @@ const styles = StyleSheet.create({
 
   sendButton: {
     width: 160,
-    backgroundColor: "#7dd583ff",
+    backgroundColor: "#7dd583",
     paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",
@@ -248,5 +253,10 @@ const styles = StyleSheet.create({
   },
   navButton: { alignItems: "center" },
   footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
-  footerTextActive: { color: "white", fontSize: 12, fontWeight: "bold", marginTop: 2 },
+  footerTextActive: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
+    marginTop: 2,
+  },
 });
