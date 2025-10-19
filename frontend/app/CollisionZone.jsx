@@ -1,4 +1,8 @@
-import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  Ionicons,
+  MaterialCommunityIcons
+} from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -128,8 +132,14 @@ export default function CollisionZone() {
       locationCounts[name] = (locationCounts[name] || 0) + 1;
     });
     const colors = [
-      "#FF6384", "#36A2EB", "#FFCE56", "#8BC34A",
-      "#FF9800", "#9C27B0", "#00BCD4", "#E91E63",
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56",
+      "#8BC34A",
+      "#FF9800",
+      "#9C27B0",
+      "#00BCD4",
+      "#E91E63",
     ];
     const chartEntries = Object.keys(locationCounts).map((name, i) => ({
       name,
@@ -152,48 +162,58 @@ export default function CollisionZone() {
     <View style={styles.container}>
       <Text style={styles.headerTitle}>Past Elephant Collision Zones</Text>
 
-      {/* Filters */}
-      <TextInput
-        placeholder="Search by area..."
-        style={styles.input}
-        value={areaFilter}
-        onChangeText={setAreaFilter}
-      />
+      {/* Search & Filters Section */}
+      <View style={styles.filterContainer}>
+        <View style={styles.searchBar}>
+          <Ionicons name="search" size={18} color="#666" />
+          <TextInput
+            placeholder="Search by area..."
+            style={styles.searchInput}
+            value={areaFilter}
+            onChangeText={setAreaFilter}
+            placeholderTextColor="#888"
+          />
+        </View>
 
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text style={styles.dateButtonText}>
-          {dateFilter ? new Date(dateFilter).toDateString() : "Filter by Date"}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.dateButton}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Ionicons name="calendar-outline" size={18} color="#fff" />
+          <Text style={styles.dateButtonText}>
+            {dateFilter ? new Date(dateFilter).toDateString() : "Filter by Date"}
+          </Text>
+        </TouchableOpacity>
 
-      {showDatePicker && (
-        <DateTimePicker
-          value={dateFilter ? new Date(dateFilter) : new Date()}
-          mode="date"
-          display="default"
-          onChange={(event, selectedDate) => {
-            setShowDatePicker(false);
-            if (selectedDate) setDateFilter(selectedDate);
-          }}
-        />
-      )}
+        {showDatePicker && (
+          <DateTimePicker
+            value={dateFilter ? new Date(dateFilter) : new Date()}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(false);
+              if (selectedDate) setDateFilter(selectedDate);
+            }}
+          />
+        )}
 
-      <TouchableOpacity style={styles.filterButton} onPress={applyFilter}>
-        <Text style={styles.filterButtonText}>Apply Filter</Text>
-      </TouchableOpacity>
+        <View style={styles.actionRow}>
+          <TouchableOpacity style={styles.filterButton} onPress={applyFilter}>
+            <MaterialCommunityIcons name="filter" size={20} color="#fff" />
+            <Text style={styles.filterButtonText}>Apply</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.pdfButton} onPress={generatePDF}>
-        <Text style={styles.pdfButtonText}>Download PDF Report</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.pdfButton} onPress={generatePDF}>
+            <Ionicons name="document-text-outline" size={20} color="#fff" />
+            <Text style={styles.filterButtonText}>PDF</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.analysisButton} onPress={handleDataAnalysis}>
-        <Text style={styles.analysisButtonText}>
-          {showChart ? "Hide Chart" : "Analyze Data"}
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.analysisButton} onPress={handleDataAnalysis}>
+            <Ionicons name="analytics-outline" size={20} color="#fff" />
+            <Text style={styles.filterButtonText}>Analyze</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
       {showChart && chartData.length > 0 && (
         <View style={styles.chartContainer}>
@@ -235,38 +255,40 @@ export default function CollisionZone() {
               style={styles.mapButton}
               onPress={() => openInMap(item.latitude, item.longitude)}
             >
+              <Ionicons name="map-outline" size={18} color="#2e8b57" />
               <Text style={styles.mapButtonText}>Open in Map</Text>
             </TouchableOpacity>
           </View>
         )}
       />
 
-      {/* 🔹 Footer Navigation */}
-      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
-        {/* Home */}
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
-          <Entypo name="home" size={24} color="#c8e6c9" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
+      {/* Footer with icons only */}
+<LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+  {/* Home */}
+  <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+    <Entypo name="home" size={24} color="#c8e6c9" />
+    <Text style={styles.footerText}>Home</Text>
+  </TouchableOpacity>
 
-        {/* Add Data */}
-        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
-          <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
-          <Text style={styles.footerText}>Add Data</Text>
-        </TouchableOpacity>
+  {/* Add Data */}
+  <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+    <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
+    <Text style={styles.footerText}>Add Data</Text>
+  </TouchableOpacity>
 
-        {/* Message */}
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+  {/* Message */}
+  <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+    <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
+    <Text style={styles.footerText}>Message</Text>
+  </TouchableOpacity>
 
-        {/* Profile */}
-        <TouchableOpacity onPress={() => navigation.navigate("WildProfile")} style={styles.navButton}>
-          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
-          <Text style={styles.footerText}>Profile</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+  {/* Back Button */}
+  <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
+    <Ionicons name="arrow-back" size={24} color="#c8e6c9" />
+    <Text style={styles.footerText}>Back</Text>
+  </TouchableOpacity>
+</LinearGradient>
+
     </View>
   );
 }
@@ -274,69 +296,101 @@ export default function CollisionZone() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: "#fff", paddingBottom: 80 },
   headerTitle: {
-    fontSize: 28,
-    color: "#0a3d0aff",
-    marginBottom: 20,
-    marginTop: 35,
+    fontSize: 26,
+    color: "#0a3d0a",
     textAlign: "center",
     fontWeight: "bold",
+    marginTop: 35,
+    marginBottom: 10,
   },
-  input: {
+
+  filterContainer: {
+    backgroundColor: "#f0f8f5",
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 15,
+  },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 8,
-    borderRadius: 6,
-    marginBottom: 10,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 5,
+    height: 40,
   },
   dateButton: {
+    flexDirection: "row",
     backgroundColor: "#2e8b57",
-    padding: 10,
-    borderRadius: 6,
-    marginBottom: 10,
+    justifyContent: "center",
     alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
   },
-  dateButtonText: { color: "#fff", fontWeight: "bold" },
+  dateButtonText: { color: "#fff", marginLeft: 6, fontWeight: "bold" },
+
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 10,
+  },
   filterButton: {
     backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 6,
-    marginBottom: 15,
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    padding: 10,
+    flex: 1,
+    marginHorizontal: 3,
   },
-  filterButtonText: { color: "#fff", fontWeight: "bold" },
   pdfButton: {
-    backgroundColor: "#22bdff",
-    padding: 10,
-    borderRadius: 6,
-    marginBottom: 15,
+    backgroundColor: "#2196F3",
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    padding: 10,
+    flex: 1,
+    marginHorizontal: 3,
   },
-  pdfButtonText: { color: "#fff", fontWeight: "bold" },
   analysisButton: {
-    backgroundColor: "#FFA500",
-    padding: 10,
-    borderRadius: 6,
-    marginBottom: 15,
+    backgroundColor: "#FF9800",
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    padding: 10,
+    flex: 1,
+    marginHorizontal: 3,
   },
-  analysisButtonText: { color: "#fff", fontWeight: "bold" },
+  filterButtonText: { color: "#fff", fontWeight: "bold", marginLeft: 5 },
+
   chartContainer: { alignItems: "center", marginBottom: 20 },
   chartTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10 },
   item: {
     backgroundColor: "#f2f2f2",
     padding: 15,
-    marginVertical: 5,
-    borderRadius: 8,
+    marginVertical: 6,
+    borderRadius: 10,
   },
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
   mapButton: {
-    marginTop: 10,
-    backgroundColor: "#f0ebebff",
+    marginTop: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#e6f4ea",
     padding: 8,
-    borderRadius: 6,
-    alignItems: "left",
+    borderRadius: 8,
+    alignSelf: "flex-start",
   },
-  mapButtonText: { color: "#141414ff", fontWeight: "bold" },
+  mapButtonText: { color: "#2e8b57", fontWeight: "bold", marginLeft: 5 },
   noDataText: {
     textAlign: "center",
     marginTop: 20,
@@ -344,7 +398,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#888",
   },
-
   footer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -353,11 +406,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "90%",
     alignSelf: "center",
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderRadius: 30,
     marginBottom: 10,
     elevation: 10,
   },
-  navButton: { alignItems: "center" },
-  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
 });
