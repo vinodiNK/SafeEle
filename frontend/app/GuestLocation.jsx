@@ -9,6 +9,7 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   FlatList,
   Linking,
@@ -19,6 +20,7 @@ import {
   View,
 } from "react-native";
 import { PieChart } from "react-native-chart-kit";
+import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
 
 export default function GuestLocation() {
@@ -146,8 +148,38 @@ export default function GuestLocation() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <Text style={styles.headerTitle}>Guest Updated Locations</Text>
+      {/* 🌿 Curved Green Header */}
+      <View style={styles.headerWrapper}>
+        <Svg height="320" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+        <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+        <Text style={styles.headerTitle}>Guest Updated Locations</Text>
+        <Text style={styles.headerSubTitle}>View all recent locations reported by guests</Text>
+      </View>
 
       {/* Filters */}
       <View style={styles.filterContainer}>
@@ -168,9 +200,7 @@ export default function GuestLocation() {
         >
           <Ionicons name="calendar-outline" size={20} color="#fff" />
           <Text style={styles.dateButtonText}>
-            {dateFilter
-              ? new Date(dateFilter).toDateString()
-              : "Search by Date"}
+            {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
           </Text>
         </TouchableOpacity>
 
@@ -199,9 +229,7 @@ export default function GuestLocation() {
 
           <TouchableOpacity style={styles.actionButton} onPress={analyzeData}>
             <Ionicons name="analytics-outline" size={22} color="#fff" />
-            <Text style={styles.actionText}>
-              {showChart ? "Hide" : "Analyze"}
-            </Text>
+            <Text style={styles.actionText}>{showChart ? "Hide" : "Analyze"}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -256,12 +284,12 @@ export default function GuestLocation() {
       />
 
       {/* Footer */}
-      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+      <LinearGradient colors={["#f5faf5ff", "#f3f8f3ff"]} style={styles.footer}>
         <TouchableOpacity
           onPress={() => navigation.navigate("index")}
           style={styles.navButton}
         >
-          <Entypo name="home" size={24} color="#c8e6c9" />
+          <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
@@ -272,7 +300,7 @@ export default function GuestLocation() {
           <MaterialCommunityIcons
             name="plus-circle"
             size={26}
-            color="#c8e6c9"
+            color="#004d00"
           />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
@@ -284,7 +312,7 @@ export default function GuestLocation() {
           <Ionicons
             name="chatbubble-ellipses-outline"
             size={24}
-            color="#c8e6c9"
+            color="#004d00"
           />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
@@ -293,7 +321,7 @@ export default function GuestLocation() {
           onPress={() => navigation.navigate("WildlifeDashboard")}
           style={styles.navButton}
         >
-          <Ionicons name="arrow-back" size={24} color="#c8e6c9" />
+          <Ionicons name="arrow-back" size={24} color="#004d00" />
           <Text style={styles.footerText}>Back</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -304,23 +332,39 @@ export default function GuestLocation() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
     backgroundColor: "#fff",
     paddingBottom: 90,
   },
+  headerWrapper: {
+    position: "relative",
+    marginBottom: 10,
+  },
+  curve: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
   headerTitle: {
     fontSize: 26,
-    color: "#0a3d0a",
+    color: "#fff",
     textAlign: "center",
     fontWeight: "bold",
-    marginTop: 35,
-    marginBottom: 10,
+    marginTop: 80,
+    zIndex: 1,
+  },
+  headerSubTitle: {
+    fontSize: 14,
+    color: "#fff",
+    textAlign: "center",
+    zIndex: 1,
   },
   filterContainer: {
     backgroundColor: "#f0f8f5",
     borderRadius: 14,
     padding: 12,
+    marginHorizontal: 10,
     marginBottom: 15,
+    marginTop: 80,
     elevation: 2,
   },
   searchBar: {
@@ -377,6 +421,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     padding: 15,
     marginVertical: 6,
+    marginHorizontal: 10,
     borderRadius: 10,
   },
   locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
@@ -409,5 +454,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
 });
