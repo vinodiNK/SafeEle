@@ -26,7 +26,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
+import Svg, {
+  Defs,
+  Path,
+  Stop,
+  LinearGradient as SvgGradient,
+} from "react-native-svg";
 import { db } from "../firebaseConfig";
 
 export default function CollisionZone() {
@@ -34,9 +39,9 @@ export default function CollisionZone() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [time, setTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [elephantLocations, setElephantLocations] = useState([]);
   const [editId, setEditId] = useState(null);
@@ -57,7 +62,9 @@ export default function CollisionZone() {
       );
       const querySnapshot = await getDocs(q);
       const locations = [];
-      querySnapshot.forEach((doc) => locations.push({ id: doc.id, ...doc.data() }));
+      querySnapshot.forEach((doc) =>
+        locations.push({ id: doc.id, ...doc.data() })
+      );
       setElephantLocations(locations);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -94,7 +101,10 @@ export default function CollisionZone() {
           longitude: parseFloat(longitude),
           timestamp,
         });
-        Alert.alert("✅ Updated", `Location "${locationName}" updated successfully.`);
+        Alert.alert(
+          "✅ Updated",
+          `Location "${locationName}" updated successfully.`
+        );
         setEditId(null);
       } else {
         await addDoc(collection(db, "elephant_locations"), {
@@ -104,7 +114,10 @@ export default function CollisionZone() {
           timestamp,
           createdAt: serverTimestamp(),
         });
-        Alert.alert("🎉 Added", `New location "${locationName}" has been added.`);
+        Alert.alert(
+          "🎉 Added",
+          `New location "${locationName}" has been added.`
+        );
       }
 
       setLocationName("");
@@ -143,27 +156,35 @@ export default function CollisionZone() {
     setLatitude(loc.latitude?.toString() || "");
     setLongitude(loc.longitude?.toString() || "");
     setDate(loc.timestamp?.toDate() || new Date());
-    setTime(
-      loc.timestamp
-        ? `${loc.timestamp.toDate().getHours()}:${loc.timestamp
-            .toDate()
-            .getMinutes()}`
-        : ""
-    );
+    if (loc.timestamp?.toDate) {
+      const hours = loc.timestamp.toDate().getHours();
+      const minutes = loc.timestamp.toDate().getMinutes();
+      const formattedTime = `${hours % 12 || 12}:${minutes
+        .toString()
+        .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
+      setTime(formattedTime);
+    }
     setEditId(loc.id);
   };
 
   // Open in Google Maps
   const openInMap = (lat, lng) => {
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    Linking.openURL(url).catch((err) => console.error("Failed to open map:", err));
+    Linking.openURL(url).catch((err) =>
+      console.error("Failed to open map:", err)
+    );
   };
 
   return (
     <View style={styles.container}>
-      {/* 🌿 Curved Green Header */}
+      {/* 🌿 Curved Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg
+          height="170"
+          width="100%"
+          viewBox="0 0 1440 320"
+          style={styles.curve}
+        >
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -175,7 +196,12 @@ export default function CollisionZone() {
             d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
           />
         </Svg>
-         <Svg height="260" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg
+          height="220"
+          width="100%"
+          viewBox="0 0 1440 320"
+          style={styles.curve}
+        >
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -187,7 +213,12 @@ export default function CollisionZone() {
             d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
           />
         </Svg>
-         <Svg height="135" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg
+          height="300"
+          width="100%"
+          viewBox="0 0 1440 320"
+          style={styles.curve}
+        >
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -212,10 +243,12 @@ export default function CollisionZone() {
       </View>
 
       {/* 📝 Form Section */}
-      <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
         <View style={styles.formContainer}>
           <Text style={styles.pageHeader}>
-            {editId ? "✏️ Edit Elephant Collision Data" : "🚨 Add Elephant Collision Data"}
+            {editId
+              ? "✏️ Edit Elephant Collision Data"
+              : "🚨 Add Elephant Collision Data"}
           </Text>
 
           <View style={styles.inputGroup}>
@@ -251,49 +284,56 @@ export default function CollisionZone() {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
-            <Ionicons name="calendar" size={18} color="#fff" />
-            <Text style={styles.dateButtonText}>
-              {date ? date.toDateString() : "Select Date"}
-            </Text>
-          </TouchableOpacity>
-
-          {showDatePicker && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="default"
-              onChange={(event, selectedDate) => {
-                setShowDatePicker(false);
-                if (selectedDate) setDate(selectedDate);
-              }}
+          {/* Inline Date Input */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Date</Text>
+            <TextInput
+              style={styles.input}
+              value={date.toDateString()}
+              onFocus={() => setShowDatePicker(true)}
             />
-          )}
+            {showDatePicker && (
+              <DateTimePicker
+                value={date || new Date()}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  setShowDatePicker(false);
+                  if (selectedDate) setDate(selectedDate);
+                }}
+              />
+            )}
+          </View>
 
-          <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
-            <Ionicons name="time-outline" size={18} color="#fff" />
-            <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
-          </TouchableOpacity>
-
-          {showTimePicker && (
-            <DateTimePicker
-              value={new Date()}
-              mode="time"
-              is24Hour={false}
-              display="default"
-              onChange={(event, selectedTime) => {
-                setShowTimePicker(false);
-                if (selectedTime) {
-                  const hours = selectedTime.getHours();
-                  const minutes = selectedTime.getMinutes();
-                  const formattedTime = `${hours % 12 || 12}:${minutes
-                    .toString()
-                    .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
-                  setTime(formattedTime);
-                }
-              }}
+          {/* Inline Time Input */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Time</Text>
+            <TextInput
+              style={styles.input}
+              value={time}
+              placeholder="HH:MM AM/PM"
+              onFocus={() => setShowTimePicker(true)}
             />
-          )}
+            {showTimePicker && (
+              <DateTimePicker
+                value={new Date()}
+                mode="time"
+                is24Hour={false}
+                display="default"
+                onChange={(event, selectedTime) => {
+                  setShowTimePicker(false);
+                  if (selectedTime) {
+                    const hours = selectedTime.getHours();
+                    const minutes = selectedTime.getMinutes();
+                    const formattedTime = `${hours % 12 || 12}:${minutes
+                      .toString()
+                      .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
+                    setTime(formattedTime);
+                  }
+                }}
+              />
+            )}
+          </View>
 
           <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
             <Text style={styles.addButtonText}>
@@ -301,6 +341,7 @@ export default function CollisionZone() {
             </Text>
           </TouchableOpacity>
 
+          {/* Existing Locations */}
           <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
           {loading ? (
             <ActivityIndicator size="large" style={{ marginTop: 20 }} />
@@ -310,7 +351,8 @@ export default function CollisionZone() {
             elephantLocations.map((item) => (
               <View key={item.id} style={styles.item}>
                 <Text style={styles.itemText}>
-                  <Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}
+                  <Text style={{ fontWeight: "bold" }}>Location:</Text>{" "}
+                  {item.locationName}
                 </Text>
                 <Text>Latitude: {item.latitude}</Text>
                 <Text>Longitude: {item.longitude}</Text>
@@ -353,12 +395,15 @@ export default function CollisionZone() {
         </View>
       </ScrollView>
 
-      {/* ✅ Footer Navigation */}
+      {/* Footer Navigation */}
       <LinearGradient
         colors={["rgba(245, 250, 245, 1)", "#f2f7f2ff"]}
         style={styles.footer}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("index")}
+          style={styles.navButton}
+        >
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
@@ -366,7 +411,11 @@ export default function CollisionZone() {
           onPress={() => navigation.navigate("AddCollision")}
           style={styles.navButton}
         >
-          <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
+          <MaterialCommunityIcons
+            name="plus-circle"
+            size={26}
+            color="#004d00"
+          />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -380,7 +429,11 @@ export default function CollisionZone() {
           onPress={() => navigation.navigate("Message")}
           style={styles.navButton}
         >
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            size={24}
+            color="#004d00"
+          />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -390,7 +443,11 @@ export default function CollisionZone() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f9f9f9" },
-  headerWrapper: { position: "relative", height: 160, justifyContent: "center" },
+  headerWrapper: {
+    position: "relative",
+    height: 160,
+    justifyContent: "center",
+  },
   curve: { position: "absolute", top: 0, left: 0 },
   headerContent: {
     position: "absolute",
@@ -401,12 +458,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  headerTitle: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
+  headerTitle: { color: "#fff", fontSize: 20, fontWeight: "bold" },
   backButton: {
     backgroundColor: "rgba(255,255,255,0.2)",
     padding: 8,
@@ -428,16 +480,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "#fff",
   },
-  dateButton: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#2E8B57",
-    padding: 12,
-    borderRadius: 8,
-    marginVertical: 5,
-  },
-  dateButtonText: { color: "#fff", marginLeft: 8, fontWeight: "bold" },
+  row: { flexDirection: "row" },
   addButton: {
     backgroundColor: "#228B22",
     padding: 14,
@@ -492,7 +535,7 @@ const styles = StyleSheet.create({
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
   footer: {
     position: "absolute",
-    bottom: 25,
+    bottom: 20,
     left: 0,
     right: 0,
     height: 70,
