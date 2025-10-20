@@ -121,7 +121,15 @@ export default function StationViewNews({ route }) {
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
-
+        
+         <TouchableOpacity
+          onPress={() => navigation.navigate("StationViewNews")}
+          style={styles.navButton}
+        >
+          <Entypo name="news" size={24} color="#004d00" />
+          <Text style={styles.footerTextActive}>News</Text>
+        </TouchableOpacity>
+        
         <TouchableOpacity
           onPress={() => navigation.navigate("Message")}
           style={styles.navButton}
@@ -130,13 +138,7 @@ export default function StationViewNews({ route }) {
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("StationViewNews")}
-          style={styles.navButton}
-        >
-          <Entypo name="news" size={24} color="#004d00" />
-          <Text style={styles.footerTextActive}>News</Text>
-        </TouchableOpacity>
+       
 
         <TouchableOpacity
           onPress={() => navigation.navigate("Profile")}

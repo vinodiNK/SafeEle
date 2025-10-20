@@ -17,6 +17,7 @@ import StationDashboard from "./app/StationDashboard";
 import StationViewNews from "./app/StationViewNews";
 import UploadLocation from "./app/UploadLocation"; // Location uploader
 import WildlifeDashboard from "./app/WildlifeDashboard";
+import WildProfile from "./app/WildProfile";
 
 // Notifications helper
 import { registerForPushNotificationsAsync } from "./app/notificationHelper";
@@ -68,6 +69,7 @@ export default function App() {
         <Stack.Screen name="AddCollision" component={AddCollision} />
         <Stack.Screen name="OpenMap" component={OpenMap} />
         <Stack.Screen name="UploadLocation" component={UploadLocation} />
+        <Stack.Screen name="WildProfile" component={WildProfile} />
 
         {/* Driver news */}
         <Stack.Screen name="DriverNews" component={SendNews} />
