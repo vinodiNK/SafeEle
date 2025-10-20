@@ -24,8 +24,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
+import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
 
 export default function CollisionZone() {
@@ -157,27 +158,43 @@ export default function CollisionZone() {
   // Open in Google Maps
   const openInMap = (lat, lng) => {
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    Linking.openURL(url).catch((err) => console.error("Failed to open map:", err));
+    Linking.openURL(url).catch((err) =>
+      console.error("Failed to open map:", err)
+    );
   };
 
   return (
     <View style={styles.container}>
-      {/* ✅ Curved Header */}
-      <LinearGradient colors={["#006400", "#228B22"]} style={styles.headerContainer}>
+      {/* 🌈 Curved Red Gradient Header */}
+      <View style={styles.headerWrapper}>
+        <Svg height="120" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+  <Defs>
+    <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <Stop offset="0%" stopColor="#6ba56bff" />
+      <Stop offset="100%" stopColor="#006400" />
+    </SvgGradient>
+  </Defs>
+  <Path
+    fill="url(#grad)"
+    d="M0,260 C480,100 960,420 1440,260 L1440,0 L0,0 Z"
+  />
+</Svg>
+
+
+
+
+
         <View style={styles.headerContent}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WildlifeDashboard")}
-          >
-            <Ionicons name="arrow-back" size={24} color="#fff" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Elephant Collision Zone</Text>
-          <Ionicons name="leaf-outline" size={24} color="#801212ff" />
+          
+
+          
+
+          <View style={{ width: 30 }} />
         </View>
-      </LinearGradient>
+      </View>
 
       {/* Scrollable content */}
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 120 }}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100 }}>
         <Text style={styles.pageHeader}>
           {editId
             ? "✏️ Edit Elephant Collision Location"
@@ -205,11 +222,15 @@ export default function CollisionZone() {
           style={styles.input}
         />
 
-        <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+        <TouchableOpacity
+          style={styles.dateButton}
+          onPress={() => setShowDatePicker(true)}
+        >
           <Text style={styles.dateButtonText}>
             {date ? date.toDateString() : "Select Date"}
           </Text>
         </TouchableOpacity>
+
         {showDatePicker && (
           <DateTimePicker
             value={date}
@@ -222,9 +243,15 @@ export default function CollisionZone() {
           />
         )}
 
-        <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
-          <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
+        <TouchableOpacity
+          style={styles.dateButton}
+          onPress={() => setShowTimePicker(true)}
+        >
+          <Text style={styles.dateButtonText}>
+            {time ? time : "Select Time"}
+          </Text>
         </TouchableOpacity>
+
         {showTimePicker && (
           <DateTimePicker
             value={new Date()}
@@ -261,7 +288,8 @@ export default function CollisionZone() {
           elephantLocations.map((item) => (
             <View key={item.id} style={styles.item}>
               <Text style={styles.itemText}>
-                <Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}
+                <Text style={{ fontWeight: "bold" }}>Location:</Text>{" "}
+                {item.locationName}
               </Text>
               <Text>Latitude: {item.latitude}</Text>
               <Text>Longitude: {item.longitude}</Text>
@@ -309,14 +337,23 @@ export default function CollisionZone() {
         )}
       </ScrollView>
 
-      {/* ✅ Footer stays fixed */}
-      <LinearGradient colors={["rgba(245, 250, 245, 1)", "#f2f7f2ff"]} style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+      {/* ✅ Footer */}
+      <LinearGradient
+        colors={["rgba(245, 250, 245, 1)", "#f2f7f2ff"]}
+        style={styles.footer}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.navigate("index")}
+          style={styles.navButton}
+        >
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AddCollision")}
+          style={styles.navButton}
+        >
           <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
@@ -329,8 +366,15 @@ export default function CollisionZone() {
           <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Message")}
+          style={styles.navButton}
+        >
+          <Ionicons
+            name="chatbubble-ellipses-outline"
+            size={24}
+            color="#004d00"
+          />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -340,45 +384,103 @@ export default function CollisionZone() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f9f9f9", padding: 15 },
-  headerContainer: {
-    width: "100%",
-    height: 120,
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-    justifyContent: "flex-end",
+  headerWrapper: {
+    position: "relative",
+    height:90,
+    justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 20,
-    elevation: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
   },
-  headerContent: {
-    flexDirection: "row",
+  curve: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+   
+  },
+  
+  
+  
+  pageHeader: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginTop: 0,
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  subHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 25,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+  },
+  dateButton: {
+    backgroundColor: "#1E90FF",
+    padding: 10,
+    borderRadius: 8,
     alignItems: "center",
-    justifyContent: "space-between",
-    width: "90%",
+    marginBottom: 10,
   },
-  headerTitle: { color: "#fff", fontSize: 22, fontWeight: "bold", textAlign: "center" },
-  backButton: { backgroundColor: "rgba(255,255,255,0.2)", padding: 8, borderRadius: 20 },
-  pageHeader: { fontSize: 22, fontWeight: "bold", marginTop: 20, marginBottom: 10, textAlign: "center" },
-  subHeader: { fontSize: 18, fontWeight: "bold", marginTop: 25, marginBottom: 10 },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 8, marginBottom: 10, backgroundColor: "#fff" },
-  dateButton: { backgroundColor: "#1E90FF", padding: 10, borderRadius: 8, alignItems: "center", marginBottom: 10 },
   dateButtonText: { color: "#fff", fontWeight: "bold" },
-  addButton: { backgroundColor: "#32CD32", padding: 12, borderRadius: 8, alignItems: "center", marginTop: 10 },
+  addButton: {
+    backgroundColor: "#32CD32",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+  },
   addButtonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
-  item: { backgroundColor: "#f0f0f0", padding: 12, borderRadius: 8, marginBottom: 8 },
+  item: {
+    backgroundColor: "#f0f0f0",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
   itemText: { fontSize: 15 },
-  emptyText: { textAlign: "center", color: "#888888ff", marginTop: 20 },
-  mapButton: { backgroundColor: "#f0f0f0", padding: 8, borderRadius: 6, flex: 1, marginRight: 1, alignItems: "center" },
+  emptyText: { textAlign: "center", color: "#888", marginTop: 20 },
+  mapButton: {
+    backgroundColor: "#f0f0f0",
+    padding: 8,
+    borderRadius: 6,
+    flex: 1,
+    marginRight: 1,
+    alignItems: "center",
+  },
   mapButtonText: { color: "#1c2924ff", fontWeight: "bold" },
-  editButton: { backgroundColor: "#cbbc7eff", padding: 8, borderRadius: 6, flex: 1, marginRight: 5, alignItems: "center" },
+  editButton: {
+    backgroundColor: "#cbbc7eff",
+    padding: 8,
+    borderRadius: 6,
+    flex: 1,
+    marginRight: 5,
+    alignItems: "center",
+  },
   editButtonText: { color: "#000", fontWeight: "bold" },
-  deleteButton: { backgroundColor: "#DC143C", padding: 8, borderRadius: 6, flex: 1, alignItems: "center" },
+  deleteButton: {
+    backgroundColor: "#DC143C",
+    padding: 8,
+    borderRadius: 6,
+    flex: 1,
+    alignItems: "center",
+  },
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
-  footer: { position: "absolute", bottom: 35, left: 0, right: 0, height: 70, flexDirection: "row", justifyContent: "space-around", alignItems: "center", paddingHorizontal: 10 },
+  footer: {
+    position: "absolute",
+    bottom: 35,
+    left: 0,
+    right: 0,
+    height: 70,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingHorizontal: 10,
+  },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 12 },
 });
