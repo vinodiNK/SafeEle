@@ -24,7 +24,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
@@ -57,13 +57,11 @@ export default function CollisionZone() {
       );
       const querySnapshot = await getDocs(q);
       const locations = [];
-      querySnapshot.forEach((doc) =>
-        locations.push({ id: doc.id, ...doc.data() })
-      );
+      querySnapshot.forEach((doc) => locations.push({ id: doc.id, ...doc.data() }));
       setElephantLocations(locations);
-      setLoading(false);
     } catch (error) {
       console.error("Fetch error:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -96,7 +94,7 @@ export default function CollisionZone() {
           longitude: parseFloat(longitude),
           timestamp,
         });
-        Alert.alert("✅ Updated", `Location "${locationName}" has been updated!`);
+        Alert.alert("✅ Updated", `Location "${locationName}" updated successfully.`);
         setEditId(null);
       } else {
         await addDoc(collection(db, "elephant_locations"), {
@@ -106,7 +104,7 @@ export default function CollisionZone() {
           timestamp,
           createdAt: serverTimestamp(),
         });
-        Alert.alert("🎉 Added", `New location "${locationName}" has been added!`);
+        Alert.alert("🎉 Added", `New location "${locationName}" has been added.`);
       }
 
       setLocationName("");
@@ -158,198 +156,212 @@ export default function CollisionZone() {
   // Open in Google Maps
   const openInMap = (lat, lng) => {
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    Linking.openURL(url).catch((err) =>
-      console.error("Failed to open map:", err)
-    );
+    Linking.openURL(url).catch((err) => console.error("Failed to open map:", err));
   };
 
   return (
     <View style={styles.container}>
-      {/* 🌈 Curved Red Gradient Header */}
+      {/* 🌿 Curved Green Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="120" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-  <Defs>
-    <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-      <Stop offset="0%" stopColor="#6ba56bff" />
-      <Stop offset="100%" stopColor="#006400" />
-    </SvgGradient>
-  </Defs>
-  <Path
-    fill="url(#grad)"
-    d="M0,260 C480,100 960,420 1440,260 L1440,0 L0,0 Z"
-  />
-</Svg>
-
-
-
-
-
+        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+         <Svg height="260" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+         <Svg height="135" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
         <View style={styles.headerContent}>
-          
-
-          
-
-          <View style={{ width: 30 }} />
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.navigate("WildlifeDashboard")}
+          >
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Elephant Collision Data</Text>
+          <View style={{ width: 24 }} />
         </View>
       </View>
 
-      {/* Scrollable content */}
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 100 }}>
-        <Text style={styles.pageHeader}>
-          {editId
-            ? "✏️ Edit Elephant Collision Location"
-            : "🚨 Add Elephant Collision Location"}
-        </Text>
-
-        <TextInput
-          placeholder="Location name"
-          value={locationName}
-          onChangeText={setLocationName}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Latitude"
-          value={latitude}
-          onChangeText={setLatitude}
-          keyboardType="numeric"
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Longitude"
-          value={longitude}
-          onChangeText={setLongitude}
-          keyboardType="numeric"
-          style={styles.input}
-        />
-
-        <TouchableOpacity
-          style={styles.dateButton}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.dateButtonText}>
-            {date ? date.toDateString() : "Select Date"}
+      {/* 📝 Form Section */}
+      <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
+        <View style={styles.formContainer}>
+          <Text style={styles.pageHeader}>
+            {editId ? "✏️ Edit Elephant Collision Data" : "🚨 Add Elephant Collision Data"}
           </Text>
-        </TouchableOpacity>
 
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false);
-              if (selectedDate) setDate(selectedDate);
-            }}
-          />
-        )}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Location Name</Text>
+            <TextInput
+              placeholder="Enter location name"
+              value={locationName}
+              onChangeText={setLocationName}
+              style={styles.input}
+            />
+          </View>
 
-        <TouchableOpacity
-          style={styles.dateButton}
-          onPress={() => setShowTimePicker(true)}
-        >
-          <Text style={styles.dateButtonText}>
-            {time ? time : "Select Time"}
-          </Text>
-        </TouchableOpacity>
-
-        {showTimePicker && (
-          <DateTimePicker
-            value={new Date()}
-            mode="time"
-            is24Hour={false}
-            display="default"
-            onChange={(event, selectedTime) => {
-              setShowTimePicker(false);
-              if (selectedTime) {
-                const hours = selectedTime.getHours();
-                const minutes = selectedTime.getMinutes();
-                const formattedTime = `${hours % 12 || 12}:${minutes
-                  .toString()
-                  .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
-                setTime(formattedTime);
-              }
-            }}
-          />
-        )}
-
-        <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
-          <Text style={styles.addButtonText}>
-            {editId ? "Update Location" : "Add Location"}
-          </Text>
-        </TouchableOpacity>
-
-        <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
-
-        {loading ? (
-          <ActivityIndicator size="large" style={{ marginTop: 20 }} />
-        ) : elephantLocations.length === 0 ? (
-          <Text style={styles.emptyText}>No locations found</Text>
-        ) : (
-          elephantLocations.map((item) => (
-            <View key={item.id} style={styles.item}>
-              <Text style={styles.itemText}>
-                <Text style={{ fontWeight: "bold" }}>Location:</Text>{" "}
-                {item.locationName}
-              </Text>
-              <Text>Latitude: {item.latitude}</Text>
-              <Text>Longitude: {item.longitude}</Text>
-              <Text>
-                Date:{" "}
-                {item.timestamp?.toDate
-                  ? item.timestamp.toDate().toDateString()
-                  : ""}
-              </Text>
-              <Text>
-                Time:{" "}
-                {item.timestamp?.toDate
-                  ? item.timestamp.toDate().toLocaleTimeString()
-                  : ""}
-              </Text>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 8,
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.mapButton}
-                  onPress={() => openInMap(item.latitude, item.longitude)}
-                >
-                  <Text style={styles.mapButtonText}>Open in Map</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.editButton}
-                  onPress={() => editLocation(item)}
-                >
-                  <Text style={styles.editButtonText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.deleteButton}
-                  onPress={() => deleteLocation(item.id)}
-                >
-                  <Text style={styles.deleteButtonText}>Delete</Text>
-                </TouchableOpacity>
-              </View>
+          <View style={styles.row}>
+            <View style={[styles.inputGroup, { flex: 1, marginRight: 5 }]}>
+              <Text style={styles.label}>Latitude</Text>
+              <TextInput
+                placeholder="e.g. 7.8714"
+                value={latitude}
+                onChangeText={setLatitude}
+                keyboardType="numeric"
+                style={styles.input}
+              />
             </View>
-          ))
-        )}
+            <View style={[styles.inputGroup, { flex: 1, marginLeft: 5 }]}>
+              <Text style={styles.label}>Longitude</Text>
+              <TextInput
+                placeholder="e.g. 80.7718"
+                value={longitude}
+                onChangeText={setLongitude}
+                keyboardType="numeric"
+                style={styles.input}
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+            <Ionicons name="calendar" size={18} color="#fff" />
+            <Text style={styles.dateButtonText}>
+              {date ? date.toDateString() : "Select Date"}
+            </Text>
+          </TouchableOpacity>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) setDate(selectedDate);
+              }}
+            />
+          )}
+
+          <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
+            <Ionicons name="time-outline" size={18} color="#fff" />
+            <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
+          </TouchableOpacity>
+
+          {showTimePicker && (
+            <DateTimePicker
+              value={new Date()}
+              mode="time"
+              is24Hour={false}
+              display="default"
+              onChange={(event, selectedTime) => {
+                setShowTimePicker(false);
+                if (selectedTime) {
+                  const hours = selectedTime.getHours();
+                  const minutes = selectedTime.getMinutes();
+                  const formattedTime = `${hours % 12 || 12}:${minutes
+                    .toString()
+                    .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
+                  setTime(formattedTime);
+                }
+              }}
+            />
+          )}
+
+          <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
+            <Text style={styles.addButtonText}>
+              {editId ? "Update Location" : "Add Location"}
+            </Text>
+          </TouchableOpacity>
+
+          <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
+          {loading ? (
+            <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+          ) : elephantLocations.length === 0 ? (
+            <Text style={styles.emptyText}>No locations found</Text>
+          ) : (
+            elephantLocations.map((item) => (
+              <View key={item.id} style={styles.item}>
+                <Text style={styles.itemText}>
+                  <Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}
+                </Text>
+                <Text>Latitude: {item.latitude}</Text>
+                <Text>Longitude: {item.longitude}</Text>
+                <Text>
+                  Date:{" "}
+                  {item.timestamp?.toDate
+                    ? item.timestamp.toDate().toDateString()
+                    : ""}
+                </Text>
+                <Text>
+                  Time:{" "}
+                  {item.timestamp?.toDate
+                    ? item.timestamp.toDate().toLocaleTimeString()
+                    : ""}
+                </Text>
+
+                <View style={styles.actionRow}>
+                  <TouchableOpacity
+                    style={styles.mapButton}
+                    onPress={() => openInMap(item.latitude, item.longitude)}
+                  >
+                    <Text style={styles.mapButtonText}>Open Map</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => editLocation(item)}
+                  >
+                    <Text style={styles.editButtonText}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => deleteLocation(item.id)}
+                  >
+                    <Text style={styles.deleteButtonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))
+          )}
+        </View>
       </ScrollView>
 
-      {/* ✅ Footer */}
+      {/* ✅ Footer Navigation */}
       <LinearGradient
         colors={["rgba(245, 250, 245, 1)", "#f2f7f2ff"]}
         style={styles.footer}
       >
-        <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => navigation.navigate("AddCollision")}
           style={styles.navButton}
@@ -357,7 +369,6 @@ export default function CollisionZone() {
           <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => Linking.openURL("https://www.google.com/maps")}
           style={styles.navButton}
@@ -365,16 +376,11 @@ export default function CollisionZone() {
           <Ionicons name="map-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => navigation.navigate("Message")}
           style={styles.navButton}
         >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#004d00"
-          />
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -383,82 +389,96 @@ export default function CollisionZone() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f9f9f9", padding: 15 },
-  headerWrapper: {
-    position: "relative",
-    height:90,
-    justifyContent: "center",
+  container: { flex: 1, backgroundColor: "#f9f9f9" },
+  headerWrapper: { position: "relative", height: 160, justifyContent: "center" },
+  curve: { position: "absolute", top: 0, left: 0 },
+  headerContent: {
+    position: "absolute",
+    top: 70,
+    width: "90%",
+    alignSelf: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
-  curve: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-   
+  headerTitle: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  
-  
-  
+  backButton: {
+    backgroundColor: "rgba(255,255,255,0.2)",
+    padding: 8,
+    borderRadius: 20,
+  },
+  formContainer: { padding: 20 },
   pageHeader: {
     fontSize: 22,
     fontWeight: "bold",
-    marginTop: 0,
-    marginBottom: 10,
+    marginBottom: 15,
     textAlign: "center",
   },
+  inputGroup: { marginBottom: 10 },
+  label: { fontSize: 14, marginBottom: 4, color: "#333" },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
+  dateButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2E8B57",
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 5,
+  },
+  dateButtonText: { color: "#fff", marginLeft: 8, fontWeight: "bold" },
+  addButton: {
+    backgroundColor: "#228B22",
+    padding: 14,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 15,
+  },
+  addButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
   subHeader: {
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 25,
     marginBottom: 10,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 10,
-    backgroundColor: "#fff",
-  },
-  dateButton: {
-    backgroundColor: "#1E90FF",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  dateButtonText: { color: "#fff", fontWeight: "bold" },
-  addButton: {
-    backgroundColor: "#32CD32",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  addButtonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
   item: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#eef2ee",
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   itemText: { fontSize: 15 },
-  emptyText: { textAlign: "center", color: "#888", marginTop: 20 },
+  actionRow: {
+    flexDirection: "row",
+    marginTop: 8,
+    justifyContent: "space-between",
+  },
   mapButton: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#c0e8c0",
     padding: 8,
     borderRadius: 6,
     flex: 1,
-    marginRight: 1,
+    marginRight: 4,
     alignItems: "center",
   },
-  mapButtonText: { color: "#1c2924ff", fontWeight: "bold" },
+  mapButtonText: { color: "#003300", fontWeight: "bold" },
   editButton: {
-    backgroundColor: "#cbbc7eff",
+    backgroundColor: "#ffe08a",
     padding: 8,
     borderRadius: 6,
     flex: 1,
-    marginRight: 5,
+    marginRight: 4,
     alignItems: "center",
   },
   editButtonText: { color: "#000", fontWeight: "bold" },
@@ -472,15 +492,14 @@ const styles = StyleSheet.create({
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
   footer: {
     position: "absolute",
-    bottom: 35,
+    bottom: 20,
     left: 0,
     right: 0,
     height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 12 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
 });
