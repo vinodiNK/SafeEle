@@ -332,7 +332,7 @@ export default function CollisionZone() {
                     style={styles.mapButton}
                     onPress={() => openInMap(item.latitude, item.longitude)}
                   >
-                    <Text style={styles.mapButtonText}>Open Map</Text>
+                    <Text style={styles.mapButtonText}>📌 Open Map</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.editButton}
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
   footer: {
     position: "absolute",
-    bottom: 20,
+    bottom: 25,
     left: 0,
     right: 0,
     height: 70,
