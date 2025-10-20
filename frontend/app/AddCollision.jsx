@@ -18,8 +18,8 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  FlatList,
   Linking,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -172,94 +172,94 @@ export default function CollisionZone() {
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Elephant Collision Zone</Text>
-          <Ionicons name="leaf-outline" size={24} color="#fff" />
+          <Ionicons name="leaf-outline" size={24} color="#801212ff" />
         </View>
       </LinearGradient>
 
-      {/* Form Section */}
-      <Text style={styles.pageHeader}>
-        {editId
-          ? "✏️ Edit Elephant Collision Location"
-          : "🚨 Add Elephant Collision Location"}
-      </Text>
-
-      <TextInput
-        placeholder="Location name"
-        value={locationName}
-        onChangeText={setLocationName}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Latitude"
-        value={latitude}
-        onChangeText={setLatitude}
-        keyboardType="numeric"
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Longitude"
-        value={longitude}
-        onChangeText={setLongitude}
-        keyboardType="numeric"
-        style={styles.input}
-      />
-
-      <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
-        <Text style={styles.dateButtonText}>
-          {date ? date.toDateString() : "Select Date"}
+      {/* Scrollable content */}
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 120 }}>
+        <Text style={styles.pageHeader}>
+          {editId
+            ? "✏️ Edit Elephant Collision Location"
+            : "🚨 Add Elephant Collision Location"}
         </Text>
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="default"
-          onChange={(event, selectedDate) => {
-            setShowDatePicker(false);
-            if (selectedDate) setDate(selectedDate);
-          }}
+
+        <TextInput
+          placeholder="Location name"
+          value={locationName}
+          onChangeText={setLocationName}
+          style={styles.input}
         />
-      )}
-
-      <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
-        <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
-      </TouchableOpacity>
-      {showTimePicker && (
-        <DateTimePicker
-          value={new Date()}
-          mode="time"
-          is24Hour={false}
-          display="default"
-          onChange={(event, selectedTime) => {
-            setShowTimePicker(false);
-            if (selectedTime) {
-              const hours = selectedTime.getHours();
-              const minutes = selectedTime.getMinutes();
-              const formattedTime = `${hours % 12 || 12}:${minutes
-                .toString()
-                .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
-              setTime(formattedTime);
-            }
-          }}
+        <TextInput
+          placeholder="Latitude"
+          value={latitude}
+          onChangeText={setLatitude}
+          keyboardType="numeric"
+          style={styles.input}
         />
-      )}
+        <TextInput
+          placeholder="Longitude"
+          value={longitude}
+          onChangeText={setLongitude}
+          keyboardType="numeric"
+          style={styles.input}
+        />
 
-      <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
-        <Text style={styles.addButtonText}>
-          {editId ? "Update Location" : "Add Location"}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
+          <Text style={styles.dateButtonText}>
+            {date ? date.toDateString() : "Select Date"}
+          </Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(false);
+              if (selectedDate) setDate(selectedDate);
+            }}
+          />
+        )}
 
-      <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
+        <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
+          <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
+        </TouchableOpacity>
+        {showTimePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="time"
+            is24Hour={false}
+            display="default"
+            onChange={(event, selectedTime) => {
+              setShowTimePicker(false);
+              if (selectedTime) {
+                const hours = selectedTime.getHours();
+                const minutes = selectedTime.getMinutes();
+                const formattedTime = `${hours % 12 || 12}:${minutes
+                  .toString()
+                  .padStart(2, "0")} ${hours >= 12 ? "PM" : "AM"}`;
+                setTime(formattedTime);
+              }
+            }}
+          />
+        )}
 
-      {loading ? (
-        <ActivityIndicator size="large" style={{ marginTop: 20 }} />
-      ) : (
-        <FlatList
-          data={elephantLocations}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
+        <TouchableOpacity style={styles.addButton} onPress={saveLocation}>
+          <Text style={styles.addButtonText}>
+            {editId ? "Update Location" : "Add Location"}
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={styles.subHeader}>📍 Existing Elephant Locations</Text>
+
+        {loading ? (
+          <ActivityIndicator size="large" style={{ marginTop: 20 }} />
+        ) : elephantLocations.length === 0 ? (
+          <Text style={styles.emptyText}>No locations found</Text>
+        ) : (
+          elephantLocations.map((item) => (
+            <View key={item.id} style={styles.item}>
               <Text style={styles.itemText}>
                 <Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}
               </Text>
@@ -305,15 +305,12 @@ export default function CollisionZone() {
                 </TouchableOpacity>
               </View>
             </View>
-          )}
-          ListEmptyComponent={() => (
-            <Text style={styles.emptyText}>No locations found</Text>
-          )}
-        />
-      )}
+          ))
+        )}
+      </ScrollView>
 
-      {/* ✅ Updated Footer */}
-      <LinearGradient colors={["rgba(237, 242, 237, 1)", "#dae6daff"]} style={styles.footer}>
+      {/* ✅ Footer stays fixed */}
+      <LinearGradient colors={["rgba(245, 250, 245, 1)", "#f2f7f2ff"]} style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
@@ -342,12 +339,7 @@ export default function CollisionZone() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-    backgroundColor: "#f9f9f9",
-    paddingBottom: 90,
-  },
+  container: { flex: 1, backgroundColor: "#f9f9f9", padding: 15 },
   headerContainer: {
     width: "100%",
     height: 120,
@@ -368,99 +360,25 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "90%",
   },
-  headerTitle: {
-    color: "#fff",
-    fontSize: 22,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  backButton: {
-    backgroundColor: "rgba(255,255,255,0.2)",
-    padding: 8,
-    borderRadius: 20,
-  },
-  pageHeader: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginTop: 20,
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  subHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 25,
-    marginBottom: 10,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 10,
-    backgroundColor: "#fff",
-  },
-  dateButton: {
-    backgroundColor: "#1E90FF",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
+  headerTitle: { color: "#fff", fontSize: 22, fontWeight: "bold", textAlign: "center" },
+  backButton: { backgroundColor: "rgba(255,255,255,0.2)", padding: 8, borderRadius: 20 },
+  pageHeader: { fontSize: 22, fontWeight: "bold", marginTop: 20, marginBottom: 10, textAlign: "center" },
+  subHeader: { fontSize: 18, fontWeight: "bold", marginTop: 25, marginBottom: 10 },
+  input: { borderWidth: 1, borderColor: "#ccc", padding: 10, borderRadius: 8, marginBottom: 10, backgroundColor: "#fff" },
+  dateButton: { backgroundColor: "#1E90FF", padding: 10, borderRadius: 8, alignItems: "center", marginBottom: 10 },
   dateButtonText: { color: "#fff", fontWeight: "bold" },
-  addButton: {
-    backgroundColor: "#32CD32",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
+  addButton: { backgroundColor: "#32CD32", padding: 12, borderRadius: 8, alignItems: "center", marginTop: 10 },
   addButtonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
-  item: {
-    backgroundColor: "#f0f0f0",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
+  item: { backgroundColor: "#f0f0f0", padding: 12, borderRadius: 8, marginBottom: 8 },
   itemText: { fontSize: 15 },
-  emptyText: { textAlign: "center", color: "#888", marginTop: 20 },
-  mapButton: {
-    backgroundColor: "#FF6347",
-    padding: 8,
-    borderRadius: 6,
-    flex: 1,
-    marginRight: 5,
-    alignItems: "center",
-  },
-  mapButtonText: { color: "#fff", fontWeight: "bold" },
-  editButton: {
-    backgroundColor: "#FFD700",
-    padding: 8,
-    borderRadius: 6,
-    flex: 1,
-    marginRight: 5,
-    alignItems: "center",
-  },
+  emptyText: { textAlign: "center", color: "#888888ff", marginTop: 20 },
+  mapButton: { backgroundColor: "#f0f0f0", padding: 8, borderRadius: 6, flex: 1, marginRight: 1, alignItems: "center" },
+  mapButtonText: { color: "#1c2924ff", fontWeight: "bold" },
+  editButton: { backgroundColor: "#cbbc7eff", padding: 8, borderRadius: 6, flex: 1, marginRight: 5, alignItems: "center" },
   editButtonText: { color: "#000", fontWeight: "bold" },
-  deleteButton: {
-    backgroundColor: "#DC143C",
-    padding: 8,
-    borderRadius: 6,
-    flex: 1,
-    alignItems: "center",
-  },
+  deleteButton: { backgroundColor: "#DC143C", padding: 8, borderRadius: 6, flex: 1, alignItems: "center" },
   deleteButtonText: { color: "#fff", fontWeight: "bold" },
-  footer: {
-    position: "absolute",
-    bottom: 35,
-    left: 0,
-    right: 0,
-    height: 70,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingHorizontal: 10,
-  },
+  footer: { position: "absolute", bottom: 35, left: 0, right: 0, height: 70, flexDirection: "row", justifyContent: "space-around", alignItems: "center", paddingHorizontal: 10 },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 12 },
 });
