@@ -23,18 +23,19 @@ export default function WildLifeDashboard() {
   const [locations, setLocations] = useState([]);
   const parallaxAnim = useRef(new Animated.Value(0)).current;
 
+  // Parallax animation for icons
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
         Animated.timing(parallaxAnim, {
-          toValue: -15,
-          duration: 6000,
+          toValue: -10,
+          duration: 4000,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
         Animated.timing(parallaxAnim, {
-          toValue: 15,
-          duration: 6000,
+          toValue: 10,
+          duration: 4000,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
@@ -60,9 +61,9 @@ export default function WildLifeDashboard() {
 
   return (
     <View style={styles.container}>
-      {/* 🌿 Curved Green Header */}
+      {/* 🌿 Curved Gradient Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -72,24 +73,24 @@ export default function WildLifeDashboard() {
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
-            <SvgGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
               <Stop offset="100%" stopColor="#006400" />
             </SvgGradient>
           </Defs>
-          <Path fill="url(#grad2)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="155" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="320" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
-            <SvgGradient id="grad3" x1="0" y1="0" x2="1" y2="1">
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
               <Stop offset="100%" stopColor="#006400" />
             </SvgGradient>
           </Defs>
-          <Path fill="url(#grad3)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
         <View style={styles.headerTextContainer}>
@@ -101,31 +102,37 @@ export default function WildLifeDashboard() {
       {/* 🔹 Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.cardsContainer}>
+          {/* Past Collision Zones */}
           <Animatable.View animation="fadeInUp" delay={100} duration={800}>
             <TouchableOpacity
+              activeOpacity={0.9}
               onPress={() => navigation.navigate("CollisionZone")}
-              activeOpacity={0.8}
             >
-              <View style={[styles.card, { backgroundColor: "#4CAF50" }]}>
-                <MaterialCommunityIcons name="map-marker-alert" size={40} color="#fff" />
+              <Animated.View style={[styles.card, styles.gradientCard]}>
+                <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
+                  <MaterialCommunityIcons name="map-marker-alert" size={50} color="#fff" />
+                </Animated.View>
                 <Text style={styles.cardTitle}>Past Collision Zones</Text>
                 <Text style={styles.cardSubtitle}>
                   Historical elephant collision records
                 </Text>
-              </View>
+              </Animated.View>
             </TouchableOpacity>
           </Animatable.View>
 
+          {/* Guest Locations */}
           <Animatable.View animation="fadeInUp" delay={200} duration={800}>
             <TouchableOpacity
+              activeOpacity={0.9}
               onPress={() => navigation.navigate("GuestLocation")}
-              activeOpacity={0.8}
             >
-              <View style={[styles.card, { backgroundColor: "#f7971e" }]}>
-                <MaterialCommunityIcons name="account-group" size={40} color="#fff" />
+              <Animated.View style={[styles.card, styles.gradientCardOrange]}>
+                <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
+                  <MaterialCommunityIcons name="account-group" size={50} color="#fff" />
+                </Animated.View>
                 <Text style={styles.cardTitle}>Guest Locations</Text>
                 <Text style={styles.cardSubtitle}>View locations updated by guests</Text>
-              </View>
+              </Animated.View>
             </TouchableOpacity>
           </Animatable.View>
         </View>
@@ -175,21 +182,43 @@ const styles = StyleSheet.create({
   headerSubtitle: { color: "#e0f7e9", fontSize: 14, marginTop: 4 },
 
   scrollContainer: { paddingBottom: 100 },
-  cardsContainer: { paddingHorizontal: 5, marginTop: 180 },
+  cardsContainer: { paddingHorizontal: 10, marginTop: 150 },
 
   card: {
-    padding: 55,
-    borderRadius: 20,
+    padding: 45,
+    borderRadius: 25,
     marginVertical: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 10,
+    marginBottom: 30,
+    marginTop: 30,
   },
-  cardTitle: { fontSize: 18, fontWeight: "bold", color: "#fff", marginTop: 6 },
-  cardSubtitle: { fontSize: 14, color: "#fff", marginTop: 5, textAlign: "center" },
+  gradientCard: {
+    backgroundColor: "#4CAF50",
+    shadowColor: "#1B5E20",
+  },
+  gradientCardOrange: {
+    backgroundColor: "#f7971e",
+    shadowColor: "#bf5700",
+  },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
+    marginTop: 10,
+    letterSpacing: 0.5,
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    color: "#fff",
+    marginTop: 5,
+    textAlign: "center",
+    lineHeight: 18,
+  },
 
   footer: {
     position: "absolute",
@@ -202,6 +231,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     backgroundColor: "#f5fbf5ff",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
