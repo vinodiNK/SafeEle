@@ -1,7 +1,5 @@
-// app/WildLifeDashboard.jsx
 import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
@@ -12,9 +10,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
+import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
 
 const { width, height } = Dimensions.get("window");
@@ -61,36 +60,59 @@ export default function WildLifeDashboard() {
 
   return (
     <View style={styles.container}>
-      {/* 🔹 Header */}
-      <LinearGradient colors={["#006400", "#228B22"]} style={styles.header}>
-        <View style={styles.headerContent}>
+      {/* 🌿 Curved Green Header */}
+      <View style={styles.headerWrapper}>
+        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+
+        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad2)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+
+        <Svg height="155" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad3" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad3)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+
+        <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
           <Text style={styles.headerSubtitle}>Manage & analyze elephant activity</Text>
         </View>
-      </LinearGradient>
+      </View>
 
-      {/* 🔹 Scrollable content */}
+      {/* 🔹 Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Parallax image */}
-        <View style={styles.topHalf}>
-          
-         
-        </View>
-
-        {/* 🔹 Cards Section */}
         <View style={styles.cardsContainer}>
           <Animatable.View animation="fadeInUp" delay={100} duration={800}>
             <TouchableOpacity
               onPress={() => navigation.navigate("CollisionZone")}
               activeOpacity={0.8}
             >
-              <LinearGradient colors={["#56ab2f", "#a8e063"]} style={styles.card}>
+              <View style={[styles.card, { backgroundColor: "#4CAF50" }]}>
                 <MaterialCommunityIcons name="map-marker-alert" size={40} color="#fff" />
                 <Text style={styles.cardTitle}>Past Collision Zones</Text>
                 <Text style={styles.cardSubtitle}>
                   Historical elephant collision records
                 </Text>
-              </LinearGradient>
+              </View>
             </TouchableOpacity>
           </Animatable.View>
 
@@ -99,69 +121,51 @@ export default function WildLifeDashboard() {
               onPress={() => navigation.navigate("GuestLocation")}
               activeOpacity={0.8}
             >
-              <LinearGradient colors={["#f7971e", "#ffd200"]} style={styles.card}>
+              <View style={[styles.card, { backgroundColor: "#f7971e" }]}>
                 <MaterialCommunityIcons name="account-group" size={40} color="#fff" />
                 <Text style={styles.cardTitle}>Guest Locations</Text>
                 <Text style={styles.cardSubtitle}>View locations updated by guests</Text>
-              </LinearGradient>
+              </View>
             </TouchableOpacity>
           </Animatable.View>
-
-          
         </View>
       </ScrollView>
 
       {/* 🔹 Footer Navigation */}
-      <LinearGradient colors={["#f5fbf5ff", "#f2f7f2ff"]} style={styles.footer}>
-        {/* Home */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        {/* Add Data */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AddCollision")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
           <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        {/* Message */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Message")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
           <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        {/* Profile */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("WildProfile")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("WildProfile")} style={styles.navButton}>
           <FontAwesome5 name="user-alt" size={20} color="#004d00" />
           <Text style={styles.footerText}>Profile</Text>
         </TouchableOpacity>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5fdf6" },
-  header: {
-    paddingVertical: 25,
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    elevation: 5,
+  headerWrapper: { position: "relative", alignItems: "center", marginBottom: 30 },
+  curve: { position: "absolute", top: 0, left: 0 },
+  headerTextContainer: {
+    position: "absolute",
+    top: 80,
+    alignItems: "center",
   },
-  headerContent: { alignItems: "center" },
   headerTitle: {
     color: "#fff",
     fontSize: 28,
@@ -171,19 +175,10 @@ const styles = StyleSheet.create({
   headerSubtitle: { color: "#e0f7e9", fontSize: 14, marginTop: 4 },
 
   scrollContainer: { paddingBottom: 100 },
-  topHalf: {
-    width: "100%",
-    height: height * 0.35,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
-  image: { position: "absolute", top: 0, width: "100%", height: "100%" },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.3)" },
+  cardsContainer: { paddingHorizontal: 5, marginTop: 180 },
 
-  cardsContainer: { paddingHorizontal: 15, marginTop: 20 },
   card: {
-    padding: 35,
+    padding: 55,
     borderRadius: 20,
     marginVertical: 12,
     shadowColor: "#000",
@@ -206,7 +201,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     paddingHorizontal: 10,
+    backgroundColor: "#f5fbf5ff",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "f4fcf4ff", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
 });
