@@ -112,13 +112,13 @@ export default function WildLifeDashboard() {
       </ScrollView>
 
       {/* 🔹 Footer Navigation */}
-      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+      <LinearGradient colors={["#f5fbf5ff", "#f2f7f2ff"]} style={styles.footer}>
         {/* Home */}
         <TouchableOpacity
           onPress={() => navigation.navigate("index")}
           style={styles.navButton}
         >
-          <Entypo name="home" size={24} color="#c8e6c9" />
+          <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
@@ -127,7 +127,7 @@ export default function WildLifeDashboard() {
           onPress={() => navigation.navigate("AddCollision")}
           style={styles.navButton}
         >
-          <MaterialCommunityIcons name="plus-circle" size={26} color="#c8e6c9" />
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
@@ -136,7 +136,7 @@ export default function WildLifeDashboard() {
           onPress={() => navigation.navigate("Message")}
           style={styles.navButton}
         >
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#c8e6c9" />
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
@@ -145,7 +145,7 @@ export default function WildLifeDashboard() {
           onPress={() => navigation.navigate("WildProfile")}
           style={styles.navButton}
         >
-          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
+          <FontAwesome5 name="user-alt" size={20} color="#004d00" />
           <Text style={styles.footerText}>Profile</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -208,5 +208,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
+  footerText: { color: "f4fcf4ff", fontSize: 12, marginTop: 2 },
 });

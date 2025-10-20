@@ -95,10 +95,7 @@ export default function CollisionZone() {
           longitude: parseFloat(longitude),
           timestamp,
         });
-        Alert.alert(
-          "✅ Updated",
-          `Location "${locationName}" has been updated!`
-        );
+        Alert.alert("✅ Updated", `Location "${locationName}" has been updated!`);
         setEditId(null);
       } else {
         await addDoc(collection(db, "elephant_locations"), {
@@ -108,10 +105,7 @@ export default function CollisionZone() {
           timestamp,
           createdAt: serverTimestamp(),
         });
-        Alert.alert(
-          "🎉 Added",
-          `New location "${locationName}" has been added!`
-        );
+        Alert.alert("🎉 Added", `New location "${locationName}" has been added!`);
       }
 
       setLocationName("");
@@ -147,13 +141,9 @@ export default function CollisionZone() {
   // Edit location
   const editLocation = (loc) => {
     setLocationName(loc.locationName || "");
-    setLatitude(loc.latitude !== undefined ? loc.latitude.toString() : "");
-    setLongitude(loc.longitude !== undefined ? loc.longitude.toString() : "");
-    setDate(
-      loc.timestamp
-        ? loc.timestamp.toDate() || new Date(loc.timestamp)
-        : new Date()
-    );
+    setLatitude(loc.latitude?.toString() || "");
+    setLongitude(loc.longitude?.toString() || "");
+    setDate(loc.timestamp?.toDate() || new Date());
     setTime(
       loc.timestamp
         ? `${loc.timestamp.toDate().getHours()}:${loc.timestamp
@@ -167,14 +157,27 @@ export default function CollisionZone() {
   // Open in Google Maps
   const openInMap = (lat, lng) => {
     const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    Linking.openURL(url).catch((err) =>
-      console.error("Failed to open map:", err)
-    );
+    Linking.openURL(url).catch((err) => console.error("Failed to open map:", err));
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>
+      {/* ✅ Curved Header */}
+      <LinearGradient colors={["#006400", "#228B22"]} style={styles.headerContainer}>
+        <View style={styles.headerContent}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.navigate("WildlifeDashboard")}
+          >
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Elephant Collision Zone</Text>
+          <Ionicons name="leaf-outline" size={24} color="#fff" />
+        </View>
+      </LinearGradient>
+
+      {/* Form Section */}
+      <Text style={styles.pageHeader}>
         {editId
           ? "✏️ Edit Elephant Collision Location"
           : "🚨 Add Elephant Collision Location"}
@@ -201,10 +204,7 @@ export default function CollisionZone() {
         style={styles.input}
       />
 
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowDatePicker(true)}
-      >
+      <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
         <Text style={styles.dateButtonText}>
           {date ? date.toDateString() : "Select Date"}
         </Text>
@@ -221,10 +221,7 @@ export default function CollisionZone() {
         />
       )}
 
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowTimePicker(true)}
-      >
+      <TouchableOpacity style={styles.dateButton} onPress={() => setShowTimePicker(true)}>
         <Text style={styles.dateButtonText}>{time ? time : "Select Time"}</Text>
       </TouchableOpacity>
       {showTimePicker && (
@@ -264,8 +261,7 @@ export default function CollisionZone() {
           renderItem={({ item }) => (
             <View style={styles.item}>
               <Text style={styles.itemText}>
-                <Text style={{ fontWeight: "bold" }}>Location:</Text>{" "}
-                {item.locationName}
+                <Text style={{ fontWeight: "bold" }}>Location:</Text> {item.locationName}
               </Text>
               <Text>Latitude: {item.latitude}</Text>
               <Text>Longitude: {item.longitude}</Text>
@@ -316,46 +312,29 @@ export default function CollisionZone() {
         />
       )}
 
-      {/* Footer */}
-      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
-          <Entypo name="home" size={24} color="#c8e6c9" />
+      {/* ✅ Updated Footer */}
+      <LinearGradient colors={["rgba(237, 242, 237, 1)", "#dae6daff"]} style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+          <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AddCollision")}
-          style={styles.navButton}
-        >
-          <MaterialCommunityIcons
-            name="plus-circle"
-            size={26}
-            color="#c8e6c9"
-          />
+        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Message")}
+          onPress={() => Linking.openURL("https://www.google.com/maps")}
           style={styles.navButton}
         >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#c8e6c9"
-          />
-          <Text style={styles.footerText}>Message</Text>
+          <Ionicons name="map-outline" size={24} color="#004d00" />
+          <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("WildlifeDashboard")}
-          style={styles.navButton}
-        >
-          <Ionicons name="arrow-back" size={24} color="#c8e6c9" />
-          <Text style={styles.footerText}>Back</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
+          <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
       </LinearGradient>
     </View>
@@ -369,11 +348,42 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
     paddingBottom: 90,
   },
-  header: {
-    fontSize: 30,
+  headerContainer: {
+    width: "100%",
+    height: 120,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingBottom: 20,
+    elevation: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  headerContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+  },
+  headerTitle: {
+    color: "#fff",
+    fontSize: 22,
     fontWeight: "bold",
-    marginTop: 25,
-    marginBottom: 15,
+    textAlign: "center",
+  },
+  backButton: {
+    backgroundColor: "rgba(255,255,255,0.2)",
+    padding: 8,
+    borderRadius: 20,
+  },
+  pageHeader: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 10,
     textAlign: "center",
   },
   subHeader: {
@@ -452,5 +462,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 12 },
 });
