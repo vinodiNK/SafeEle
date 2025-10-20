@@ -1,7 +1,6 @@
 // app/OpenMap.jsx
 import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import * as Location from "expo-location";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -15,6 +14,7 @@ import {
   View,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
 
 const COLLISION_RADIUS = 1000; // meters
@@ -76,7 +76,6 @@ export default function OpenMap() {
 
       if (locations.length > 0) {
         const latest = locations.sort((a, b) => b.dateTime.seconds - a.dateTime.seconds)[0];
-
         if (latest && latest.dateTime?.seconds !== lastCollisionAlertRef.current["camera"]) {
           lastCollisionAlertRef.current["camera"] = latest.dateTime.seconds;
 
@@ -90,14 +89,13 @@ export default function OpenMap() {
         }
       }
     });
-
     return unsubscribe;
   }, []);
 
   // Collision alert real-time
   useEffect(() => {
     if (!location) return;
-    elephantLocations.forEach((ele, idx) => {
+    elephantLocations.forEach((ele) => {
       const distance = getDistance(location, ele);
       const lastAlert = lastCollisionAlertRef.current[ele.id] || 0;
       const now = Date.now();
@@ -140,17 +138,45 @@ export default function OpenMap() {
 
   return (
     <View style={styles.container}>
-      {/* 🔹 Header */}
-      <LinearGradient colors={["#006400", "#228B22"]} style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={styles.headerTextLeft}>Train ID: 1234</Text>
-          <Text style={styles.headerTextRight}>Lakshman</Text>
-        </View>
-        <Text style={styles.subtitle}>Real-Time Monitoring</Text>
-        <Text style={styles.title}>Live Map</Text>
-      </LinearGradient>
+      {/* 🌿 Curved Gradient Header */}
+      <View style={styles.headerWrapper}>
+        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad1)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+         <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad1)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+        
 
-      {/* 🔹 Map Section */}
+        {/* Header Text */}
+        <View style={styles.headerContent}>
+          <View style={styles.headerTop}>
+            
+          </View>
+          <Text style={styles.subtitle}>Real-Time Monitoring</Text>
+          
+        </View>
+      </View>
+
+      {/* 🗺️ Map Section */}
       <MapView
         style={styles.map}
         initialRegion={{
@@ -173,7 +199,6 @@ export default function OpenMap() {
             key={`elephant-${index}`}
             coordinate={{ latitude: ele.latitude, longitude: ele.longitude }}
             title="Elephant Location"
-            description="Reported in Firestore"
           >
             <Image
               source={require("../assets/elephant.png")}
@@ -189,7 +214,6 @@ export default function OpenMap() {
             key={`guest-${index}`}
             coordinate={{ latitude: guest.latitude, longitude: guest.longitude }}
             title="Guest Location"
-            description="Reported in Firestore"
           >
             <Image
               source={require("../assets/elephant.png")}
@@ -218,40 +242,28 @@ export default function OpenMap() {
         ))}
       </MapView>
 
-      {/* 🔹 Footer Navigation */}
-      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
-          <Entypo name="home" size={22} color="#c8e6c9" />
+      {/* 🧭 Footer Navigation */}
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
+          <Entypo name="home" size={22} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("OpenMap")}
-          style={styles.navButton}
-        >
-          <Entypo name="location-pin" size={26} color="white" />
+        <TouchableOpacity onPress={() => navigation.navigate("OpenMap")} style={styles.navButton}>
+          <Entypo name="location-pin" size={26} color="#004d00" />
           <Text style={styles.footerTextActive}>Map</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SendNews")}
-          style={styles.navButton}
-        >
-          <MaterialIcons name="message" size={22} color="#fff" />
+        <TouchableOpacity onPress={() => navigation.navigate("SendNews")} style={styles.navButton}>
+          <MaterialIcons name="message" size={22} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.navButton}
-        >
-          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.navButton}>
+          <FontAwesome5 name="user-alt" size={20} color="#004d00" />
           <Text style={styles.footerText}>Profile</Text>
         </TouchableOpacity>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
@@ -259,39 +271,38 @@ export default function OpenMap() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#e8f5e9" },
 
-  header: {
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    paddingVertical: 25,
-    paddingHorizontal: 20,
-    elevation: 5,
+  // Curved Header
+  headerWrapper: { position: "relative", alignItems: "center" },
+  curve: { position: "absolute", top: 0 },
+  headerContent: {
+    position: "absolute",
+    top: 50,
+    width: "100%",
+    alignItems: "center",
   },
   headerTop: {
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "90%",
   },
   headerTextLeft: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
   headerTextRight: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
-  subtitle: { color: "#dff5df", fontSize: 16, textAlign: "center", marginTop: 10 },
-  title: { color: "white", fontSize: 34, fontWeight: "bold", textAlign: "center" },
+  subtitle: { color: "#dff5df", fontSize: 28, textAlign: "center", marginTop: 10,fontWeight: "bold" },
 
-  map: { flex: 1, marginBottom: 70 },
+
+  map: { flex: 1, marginBottom: 90, marginTop: 180 },
   loading: { flex: 1, justifyContent: "center", alignItems: "center" },
 
   footer: {
+    position: "absolute",
+    bottom: 20,
+    left: 0,
+    right: 0,
+    height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0,
-    width: "90%",
-    alignSelf: "center",
-    paddingVertical: 10,
-    borderRadius: 30,
-    marginBottom: 35,
-    elevation: 10,
   },
-  navButton: { alignItems: "center" },
-  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
-  footerTextActive: { color: "white", fontSize: 12, fontWeight: "bold", marginTop: 2 },
+  navButton: { justifyContent: "center", alignItems: "center" },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
 });

@@ -226,11 +226,11 @@ const styles = StyleSheet.create({
     color: "#071307ff",
     fontSize: 16,
     textAlign: "center",
-    marginTop: 5,
+    marginTop: 15,
   },
-  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 1 },
+  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 10 },
 
-  image: { width: "100%", height: 230, marginTop: 10 },
+  image: { width: "100%", height: 230, marginTop: 10, marginBottom: 10 },
 
   formContainer: {
     alignItems: "center",
