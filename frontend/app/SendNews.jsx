@@ -2,7 +2,6 @@
 import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
@@ -14,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Defs, Path, Stop, Svg, LinearGradient as SvgGradient } from "react-native-svg";
 import NewsImage from "../assets/news.png";
 import { db } from "../firebaseConfig";
 
@@ -65,15 +65,41 @@ export default function SendNews() {
 
   return (
     <View style={styles.container}>
-      {/* 🔹 Header */}
-      <LinearGradient colors={["#006400", "#228B22"]} style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={styles.headerTextLeft}>Train ID: 1234</Text>
-          <Text style={styles.headerTextRight}>Lakshman</Text>
+      {/* 🌿 Curved Header */}
+      <View style={styles.headerWrapper}>
+        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+         <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+        
+        {/* Header Text */}
+        <View style={styles.headerTextContainer}>
+          
         </View>
-        <Text style={styles.subtitle}>Sending updates</Text>
-        <Text style={styles.title}>Send News</Text>
-      </LinearGradient>
+        
+        <Text style={styles.title}>Send Message</Text>
+        <Text style={styles.subtitle}>Sending updates to station</Text>
+      </View>
 
       {/* 🔹 Illustration */}
       <Image source={NewsImage} style={styles.image} resizeMode="contain" />
@@ -131,18 +157,21 @@ export default function SendNews() {
           multiline
         />
 
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
+        <View style={{ width: '85%', flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10 }}>
+  <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+    <Text style={styles.sendButtonText}>Send</Text>
+  </TouchableOpacity>
+</View>
+
       </View>
 
       {/* 🔹 Footer Navigation */}
-      <LinearGradient colors={["#004d00", "#006400"]} style={styles.footer}>
+      <View style={styles.footer}>
         <TouchableOpacity
           onPress={() => navigation.navigate("index")}
           style={styles.navButton}
         >
-          <Entypo name="home" size={22} color="#c8e6c9" />
+          <Entypo name="home" size={22} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
@@ -150,7 +179,7 @@ export default function SendNews() {
           onPress={() => navigation.navigate("OpenMap")}
           style={styles.navButton}
         >
-          <Entypo name="location-pin" size={26} color="#c8e6c9" />
+          <Entypo name="location-pin" size={26} color="#004d00" />
           <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
 
@@ -158,7 +187,7 @@ export default function SendNews() {
           onPress={() => navigation.navigate("SendNews")}
           style={styles.navButton}
         >
-          <MaterialIcons name="message" size={22} color="#fff" />
+          <MaterialIcons name="message" size={22} color="#004d00" />
           <Text style={styles.footerTextActive}>Message</Text>
         </TouchableOpacity>
 
@@ -166,10 +195,10 @@ export default function SendNews() {
           onPress={() => navigation.navigate("Profile")}
           style={styles.navButton}
         >
-          <FontAwesome5 name="user-alt" size={20} color="#c8e6c9" />
+          <FontAwesome5 name="user-alt" size={20} color="#004d00" />
           <Text style={styles.footerText}>Profile</Text>
         </TouchableOpacity>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
@@ -177,32 +206,35 @@ export default function SendNews() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#e8f5e9" },
 
-  header: {
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
-    paddingVertical: 25,
-    paddingHorizontal: 20,
-    elevation: 5,
+  headerWrapper: {
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
-  headerTop: {
+  curve: {
+    position: "absolute",
+    top: 0,
+  },
+  headerTextContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginHorizontal: 20,
+    marginTop: 80,
   },
   headerTextLeft: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
   headerTextRight: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
   subtitle: {
-    color: "#dff5df",
+    color: "#071307ff",
     fontSize: 16,
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 5,
   },
-  title: { color: "white", fontSize: 34, fontWeight: "bold", textAlign: "center" },
+  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 1 },
 
-  image: { width: "100%", height: 230, marginTop: 5 },
+  image: { width: "100%", height: 230, marginTop: 10 },
 
   formContainer: {
     alignItems: "center",
-    marginTop: -10,
+    marginTop: -20,
     paddingBottom: 80,
   },
 
@@ -233,30 +265,22 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",
-    marginTop: 15,
+    marginTop: 10,
     elevation: 3,
   },
   sendButtonText: { color: "white", fontWeight: "bold", fontSize: 16 },
 
   footer: {
+    position: "absolute",
+    bottom: 20,
+    left: 0,
+    right: 0,
+    height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0,
-    width: "90%",
-    alignSelf: "center",
-    paddingVertical: 10,
-    borderRadius: 30,
-    marginBottom: 10,
-    elevation: 10,
   },
-  navButton: { alignItems: "center" },
-  footerText: { color: "#c8e6c9", fontSize: 12, marginTop: 2 },
-  footerTextActive: {
-    color: "white",
-    fontSize: 12,
-    fontWeight: "bold",
-    marginTop: 2,
-  },
+  navButton: { justifyContent: "center", alignItems: "center" },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+ 
 });
