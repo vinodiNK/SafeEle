@@ -98,7 +98,7 @@ export default function DriverProfile() {
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Text style={styles.headerTitle}>Driver Profile</Text>
+        <Text style={styles.headerTitle}>Station Profile</Text>
       </View>
 
       {/* 👤 Profile Section */}
