@@ -1,5 +1,5 @@
 // app/DriverProfile.jsx
-import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { doc, getDoc } from "firebase/firestore";
@@ -149,9 +149,9 @@ export default function DriverProfile() {
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
+          <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("StationViewNews")} style={styles.navButton}>
