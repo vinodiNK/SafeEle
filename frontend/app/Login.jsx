@@ -46,7 +46,7 @@ export default function Login() {
         if (role === "driver") {
           navigation.reset({ index: 0, routes: [{ name: "OpenMap" }] });
         } else if (role === "station") {
-          navigation.reset({ index: 0, routes: [{ name: "StationDashboard" }] });
+          navigation.reset({ index: 0, routes: [{ name: "StationViewNews" }] });
         } else if (role === "wildlife") {
           navigation.reset({ index: 0, routes: [{ name: "WildlifeDashboard" }] });
         } else {

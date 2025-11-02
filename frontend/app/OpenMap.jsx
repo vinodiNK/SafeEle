@@ -259,7 +259,7 @@ export default function OpenMap() {
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("DriverProfile")} style={styles.navButton}>
           <FontAwesome5 name="user-alt" size={20} color="#004d00" />
           <Text style={styles.footerText}>Profile</Text>
         </TouchableOpacity>

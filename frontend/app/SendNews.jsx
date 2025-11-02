@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
 
   formContainer: {
     alignItems: "center",
-    marginTop: -20,
+    marginTop: -40,
     paddingBottom: 80,
   },
 
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 2,
     elevation: 3,
   },
   sendButtonText: { color: "white", fontWeight: "bold", fontSize: 16 },
