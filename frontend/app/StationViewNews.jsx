@@ -141,7 +141,7 @@ export default function StationViewNews({ route }) {
        
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("StationProfile")}
           style={styles.navButton}
         >
           <FontAwesome5 name="user-alt" size={24} color="#004d00" />

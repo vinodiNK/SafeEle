@@ -4,13 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import {
-    Alert,
-    Image,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import MessageImage from "../assets/news.png"; // ✅ change to your image path
 import { db } from "../firebaseConfig"; // ✅ your Firestore config
@@ -112,7 +112,7 @@ export default function StationMessage() {
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("News")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("StationViewNews")} style={styles.navButton}>
           <Entypo name="news" size={22} color="#004d00" />
           <Text style={styles.footerText}>News</Text>
         </TouchableOpacity>
