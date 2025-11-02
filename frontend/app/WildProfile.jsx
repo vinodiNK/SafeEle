@@ -1,22 +1,22 @@
 // app/WildProfile.jsx
-import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLayoutEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 
 export default function WildProfile() {
   const navigation = useNavigation();
 
-  // 👇 Hide default navigation header
+  // Hide default top navigation header
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      {/* 🌿 Curved Gradient Header */}
+      {/* 🌿 Curved Green Header */}
       <View style={styles.headerWrapper}>
         <Svg
                   height="170"
@@ -70,16 +70,53 @@ export default function WildProfile() {
                   />
                 </Svg>
        
-        <Text style={styles.headerTitle}>Wildlife Profile</Text>
+        <Text style={styles.headerTitle}>Sation Master Profile</Text>
       </View>
 
-      {/* Profile Content */}
-      <View style={styles.content}>
-        <Text style={styles.profileText}>profile</Text>
+      {/* 👤 Profile Section */}
+      <View style={styles.profileCard}>
+        <Image
+          source={{
+            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeZ6_2H3Fz2ktHaHIFfQAOLuVwfGWp98G2Dg&s"
+          }}
+          style={styles.profileImage}
+        />
+        <Text style={styles.profileName}>A.G.Jayalath</Text>
+        <Text style={styles.profileRole}>Station Master</Text>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.infoRow}>
+            <Ionicons name="id-card-outline" size={22} color="#2E8B57" />
+            <Text style={styles.infoText}>196011197845</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Ionicons name="call-outline" size={22} color="#2E8B57" />
+            <Text style={styles.infoText}>+94 70 123 4567</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Ionicons name="mail-outline" size={22} color="#2E8B57" />
+            <Text style={styles.infoText}>jayalath@gmail.com</Text>
+          </View>
+          
+          <View style={styles.infoRow}>
+            <MaterialIcons name="location-on" size={22} color="#2E8B57" />
+            <Text style={styles.infoText}>Borupana, Ratmalana</Text>
+          </View>
+        </View>
+
+        {/* Logout Button */}
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => navigation.navigate("index")}
+        >
+          <LinearGradient colors={["#32CD32", "#228B22"]} style={styles.logoutGradient}>
+            <Text style={styles.logoutText}>Logout</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
 
       {/* 🌿 Footer Navigation */}
-      <LinearGradient colors={["#eaf1eaff", "#f0f8f0ff"]} style={styles.footer}>
+      <LinearGradient colors={["#eaf1eaff", "#e5ece5ff"]} style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
@@ -106,10 +143,10 @@ export default function WildProfile() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5", paddingBottom: 90 },
-  headerWrapper: { alignItems: "center", justifyContent: "center", marginBottom: 10 },
+  headerWrapper: { alignItems: "center", justifyContent: "center" },
   curve: { position: "absolute", top: 0 },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
     marginTop: 100,
@@ -117,18 +154,51 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
   },
-  content: { flex: 1, alignItems: "center", justifyContent: "center" },
-  profileText: { fontSize: 20, color: "#2E8B57" },
-   footer: {
+
+  profileCard: {
+    backgroundColor: "#fff",
+    marginHorizontal: 20,
+    borderRadius: 15,
+    alignItems: "center",
+    paddingVertical: 25,
+    elevation: 3,
+    marginTop: 60,
+  },
+  profileImage: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    borderWidth: 3,
+    borderColor: "#2E8B57",
+  },
+  profileName: { fontSize: 22, fontWeight: "bold", marginTop: 10, color: "#2E8B57" },
+  profileRole: { fontSize: 16, color: "#666", marginBottom: 15 },
+
+  infoContainer: { width: "85%", marginTop: 10 },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 8,
+  },
+  infoText: { fontSize: 16, color: "#333", marginLeft: 10 },
+
+  logoutButton: { width: "70%", marginTop: 25 },
+  logoutGradient: {
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  logoutText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
+
+  footer: {
     position: "absolute",
-    bottom: 35,
-    left: 10,
-    right: 10,
+    bottom: 30,
+    left: 0,
+    right: 0,
     height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },

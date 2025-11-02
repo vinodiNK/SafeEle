@@ -6,16 +6,15 @@ import { useEffect } from "react";
 // Screens
 import AddCollision from "./app/";
 import CollisionZone from "./app/CollisionZone";
-import DriverDashboard from "./app/DriverDashboard";
 import GuestLocation from "./app/GuestLocation";
 import Index from "./app/index"; // Landing page
-import LoginPage from "./app/Login"; // Login screen
-import OpenMap from "./app/OpenMap"; // Map screen
+import LoginPage from "./app/Login";
+import OpenMap from "./app/OpenMap";
 import TrainMapYalDevi from "./app/rainMapYalDevi";
-import SendNews from "./app/SendNews"; // Driver send news
+import SendNews from "./app/SendNews";
 import StationDashboard from "./app/StationDashboard";
 import StationViewNews from "./app/StationViewNews";
-import UploadLocation from "./app/UploadLocation"; // Location uploader
+import UploadLocation from "./app/UploadLocation";
 import WildlifeDashboard from "./app/WildlifeDashboard";
 import WildProfile from "./app/WildProfile";
 
@@ -56,7 +55,7 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginPage} />
 
         {/* Dashboards */}
-        <Stack.Screen name="DriverDashboard" component={DriverDashboard} />
+        <Stack.Screen name="OpenMap" component={OpenMap} />
         <Stack.Screen name="StationDashboard" component={StationDashboard} />
         <Stack.Screen name="StationViewNews" component={StationViewNews} />
         <Stack.Screen name="TrackTrainScreen" component={TrackTrain} />

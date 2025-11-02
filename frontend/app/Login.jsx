@@ -44,7 +44,7 @@ export default function Login() {
         const role = docSnap.data().role;
 
         if (role === "driver") {
-          navigation.reset({ index: 0, routes: [{ name: "DriverDashboard" }] });
+          navigation.reset({ index: 0, routes: [{ name: "OpenMap" }] });
         } else if (role === "station") {
           navigation.reset({ index: 0, routes: [{ name: "StationDashboard" }] });
         } else if (role === "wildlife") {
