@@ -131,7 +131,7 @@ export default function StationViewNews({ route }) {
         </TouchableOpacity>
         
         <TouchableOpacity
-          onPress={() => navigation.navigate("Message")}
+          onPress={() => navigation.navigate("StationMessage")}
           style={styles.navButton}
         >
           <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
