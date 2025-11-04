@@ -425,17 +425,10 @@ export default function CollisionZone() {
           <Ionicons name="map-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Message")}
-          style={styles.navButton}
-        >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#004d00"
-          />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
+                  <Entypo name="news" size={24} color="#004d00" />
+                  <Text style={styles.footerText}>News</Text>
+                </TouchableOpacity>
       </LinearGradient>
     </View>
   );
