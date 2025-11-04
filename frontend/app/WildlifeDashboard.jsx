@@ -150,7 +150,7 @@ export default function WildLifeDashboard() {
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("StationViewNews")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
                   <Entypo name="news" size={24} color="#004d00" />
                   <Text style={styles.footerText}>News</Text>
                 </TouchableOpacity>
