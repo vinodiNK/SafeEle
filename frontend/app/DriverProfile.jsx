@@ -34,7 +34,7 @@ export default function DriverProfile() {
         if (docSnap.exists()) {
           setUserData(docSnap.data());
         } else {
-          console.log("No user data found in Firestore!");
+          console.log("No user data found!");
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -159,10 +159,13 @@ export default function DriverProfile() {
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("DriverProfile")} style={styles.navButton}>
-          <FontAwesome5 name="user-alt" size={20} color="#004d00" />
-          <Text style={styles.footerText}>Profile</Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+                  onPress={() => navigation.navigate("DriverProfile")}
+                  style={styles.navButton}
+                >
+                  <FontAwesome5 name="user-alt" size={24} color="#004d00" />
+                  <Text style={styles.footerText}>Profile</Text>
+                </TouchableOpacity>
       </View>
     </View>
   );

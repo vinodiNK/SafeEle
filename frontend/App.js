@@ -6,6 +6,7 @@ import { useEffect } from "react";
 // Screens
 import AddCollision from "./app/";
 import CollisionZone from "./app/CollisionZone";
+import DriverProfile from "./app/DriverProfile";
 import GuestLocation from "./app/GuestLocation";
 import Index from "./app/index"; // Landing page
 import LoginPage from "./app/Login";
@@ -17,7 +18,6 @@ import StationViewNews from "./app/StationViewNews";
 import UploadLocation from "./app/UploadLocation";
 import WildlifeDashboard from "./app/WildlifeDashboard";
 import WildProfile from "./app/WildProfile";
-
 // Notifications helper
 import { registerForPushNotificationsAsync } from "./app/notificationHelper";
 
@@ -69,6 +69,7 @@ export default function App() {
         <Stack.Screen name="OpenMap" component={OpenMap} />
         <Stack.Screen name="UploadLocation" component={UploadLocation} />
         <Stack.Screen name="WildProfile" component={WildProfile} />
+         <Stack.Screen name="Profile" component={DriverProfile} />
 
         {/* Driver news */}
         <Stack.Screen name="DriverNews" component={SendNews} />

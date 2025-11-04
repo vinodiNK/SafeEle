@@ -1,4 +1,4 @@
-import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -150,10 +150,10 @@ export default function WildLifeDashboard() {
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("StationViewNews")} style={styles.navButton}>
+                  <Entypo name="news" size={24} color="#004d00" />
+                  <Text style={styles.footerText}>News</Text>
+                </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("WildProfile")} style={styles.navButton}>
           <FontAwesome5 name="user-alt" size={20} color="#004d00" />
