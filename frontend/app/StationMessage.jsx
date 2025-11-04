@@ -15,8 +15,8 @@ import {
   View,
 } from "react-native";
 import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
-import MessageImage from "../assets/news.png"; // ✅ change to your image path
-import { db } from "../firebaseConfig"; // ✅ your Firestore config
+import MessageImage from "../assets/news.png";
+import { db } from "../firebaseConfig";
 
 export default function StationMessage() {
   const navigation = useNavigation();
@@ -28,6 +28,7 @@ export default function StationMessage() {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
+  // ✅ Send message to Firestore
   const handleSend = async () => {
     if (!station || !title || !news) {
       Alert.alert("Error", "Please fill all fields before sending.");
@@ -35,12 +36,13 @@ export default function StationMessage() {
     }
 
     try {
-      await addDoc(collection(db, "messages"), {
+      await addDoc(collection(db, "StationSendNews"), {
         station,
         title,
         news,
         createdAt: serverTimestamp(),
       });
+
       Alert.alert("✅ Success", "Message sent to Wildlife Department!");
       setStation("");
       setTitle("");
@@ -53,52 +55,25 @@ export default function StationMessage() {
 
   return (
     <View style={styles.container}>
-      {/* 🌿 Curved Green Header */}
-      
-            <View style={styles.headerWrapper}>
-              {/* Decorative Curves */}
-              <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-                <Defs>
-                  <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-                    <Stop offset="0%" stopColor="#4CAF50" />
-                    <Stop offset="100%" stopColor="#006400" />
-                  </SvgGradient>
-                </Defs>
-                <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-              </Svg>
-      
-              <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-                <Defs>
-                  <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-                    <Stop offset="0%" stopColor="#4CAF50" />
-                    <Stop offset="100%" stopColor="#006400" />
-                  </SvgGradient>
-                </Defs>
-                <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-              </Svg>
-      
-              <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-                <Defs>
-                  <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-                    <Stop offset="0%" stopColor="#4CAF50" />
-                    <Stop offset="100%" stopColor="#006400" />
-                  </SvgGradient>
-                </Defs>
-                <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-              </Svg>
-
+      {/* 🌿 Header */}
+      <View style={styles.headerWrapper}>
+        <Svg height="200" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
         <Text style={styles.headerTitle}>Send Message</Text>
-        <Text style={styles.subTitle}>
-          Sending updates to Wildlife Department
-        </Text>
+        <Text style={styles.subTitle}>Send updates to Wildlife Department</Text>
       </View>
 
-      {/* 📰 Image Section */}
       <Image source={MessageImage} style={styles.image} resizeMode="contain" />
 
       {/* 🧾 Form Section */}
       <View style={styles.formContainer}>
-        {/* Station Picker */}
         <View style={styles.dropdownContainer}>
           <Picker
             selectedValue={station}
@@ -114,7 +89,6 @@ export default function StationMessage() {
           </Picker>
         </View>
 
-        {/* Title Picker */}
         <View style={styles.dropdownContainer}>
           <Picker
             selectedValue={title}
@@ -130,17 +104,15 @@ export default function StationMessage() {
           </Picker>
         </View>
 
-        {/* News Textbox */}
         <TextInput
           style={styles.textBox}
-          placeholder="Enter News Here..."
+          placeholder="Enter Message Here..."
           placeholderTextColor="#004d00"
           value={news}
           onChangeText={setNews}
           multiline
         />
 
-        {/* Send Button */}
         <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
@@ -148,10 +120,7 @@ export default function StationMessage() {
 
       {/* 🌿 Footer Navigation */}
       <LinearGradient colors={["#eaf1eaff", "#e5ece5ff"]} style={styles.footer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
@@ -186,37 +155,12 @@ export default function StationMessage() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#e8f5e9", alignItems: "center" },
-
-  // Header styles
   headerWrapper: { alignItems: "center", justifyContent: "center", width: "100%" },
   curve: { position: "absolute", top: 0 },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#fff",
-    marginTop: 70,
-    textShadowColor: "rgba(0,0,0,0.3)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-  },
-  subTitle: {
-    fontSize: 15,
-    color: "#fff",
-    textAlign: "center",
-    marginTop: 5,
-  },
-
-  image: {
-    width: 250,
-    height: 180,
-    marginTop: 90,
-  },
-
-  formContainer: {
-    width: "90%",
-    alignItems: "center",
-    marginTop: 20,
-  },
+  headerTitle: { fontSize: 26, fontWeight: "bold", color: "#fff", marginTop: 70 },
+  subTitle: { fontSize: 15, color: "#fff", textAlign: "center", marginTop: 5 },
+  image: { width: 250, height: 180, marginTop: 90 },
+  formContainer: { width: "90%", alignItems: "center", marginTop: 20 },
   dropdownContainer: {
     width: "100%",
     borderRadius: 25,
@@ -245,7 +189,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   sendButtonText: { color: "white", fontWeight: "bold", fontSize: 16 },
-
   footer: {
     position: "absolute",
     bottom: 30,

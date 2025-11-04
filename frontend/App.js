@@ -18,6 +18,8 @@ import StationViewNews from "./app/StationViewNews";
 import UploadLocation from "./app/UploadLocation";
 import WildlifeDashboard from "./app/WildlifeDashboard";
 import WildProfile from "./app/WildProfile";
+import WildViewNews from "./app/WildViewNews";
+
 // Notifications helper
 import { registerForPushNotificationsAsync } from "./app/notificationHelper";
 
@@ -70,6 +72,7 @@ export default function App() {
         <Stack.Screen name="UploadLocation" component={UploadLocation} />
         <Stack.Screen name="WildProfile" component={WildProfile} />
          <Stack.Screen name="Profile" component={DriverProfile} />
+        <Stack.Screen name="WildViewNews" component={WildViewNews} />
 
         {/* Driver news */}
         <Stack.Screen name="DriverNews" component={SendNews} />
