@@ -7,12 +7,14 @@ import {
   Animated,
   Dimensions,
   Easing,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+
 import * as Animatable from "react-native-animatable";
 import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
@@ -95,9 +97,15 @@ export default function WildLifeDashboard() {
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
           <Text style={styles.headerSubtitle}>Manage & analyze elephant activity</Text>
+            
+
         </View>
       </View>
-
+   <Image
+  source={require("../assets/wildlife.png")}
+  style={styles.headerImage}
+/>
+   
       {/* 🔹 Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.cardsContainer}>
@@ -113,7 +121,7 @@ export default function WildLifeDashboard() {
                     <MaterialCommunityIcons name="map-marker-alert" size={42} color="#fff" />
                   </Animated.View>
                   <View style={styles.cardContent}>
-  <Ionicons name="warning" size={40} color="#fff" style={styles.cardIcon} />
+  <Ionicons name="warning" size={50} color="#fff" style={styles.cardIcon} />
   <Text style={styles.cardTitle}>Past Collision</Text>
 </View>
 
@@ -133,7 +141,7 @@ export default function WildLifeDashboard() {
                     <MaterialCommunityIcons name="account-group" size={42} color="#fff" />
                   </Animated.View>
                   <View style={styles.cardContent}>
-  <FontAwesome5 name="map-marker-alt" size={40} color="#fff" style={styles.cardIcon} />
+  <FontAwesome5 name="map-marker-alt" size={50} color="#fff" style={styles.cardIcon} />
   <Text style={styles.cardTitle}>Past Collision</Text>
 </View>
 
@@ -202,27 +210,41 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  smallCard: {
-    width: width * 0.42,
-    paddingVertical: 35,
-    borderRadius: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
-    marginBottom: 20,
-  },
+  // 📦 Button (Card) size
+smallCard: {
+  width: width * 0.44,   // increase to make buttons wider
+  height: 150,           // set height explicitly for uniform look
+  borderRadius: 20,
+  alignItems: "center",
+  justifyContent: "center",
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 6 },
+  shadowOpacity: 0.2,
+  shadowRadius: 8,
+  elevation: 6,
+  marginTop: -100,
+  padding: 10,
+  
+},
+
 
   gradientCard: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#2f8658ff",
     shadowColor: "#1B5E20",
   },
   gradientCardOrange: {
     backgroundColor: "#f7971e",
     shadowColor: "#bf5700",
   },
+  headerImage: {
+  width: "90%",       // controls horizontal size (set to "100%" to fill screen)
+  height: 260,        // increase/decrease to make the image taller or shorter
+  alignSelf: "center",
+  marginTop: 140,
+  borderRadius: 20,   // gives nice rounded edges
+  resizeMode: "cover",
+},
+
 
   cardTitleRow: {
     flexDirection: "row",
