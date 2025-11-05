@@ -73,6 +73,24 @@ export default function WildLifeDashboard() {
           </Defs>
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
+        <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
 
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
@@ -94,10 +112,11 @@ export default function WildLifeDashboard() {
                   <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
                     <MaterialCommunityIcons name="map-marker-alert" size={42} color="#fff" />
                   </Animated.View>
-                  <View style={styles.cardTitleRow}>
-                    <Ionicons name="warning" size={18} color="#fff" style={{ marginRight: 6 }} />
-                    <Text style={styles.cardTitle}>Past Collision</Text>
-                  </View>
+                  <View style={styles.cardContent}>
+  <Ionicons name="warning" size={40} color="#fff" style={styles.cardIcon} />
+  <Text style={styles.cardTitle}>Past Collision</Text>
+</View>
+
                   <Text style={styles.cardSubtitle}>Historical collision records</Text>
                 </Animated.View>
               </TouchableOpacity>
@@ -113,10 +132,11 @@ export default function WildLifeDashboard() {
                   <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
                     <MaterialCommunityIcons name="account-group" size={42} color="#fff" />
                   </Animated.View>
-                  <View style={styles.cardTitleRow}>
-                    <FontAwesome5 name="map-marker-alt" size={16} color="#fff" style={{ marginRight: 6 }} />
-                    <Text style={styles.cardTitle}>Guest Locations</Text>
-                  </View>
+                  <View style={styles.cardContent}>
+  <FontAwesome5 name="map-marker-alt" size={40} color="#fff" style={styles.cardIcon} />
+  <Text style={styles.cardTitle}>Past Collision</Text>
+</View>
+
                   <Text style={styles.cardSubtitle}>Updates shared by guests</Text>
                 </Animated.View>
               </TouchableOpacity>
@@ -223,6 +243,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 18,
   },
+
+  cardContent: {
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
+},
+
+cardIcon: {
+  marginBottom: 8,
+},
+
 
   footer: {
     position: "absolute",
