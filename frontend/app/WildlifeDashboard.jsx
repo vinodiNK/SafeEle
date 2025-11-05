@@ -7,24 +7,24 @@ import {
   Animated,
   Dimensions,
   Easing,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import * as Animatable from "react-native-animatable";
 import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
 import { db } from "../firebaseConfig";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default function WildLifeDashboard() {
   const navigation = useNavigation();
   const [locations, setLocations] = useState([]);
   const parallaxAnim = useRef(new Animated.Value(0)).current;
+  const imageAnim = useRef(new Animated.Value(0)).current; // 🌊 image floating animation
 
   // Parallax animation for icons
   useEffect(() => {
@@ -39,6 +39,26 @@ export default function WildLifeDashboard() {
         Animated.timing(parallaxAnim, {
           toValue: 10,
           duration: 4000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
+
+  // Floating animation for image 🐘
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(imageAnim, {
+          toValue: -10,
+          duration: 2500,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(imageAnim, {
+          toValue: 10,
+          duration: 2500,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
@@ -84,28 +104,32 @@ export default function WildLifeDashboard() {
           </Defs>
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
+
         <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
-            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
+            <SvgGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
               <Stop offset="100%" stopColor="#006400" />
             </SvgGradient>
           </Defs>
-          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+          <Path fill="url(#grad2)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
           <Text style={styles.headerSubtitle}>Manage & analyze elephant activity</Text>
-            
-
         </View>
       </View>
-   <Image
-  source={require("../assets/wildlife.png")}
-  style={styles.headerImage}
-/>
-   
+
+      {/* 🐘 Animated Floating Image */}
+      <Animated.Image
+        source={require("../assets/wildlife.png")}
+        style={[
+          styles.headerImage,
+          { transform: [{ translateY: imageAnim }] },
+        ]}
+      />
+
       {/* 🔹 Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.cardsContainer}>
@@ -121,10 +145,9 @@ export default function WildLifeDashboard() {
                     <MaterialCommunityIcons name="map-marker-alert" size={42} color="#fff" />
                   </Animated.View>
                   <View style={styles.cardContent}>
-  <Ionicons name="warning" size={50} color="#fff" style={styles.cardIcon} />
-  <Text style={styles.cardTitle}>Past Collision</Text>
-</View>
-
+                    <Ionicons name="warning" size={50} color="#fff" style={styles.cardIcon} />
+                    <Text style={styles.cardTitle}>Past Collision</Text>
+                  </View>
                   <Text style={styles.cardSubtitle}>Historical collision records</Text>
                 </Animated.View>
               </TouchableOpacity>
@@ -141,10 +164,9 @@ export default function WildLifeDashboard() {
                     <MaterialCommunityIcons name="account-group" size={42} color="#fff" />
                   </Animated.View>
                   <View style={styles.cardContent}>
-  <FontAwesome5 name="map-marker-alt" size={50} color="#fff" style={styles.cardIcon} />
-  <Text style={styles.cardTitle}>Past Collision</Text>
-</View>
-
+                    <FontAwesome5 name="map-marker-alt" size={50} color="#fff" style={styles.cardIcon} />
+                    <Text style={styles.cardTitle}>Guest Locations</Text>
+                  </View>
                   <Text style={styles.cardSubtitle}>Updates shared by guests</Text>
                 </Animated.View>
               </TouchableOpacity>
@@ -187,22 +209,27 @@ const styles = StyleSheet.create({
 
   headerWrapper: { position: "relative", alignItems: "center", marginBottom: 30 },
   curve: { position: "absolute", top: 0, left: 0 },
-  headerTextContainer: {
-    position: "absolute",
-    top: 80,
-    alignItems: "center",
-  },
-  headerTitle: {
-    color: "#fff",
-    fontSize: 28,
-    fontWeight: "bold",
-    letterSpacing: 1,
-  },
+  headerTextContainer: { position: "absolute", top: 80, alignItems: "center" },
+  headerTitle: { color: "#fff", fontSize: 28, fontWeight: "bold", letterSpacing: 1 },
   headerSubtitle: { color: "#e0f7e9", fontSize: 14, marginTop: 4 },
+
+  // 🐘 Animated Image
+  headerImage: {
+    width: "90%",
+    height: 260,
+    alignSelf: "center",
+    marginTop: 170,
+    borderRadius: 20,
+    resizeMode: "cover",
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 6,
+  },
 
   scrollContainer: { paddingBottom: 100 },
   cardsContainer: { paddingHorizontal: 10, marginTop: 150 },
-
   rowContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -210,72 +237,27 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  // 📦 Button (Card) size
-smallCard: {
-  width: width * 0.44,   // increase to make buttons wider
-  height: 150,           // set height explicitly for uniform look
-  borderRadius: 20,
-  alignItems: "center",
-  justifyContent: "center",
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 6 },
-  shadowOpacity: 0.2,
-  shadowRadius: 8,
-  elevation: 6,
-  marginTop: -100,
-  padding: 10,
-  
-},
-
-
-  gradientCard: {
-    backgroundColor: "#2f8658ff",
-    shadowColor: "#1B5E20",
-  },
-  gradientCardOrange: {
-    backgroundColor: "#f7971e",
-    shadowColor: "#bf5700",
-  },
-  headerImage: {
-  width: "90%",       // controls horizontal size (set to "100%" to fill screen)
-  height: 260,        // increase/decrease to make the image taller or shorter
-  alignSelf: "center",
-  marginTop: 140,
-  borderRadius: 20,   // gives nice rounded edges
-  resizeMode: "cover",
-},
-
-
-  cardTitleRow: {
-    flexDirection: "row",
+  smallCard: {
+    width: width * 0.44,
+    height: 150,
+    borderRadius: 20,
     alignItems: "center",
-    marginTop: 10,
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+    marginTop: -100,
+    padding: 10,
   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
-    letterSpacing: 0.5,
-    textAlign: "center",
-  },
-  cardSubtitle: {
-    fontSize: 13,
-    color: "#fff",
-    marginTop: 5,
-    textAlign: "center",
-    lineHeight: 18,
-  },
+  gradientCard: { backgroundColor: "#2f8658ff", shadowColor: "#1B5E20" },
+  gradientCardOrange: { backgroundColor: "#f7971e", shadowColor: "#bf5700" },
 
-  cardContent: {
-  alignItems: "center",
-  justifyContent: "center",
-  flexDirection: "column",
-},
-
-cardIcon: {
-  marginBottom: 8,
-},
-
+  cardContent: { alignItems: "center", justifyContent: "center", flexDirection: "column" },
+  cardIcon: { marginBottom: 8 },
+  cardTitle: { fontSize: 18, fontWeight: "bold", color: "#fff", textAlign: "center" },
+  cardSubtitle: { fontSize: 13, color: "#fff", marginTop: 5, textAlign: "center" },
 
   footer: {
     position: "absolute",
