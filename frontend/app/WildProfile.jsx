@@ -105,7 +105,7 @@ export default function DriverProfile() {
       <View style={styles.profileCard}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/1995/1995574.png",
+            uri: "https://img.freepik.com/premium-vector/user-icon-man-business-suit_454641-453.jpg",
           }}
           style={styles.profileImage}
         />

@@ -1,4 +1,5 @@
-import { Entypo, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+// app/WildLifeDashboard.jsx
+import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -73,26 +74,6 @@ export default function WildLifeDashboard() {
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-          <Defs>
-            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-        </Svg>
-
-        <Svg height="320" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-          <Defs>
-            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-        </Svg>
-
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Wildlife Dashboard</Text>
           <Text style={styles.headerSubtitle}>Manage & analyze elephant activity</Text>
@@ -102,39 +83,45 @@ export default function WildLifeDashboard() {
       {/* 🔹 Scrollable Content */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.cardsContainer}>
-          {/* Past Collision Zones */}
-          <Animatable.View animation="fadeInUp" delay={100} duration={800}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => navigation.navigate("CollisionZone")}
-            >
-              <Animated.View style={[styles.card, styles.gradientCard]}>
-                <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
-                  <MaterialCommunityIcons name="map-marker-alert" size={50} color="#fff" />
+          <View style={styles.rowContainer}>
+            {/* 🗺️ Past Collision Zones */}
+            <Animatable.View animation="fadeInUp" delay={100} duration={800}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate("CollisionZone")}
+              >
+                <Animated.View style={[styles.smallCard, styles.gradientCard]}>
+                  <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
+                    <MaterialCommunityIcons name="map-marker-alert" size={42} color="#fff" />
+                  </Animated.View>
+                  <View style={styles.cardTitleRow}>
+                    <Ionicons name="warning" size={18} color="#fff" style={{ marginRight: 6 }} />
+                    <Text style={styles.cardTitle}>Past Collision</Text>
+                  </View>
+                  <Text style={styles.cardSubtitle}>Historical collision records</Text>
                 </Animated.View>
-                <Text style={styles.cardTitle}>Past Collision Zones</Text>
-                <Text style={styles.cardSubtitle}>
-                  Historical elephant collision records
-                </Text>
-              </Animated.View>
-            </TouchableOpacity>
-          </Animatable.View>
+              </TouchableOpacity>
+            </Animatable.View>
 
-          {/* Guest Locations */}
-          <Animatable.View animation="fadeInUp" delay={200} duration={800}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => navigation.navigate("GuestLocation")}
-            >
-              <Animated.View style={[styles.card, styles.gradientCardOrange]}>
-                <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
-                  <MaterialCommunityIcons name="account-group" size={50} color="#fff" />
+            {/* 👥 Guest Locations */}
+            <Animatable.View animation="fadeInUp" delay={200} duration={800}>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => navigation.navigate("GuestLocation")}
+              >
+                <Animated.View style={[styles.smallCard, styles.gradientCardOrange]}>
+                  <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
+                    <MaterialCommunityIcons name="account-group" size={42} color="#fff" />
+                  </Animated.View>
+                  <View style={styles.cardTitleRow}>
+                    <FontAwesome5 name="map-marker-alt" size={16} color="#fff" style={{ marginRight: 6 }} />
+                    <Text style={styles.cardTitle}>Guest Locations</Text>
+                  </View>
+                  <Text style={styles.cardSubtitle}>Updates shared by guests</Text>
                 </Animated.View>
-                <Text style={styles.cardTitle}>Guest Locations</Text>
-                <Text style={styles.cardSubtitle}>View locations updated by guests</Text>
-              </Animated.View>
-            </TouchableOpacity>
-          </Animatable.View>
+              </TouchableOpacity>
+            </Animatable.View>
+          </View>
         </View>
       </ScrollView>
 
@@ -145,15 +132,18 @@ export default function WildLifeDashboard() {
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AddCollision")}
+          style={styles.navButton}
+        >
           <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
-                  <Entypo name="news" size={24} color="#004d00" />
-                  <Text style={styles.footerText}>News</Text>
-                </TouchableOpacity>
+          <Entypo name="news" size={24} color="#004d00" />
+          <Text style={styles.footerText}>News</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("WildProfile")} style={styles.navButton}>
           <FontAwesome5 name="user-alt" size={20} color="#004d00" />
@@ -166,6 +156,7 @@ export default function WildLifeDashboard() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5fdf6" },
+
   headerWrapper: { position: "relative", alignItems: "center", marginBottom: 30 },
   curve: { position: "absolute", top: 0, left: 0 },
   headerTextContainer: {
@@ -184,19 +175,26 @@ const styles = StyleSheet.create({
   scrollContainer: { paddingBottom: 100 },
   cardsContainer: { paddingHorizontal: 10, marginTop: 150 },
 
-  card: {
-    padding: 45,
-    borderRadius: 25,
-    marginVertical: 12,
+  rowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: 20,
+  },
+
+  smallCard: {
+    width: width * 0.42,
+    paddingVertical: 35,
+    borderRadius: 20,
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    elevation: 10,
-    marginBottom: 30,
-    marginTop: 30,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+    marginBottom: 20,
   },
+
   gradientCard: {
     backgroundColor: "#4CAF50",
     shadowColor: "#1B5E20",
@@ -205,15 +203,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7971e",
     shadowColor: "#bf5700",
   },
+
+  cardTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+  },
   cardTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 10,
     letterSpacing: 0.5,
+    textAlign: "center",
   },
   cardSubtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#fff",
     marginTop: 5,
     textAlign: "center",

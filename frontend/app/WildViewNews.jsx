@@ -143,20 +143,20 @@ export default function WildViewNews() {
 // 🎨 Styles
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5", paddingBottom: 90 },
-  headerWrapper: { alignItems: "center", justifyContent: "center", marginBottom: 20 },
+  headerWrapper: { alignItems: "center", justifyContent: "center", marginBottom: 60 },
   curve: { position: "absolute", top: 0 },
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 100,
+    marginTop: 80,
     textShadowColor: "rgba(0,0,0,0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
   },
   subTitle: { fontSize: 14, color: "#e0f2f1", marginTop: 5 },
   card: {
-    backgroundColor: "#C8E6C9",
+    backgroundColor: "#f5faf6ff",
     width: "90%",
     alignSelf: "center",
     padding: 15,
@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     elevation: 3,
   },
-  stationText: { fontSize: 16, fontWeight: "bold", color: "#1b5e20" },
-  titleText: { fontSize: 15, color: "#2e7d32", marginVertical: 4 },
-  newsText: { fontSize: 14, color: "#33691e", marginTop: 5 },
-  timeText: { fontSize: 11, color: "#004d00", marginTop: 8, textAlign: "right" },
+  stationText: { fontSize: 16, fontWeight: "bold", color: "#0a0a0aff" },
+  titleText: { fontSize: 15,fontWeight: "bold", color: "#129553ff", marginVertical: 4 },
+  newsText: { fontSize: 14, color: "#0c1707ff", marginTop: 5 },
+  timeText: { fontSize: 11, color: "#0e0f0eff", marginTop: 8, textAlign: "right" },
   noData: { color: "#666", marginTop: 40, fontSize: 16, textAlign: "center" },
   footer: {
     position: "absolute",
