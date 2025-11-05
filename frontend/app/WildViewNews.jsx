@@ -3,7 +3,7 @@ import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
     ActivityIndicator,
     FlatList,
@@ -18,6 +18,13 @@ export default function WildViewNews() {
   const navigation = useNavigation();
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // ✅ Hide the top navigation header
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, [navigation]);
 
   // ✅ Real-time listener for Firestore updates
   useEffect(() => {
@@ -97,7 +104,7 @@ const styles = StyleSheet.create({
   subTitle: { fontSize: 14, color: "#4CAF50", marginTop: 5 },
   card: {
     backgroundColor: "#C8E6C9",
-    width: "90%",
+    width: "100%",
     padding: 15,
     borderRadius: 20,
     marginVertical: 10,

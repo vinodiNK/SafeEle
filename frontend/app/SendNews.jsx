@@ -192,7 +192,7 @@ export default function SendNews() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("DriverProfile")}
           style={styles.navButton}
         >
           <FontAwesome5 name="user-alt" size={20} color="#004d00" />
