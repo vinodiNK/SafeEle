@@ -142,7 +142,7 @@ export default function WildLifeDashboard() {
               >
                 <Animated.View style={[styles.smallCard, styles.gradientCard]}>
                   <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
-                    <MaterialCommunityIcons name="map-marker-alert" size={42} color="#fff" />
+                    
                   </Animated.View>
                   <View style={styles.cardContent}>
                     <Ionicons name="warning" size={42} color="#fff" style={styles.cardIcon} />

@@ -39,10 +39,7 @@ export default function GuestLocation() {
   }, [navigation]);
 
   useEffect(() => {
-    const q = query(
-      collection(db, "guestLocations"),
-      orderBy("timestamp", "desc")
-    );
+    const q = query(collection(db, "guestLocations"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
       querySnapshot.forEach((doc) => locs.push({ id: doc.id, ...doc.data() }));
@@ -98,12 +95,10 @@ export default function GuestLocation() {
                   ? loc.timestamp.toDate().toLocaleString()
                   : loc.timestamp
               }</td>
-            </tr>
-          `
+            </tr>`
             )
             .join("")}
-        </table>
-      `;
+        </table>`;
       const { uri } = await Print.printToFileAsync({ html });
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri);
@@ -130,9 +125,7 @@ export default function GuestLocation() {
     const data = Object.keys(counts).map((area, index) => ({
       name: area,
       population: counts[area],
-      color: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"][
-        index % 6
-      ],
+      color: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40"][index % 6],
       legendFontColor: "#333",
       legendFontSize: 14,
     }));
@@ -141,16 +134,15 @@ export default function GuestLocation() {
     setShowChart(true);
   };
 
-  if (loading)
-    return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
+  if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
 
   const screenWidth = Dimensions.get("window").width - 20;
 
   return (
     <View style={styles.container}>
-      {/* 🌿 Curved Green Header */}
+      {/* 🌿 Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="320" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -159,7 +151,7 @@ export default function GuestLocation() {
           </Defs>
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
-        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -168,7 +160,7 @@ export default function GuestLocation() {
           </Defs>
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
-        <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -181,28 +173,48 @@ export default function GuestLocation() {
         <Text style={styles.headerSubTitle}>View all recent locations reported by guests</Text>
       </View>
 
-      {/* Filters */}
+      {/* 🔍 Two Search Boxes */}
       <View style={styles.filterContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#666" />
-          <TextInput
-            placeholder="Search by area..."
-            style={styles.searchInput}
-            value={areaFilter}
-            onChangeText={setAreaFilter}
-            placeholderTextColor="#888"
-          />
+        {/* Search by Area */}
+        <View style={styles.fullBox}>
+          <View style={styles.inputRow}>
+            <Ionicons name="search" size={20} color="#666" />
+            <TextInput
+              placeholder="Search by area..."
+              style={styles.textInput}
+              value={areaFilter}
+              onChangeText={setAreaFilter}
+              placeholderTextColor="#888"
+            />
+            <TouchableOpacity style={styles.searchButton} onPress={applyFilter}>
+              <Ionicons name="search" size={22} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.dateButton}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Ionicons name="calendar-outline" size={20} color="#fff" />
-          <Text style={styles.dateButtonText}>
-            {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
-          </Text>
-        </TouchableOpacity>
+        {/* Search by Date */}
+        <View style={styles.fullBox}>
+          <View style={styles.inputRow}>
+            <Ionicons name="calendar-outline" size={20} color="#666" />
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              activeOpacity={0.8}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Text style={styles.dateFilterText}>
+                {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
+              </Text>
+            </TouchableOpacity>
+            {dateFilter ? (
+              <TouchableOpacity onPress={() => setDateFilter(null)}>
+                <Ionicons name="close-circle" size={20} color="#666" />
+              </TouchableOpacity>
+            ) : null}
+            <TouchableOpacity style={styles.searchButton} onPress={applyFilter}>
+              <Ionicons name="search" size={22} color="#fff" />
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {showDatePicker && (
           <DateTimePicker
@@ -216,12 +228,8 @@ export default function GuestLocation() {
           />
         )}
 
+        {/* Buttons */}
         <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.actionButton} onPress={applyFilter}>
-            <Ionicons name="funnel-outline" size={22} color="#fff" />
-            <Text style={styles.actionText}>Filter</Text>
-          </TouchableOpacity>
-
           <TouchableOpacity style={styles.actionButton} onPress={generatePDF}>
             <Ionicons name="document-text-outline" size={22} color="#fff" />
             <Text style={styles.actionText}>PDF</Text>
@@ -234,7 +242,7 @@ export default function GuestLocation() {
         </View>
       </View>
 
-      {/* Pie Chart */}
+      {/* Chart */}
       {showChart && chartData.length > 0 && (
         <View style={styles.chartContainer}>
           <Text style={styles.chartTitle}>Sightings by Area</Text>
@@ -254,7 +262,7 @@ export default function GuestLocation() {
         </View>
       )}
 
-      {/* Locations List */}
+      {/* Data List */}
       <FlatList
         data={filteredLocations}
         keyExtractor={(item) => item.id}
@@ -285,42 +293,22 @@ export default function GuestLocation() {
 
       {/* Footer */}
       <LinearGradient colors={["#f5faf5ff", "#f3f8f3ff"]} style={styles.footer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AddCollision")}
-          style={styles.navButton}
-        >
-          <MaterialCommunityIcons
-            name="plus-circle"
-            size={26}
-            color="#004d00"
-          />
+        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
+          <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Message")}
-          style={styles.navButton}
-        >
-          <Ionicons
-            name="chatbubble-ellipses-outline"
-            size={24}
-            color="#004d00"
-          />
+        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("WildlifeDashboard")}
-          style={styles.navButton}
-        >
+        <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
           <Ionicons name="arrow-back" size={24} color="#004d00" />
           <Text style={styles.footerText}>Back</Text>
         </TouchableOpacity>
@@ -332,71 +320,62 @@ export default function GuestLocation() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    paddingBottom: 90,
+    backgroundColor: "#f5faf5",
   },
   headerWrapper: {
-    position: "relative",
+    alignItems: "center",
     marginBottom: 10,
   },
   curve: {
     position: "absolute",
     top: 0,
-    left: 0,
   },
   headerTitle: {
-    fontSize: 26,
-    color: "#fff",
-    textAlign: "center",
+    fontSize: 22,
     fontWeight: "bold",
+    color: "#fff",
     marginTop: 80,
-    zIndex: 1,
   },
   headerSubTitle: {
     fontSize: 14,
     color: "#fff",
-    textAlign: "center",
-    zIndex: 1,
+    marginBottom: 50,
   },
   filterContainer: {
-    backgroundColor: "#f0f8f5",
-    borderRadius: 14,
-    padding: 12,
+    padding: 15,
+    backgroundColor: "#fff",
     marginHorizontal: 10,
-    marginBottom: 15,
-    marginTop: 80,
-    elevation: 2,
+    borderRadius: 12,
+    elevation: 3,
   },
-  searchBar: {
+  fullBox: { marginTop: 8 },
+  inputRow: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 12,
-    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: "#ccc",
     height: 45,
+    paddingHorizontal: 10,
   },
-  searchInput: { flex: 1, marginLeft: 8, fontSize: 16, color: "#333" },
-  dateButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#2e8b57",
-    paddingVertical: 10,
-    borderRadius: 12,
-    marginTop: 10,
-  },
-  dateButtonText: {
-    color: "#fff",
+  textInput: {
+    flex: 1,
     marginLeft: 8,
-    fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 16,
+    color: "#333",
+  },
+  dateFilterText: { color: "#333", fontSize: 16 },
+  searchButton: {
+    backgroundColor: "#4CAF50",
+    padding: 8,
+    borderRadius: 8,
+    marginLeft: 5,
   },
   actionRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 12,
+    justifyContent: "space-around",
+    marginTop: 15,
   },
   actionButton: {
     flex: 1,
@@ -407,51 +386,60 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 12,
     marginHorizontal: 4,
-    elevation: 2,
   },
   actionText: {
     color: "#fff",
-    fontWeight: "bold",
-    fontSize: 14,
-    marginLeft: 6,
-  },
-  chartContainer: { alignItems: "center", marginBottom: 20 },
-  chartTitle: { fontSize: 16, fontWeight: "bold", marginBottom: 10 },
-  item: {
-    backgroundColor: "#f2f2f2",
-    padding: 15,
-    marginVertical: 6,
-    marginHorizontal: 10,
-    borderRadius: 10,
-  },
-  locationName: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
-  mapButton: {
-    marginTop: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#e6f4ea",
-    padding: 8,
-    borderRadius: 8,
-    alignSelf: "flex-start",
-  },
-  mapButtonText: { color: "#2e8b57", fontWeight: "bold", marginLeft: 5 },
-  noDataText: {
-    textAlign: "center",
-    marginTop: 20,
+    marginLeft: 5,
     fontSize: 16,
     fontWeight: "bold",
-    color: "#888",
+  },
+  chartContainer: {
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  chartTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#004d00",
+    marginBottom: 10,
+  },
+  item: {
+    backgroundColor: "#fff",
+    margin: 10,
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+  },
+  locationName: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#004d00",
+  },
+  mapButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 6,
+  },
+  mapButtonText: {
+    color: "#2e8b57",
+    fontWeight: "bold",
+    marginLeft: 4,
+  },
+  noDataText: {
+    textAlign: "center",
+    marginTop: 40,
+    fontSize: 16,
+    color: "#777",
   },
   footer: {
     position: "absolute",
     bottom: 35,
-    left: 10,
-    right: 10,
+    left: 0,
+    right: 0,
     height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
