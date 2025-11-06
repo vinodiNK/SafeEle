@@ -173,7 +173,7 @@ export default function CollisionZone() {
           </Defs>
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
-         <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -182,7 +182,7 @@ export default function CollisionZone() {
           </Defs>
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
-         <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -193,73 +193,75 @@ export default function CollisionZone() {
         </Svg>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Past Elephant Collision Zones</Text>
-           <Text style={styles.headerSubTitle}>Track past elephant collision zones and navigate locations </Text>
+          <Text style={styles.headerSubTitle}>Track past elephant collision zones and navigate locations</Text>
         </View>
       </View>
 
       {/* Content below header */}
       <View style={{ flex: 1, marginTop: 90 }}>
-        {/* Search & Filters Section */}
-        <View style={styles.filterContainer}>
-          <View style={styles.searchBar}>
-            <Ionicons name="search" size={20} color="#666" />
-            <TextInput
-              placeholder="Search by area..."
-              style={styles.searchInput}
-              value={areaFilter}
-              onChangeText={setAreaFilter}
-              placeholderTextColor="#888"
-            />
-          </View>
-
-          {/* Date Filter Box */}
-<View style={styles.dateFilterBox}>
-  <Ionicons name="calendar-outline" size={20} color="#666" />
-
-  <TouchableOpacity
-    style={{ flex: 1 }}
-    activeOpacity={0.8}
-    onPress={() => setShowDatePicker(true)}
-  >
-    <Text style={styles.dateFilterText}>
-      {dateFilter
-        ? new Date(dateFilter).toISOString().split("T")[0]
-        : "Select Date"}
-    </Text>
-  </TouchableOpacity>
-
-  {dateFilter ? (
-    <TouchableOpacity
-      onPress={() => {
-        setDateFilter("");
-        setSearchResults && setSearchResults([]); // optional: clear data
-      }}
-    >
-      <Ionicons name="close-circle" size={20} color="#666" />
-    </TouchableOpacity>
-  ) : null}
-</View>
-
-{/* Keep DateTimePicker outside the view */}
-{showDatePicker && (
-  <DateTimePicker
-    value={dateFilter ? new Date(dateFilter) : new Date()}
-    mode="date"
-    display="spinner"
-    onChange={(event, selectedDate) => {
-      setShowDatePicker(false);
-      if (selectedDate) setDateFilter(selectedDate);
-    }}
-  />
-)}
+  {/* Search & Filters Section */}
+  <View style={styles.filterContainer}>
+    <View style={styles.searchBar}>
+      <Ionicons name="search" size={20} color="#666" />
+      <TextInput
+        placeholder="Search by area..."
+        style={styles.searchInput}
+        value={areaFilter}
+        onChangeText={setAreaFilter}
+        placeholderTextColor="#888"
+      />
+    </View>
 
 
-          <View style={styles.actionRow}>
-            <TouchableOpacity style={styles.actionButton} onPress={applyFilter}>
-              <Ionicons name="funnel-outline" size={22} color="#fff" />
-              <Text style={styles.actionText}>Filter</Text>
+          {/* Date Filter Box with Filter Button */}
+          <View style={styles.dateFilterBox}>
+            <Ionicons name="calendar-outline" size={20} color="#666" />
+
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              activeOpacity={0.8}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Text style={styles.dateFilterText}>
+                {dateFilter
+                  ? new Date(dateFilter).toISOString().split("T")[0]
+                  : "Select Date"}
+              </Text>
             </TouchableOpacity>
 
+            {dateFilter ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setDateFilter("");
+                }}
+              >
+                <Ionicons name="close-circle" size={20} color="#666" />
+              </TouchableOpacity>
+            ) : null}
+
+            {/* ✅ Filter button moved inside here */}
+            <TouchableOpacity
+              style={styles.filterIconButton}
+              onPress={applyFilter}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="funnel-outline" size={22} color="#fff" />
+            </TouchableOpacity>
+          </View>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={dateFilter ? new Date(dateFilter) : new Date()}
+              mode="date"
+              display="spinner"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) setDateFilter(selectedDate);
+              }}
+            />
+          )}
+
+          <View style={styles.actionRow}>
             <TouchableOpacity style={styles.actionButton} onPress={generatePDF}>
               <Ionicons name="document-text-outline" size={22} color="#fff" />
               <Text style={styles.actionText}>PDF</Text>
@@ -376,16 +378,34 @@ const styles = StyleSheet.create({
     height: 45,
   },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 16, color: "#333" },
-  dateButton: {
+  dateFilterBox: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#2e8b57",
-    paddingVertical: 10,
-    borderRadius: 12,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
     marginTop: 10,
+    marginHorizontal: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  dateButtonText: { color: "#fff", marginLeft: 8, fontWeight: "bold", fontSize: 15 },
+  dateFilterText: {
+    flex: 1,
+    color: "#333",
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  filterIconButton: {
+    backgroundColor: "#4CAF50",
+    padding: 8,
+    borderRadius: 8,
+    marginLeft: 8,
+    elevation: 2,
+  },
   actionRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 12 },
   actionButton: {
     flex: 1,
@@ -427,28 +447,4 @@ const styles = StyleSheet.create({
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
-
-  dateFilterBox: {
-  flexDirection: "row",
-  alignItems: "center",
-  backgroundColor: "#fff",
-  borderRadius: 10,
-  paddingHorizontal: 12,
-  paddingVertical: 12,
-  marginTop: 10,
-  marginHorizontal: 2,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.1,
-  shadowRadius: 2,
-  elevation: 2,
-},
-
-dateFilterText: {
-  flex: 1,
-  color: "#333",
-  fontSize: 16,
-  marginLeft: 8,
-},
-
 });
