@@ -145,7 +145,7 @@ export default function WildLifeDashboard() {
                     <MaterialCommunityIcons name="map-marker-alert" size={42} color="#fff" />
                   </Animated.View>
                   <View style={styles.cardContent}>
-                    <Ionicons name="warning" size={50} color="#fff" style={styles.cardIcon} />
+                    <Ionicons name="warning" size={42} color="#fff" style={styles.cardIcon} />
                     <Text style={styles.cardTitle}>Past Collision</Text>
                   </View>
                   <Text style={styles.cardSubtitle}>Historical collision records</Text>
@@ -164,7 +164,7 @@ export default function WildLifeDashboard() {
                     <MaterialCommunityIcons name="account-group" size={42} color="#fff" />
                   </Animated.View>
                   <View style={styles.cardContent}>
-                    <FontAwesome5 name="map-marker-alt" size={50} color="#fff" style={styles.cardIcon} />
+                    
                     <Text style={styles.cardTitle}>Guest Locations</Text>
                   </View>
                   <Text style={styles.cardSubtitle}>Updates shared by guests</Text>

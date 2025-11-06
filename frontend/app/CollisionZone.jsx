@@ -212,27 +212,47 @@ export default function CollisionZone() {
             />
           </View>
 
-          <TouchableOpacity
-            style={styles.dateButton}
-            onPress={() => setShowDatePicker(true)}
-          >
-            <Ionicons name="calendar-outline" size={20} color="#fff" />
-            <Text style={styles.dateButtonText}>
-              {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
-            </Text>
-          </TouchableOpacity>
+          {/* Date Filter Box */}
+<View style={styles.dateFilterBox}>
+  <Ionicons name="calendar-outline" size={20} color="#666" />
 
-          {showDatePicker && (
-            <DateTimePicker
-              value={dateFilter ? new Date(dateFilter) : new Date()}
-              mode="date"
-              display="spinner"
-              onChange={(event, selectedDate) => {
-                setShowDatePicker(false);
-                if (selectedDate) setDateFilter(selectedDate);
-              }}
-            />
-          )}
+  <TouchableOpacity
+    style={{ flex: 1 }}
+    activeOpacity={0.8}
+    onPress={() => setShowDatePicker(true)}
+  >
+    <Text style={styles.dateFilterText}>
+      {dateFilter
+        ? new Date(dateFilter).toISOString().split("T")[0]
+        : "Select Date"}
+    </Text>
+  </TouchableOpacity>
+
+  {dateFilter ? (
+    <TouchableOpacity
+      onPress={() => {
+        setDateFilter("");
+        setSearchResults && setSearchResults([]); // optional: clear data
+      }}
+    >
+      <Ionicons name="close-circle" size={20} color="#666" />
+    </TouchableOpacity>
+  ) : null}
+</View>
+
+{/* Keep DateTimePicker outside the view */}
+{showDatePicker && (
+  <DateTimePicker
+    value={dateFilter ? new Date(dateFilter) : new Date()}
+    mode="date"
+    display="spinner"
+    onChange={(event, selectedDate) => {
+      setShowDatePicker(false);
+      if (selectedDate) setDateFilter(selectedDate);
+    }}
+  />
+)}
+
 
           <View style={styles.actionRow}>
             <TouchableOpacity style={styles.actionButton} onPress={applyFilter}>
@@ -407,4 +427,28 @@ const styles = StyleSheet.create({
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+
+  dateFilterBox: {
+  flexDirection: "row",
+  alignItems: "center",
+  backgroundColor: "#fff",
+  borderRadius: 10,
+  paddingHorizontal: 12,
+  paddingVertical: 12,
+  marginTop: 10,
+  marginHorizontal: 2,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.1,
+  shadowRadius: 2,
+  elevation: 2,
+},
+
+dateFilterText: {
+  flex: 1,
+  color: "#333",
+  fontSize: 16,
+  marginLeft: 8,
+},
+
 });
