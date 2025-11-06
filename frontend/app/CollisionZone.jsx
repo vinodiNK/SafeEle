@@ -61,6 +61,7 @@ export default function CollisionZone() {
     Linking.openURL(url);
   };
 
+  // 🔍 Combined filter
   const applyFilter = () => {
     let filtered = locations;
     if (areaFilter.trim() !== "") {
@@ -105,12 +106,10 @@ export default function CollisionZone() {
                   ? loc.timestamp.toDate().toLocaleString()
                   : loc.timestamp
               }</td>
-            </tr>
-          `
+            </tr>`
             )
             .join("")}
-        </table>
-      `;
+        </table>`;
       const { uri } = await Print.printToFileAsync({ html });
       if (await Sharing.isAvailableAsync()) {
         await Sharing.shareAsync(uri);
@@ -154,9 +153,7 @@ export default function CollisionZone() {
     setShowChart(true);
   };
 
-  if (loading) {
-    return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
-  }
+  if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
 
   const screenWidth = Dimensions.get("window").width - 20;
 
@@ -173,7 +170,7 @@ export default function CollisionZone() {
           </Defs>
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
-        <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -199,56 +196,58 @@ export default function CollisionZone() {
 
       {/* Content below header */}
       <View style={{ flex: 1, marginTop: 90 }}>
-  {/* Search & Filters Section */}
-  <View style={styles.filterContainer}>
-    <View style={styles.searchBar}>
-      <Ionicons name="search" size={20} color="#666" />
-      <TextInput
-        placeholder="Search by area..."
-        style={styles.searchInput}
-        value={areaFilter}
-        onChangeText={setAreaFilter}
-        placeholderTextColor="#888"
-      />
-    </View>
-
-
-          {/* Date Filter Box with Filter Button */}
-          <View style={styles.dateFilterBox}>
-            <Ionicons name="calendar-outline" size={20} color="#666" />
-
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              activeOpacity={0.8}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Text style={styles.dateFilterText}>
-                {dateFilter
-                  ? new Date(dateFilter).toISOString().split("T")[0]
-                  : "Select Date"}
-              </Text>
-            </TouchableOpacity>
-
-            {dateFilter ? (
+        {/* 🔍 Filters Section */}
+        <View style={styles.filterContainer}>
+          {/* 🔹 Search by Area */}
+          <View style={styles.fullBox}>
+            <View style={styles.inputRow}>
+              <Ionicons name="search" size={20} color="#666" />
+              <TextInput
+                placeholder="Search by area..."
+                style={styles.textInput}
+                value={areaFilter}
+                onChangeText={setAreaFilter}
+                placeholderTextColor="#888"
+              />
               <TouchableOpacity
-                onPress={() => {
-                  setDateFilter("");
-                }}
+                style={styles.searchButton}
+                onPress={applyFilter}
               >
-                <Ionicons name="close-circle" size={20} color="#666" />
+                <Ionicons name="search" size={22} color="#fff" />
               </TouchableOpacity>
-            ) : null}
-
-            {/* ✅ Filter button moved inside here */}
-            <TouchableOpacity
-              style={styles.filterIconButton}
-              onPress={applyFilter}
-              activeOpacity={0.8}
-            >
-              <Ionicons name="funnel-outline" size={22} color="#fff" />
-            </TouchableOpacity>
+            </View>
           </View>
 
+          {/* 🔹 Search by Date (below area search) */}
+          <View style={styles.fullBox}>
+            <View style={styles.inputRow}>
+              <Ionicons name="calendar-outline" size={20} color="#666" />
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                activeOpacity={0.8}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Text style={styles.dateFilterText}>
+                  {dateFilter
+                    ? new Date(dateFilter).toISOString().split("T")[0]
+                    : "Search by Date"}
+                </Text>
+              </TouchableOpacity>
+              {dateFilter ? (
+                <TouchableOpacity onPress={() => setDateFilter("")}>
+                  <Ionicons name="close-circle" size={20} color="#666" />
+                </TouchableOpacity>
+              ) : null}
+              <TouchableOpacity
+                style={styles.searchButton}
+                onPress={applyFilter}
+              >
+                <Ionicons name="search" size={22} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* 📅 Date Picker */}
           {showDatePicker && (
             <DateTimePicker
               value={dateFilter ? new Date(dateFilter) : new Date()}
@@ -261,12 +260,12 @@ export default function CollisionZone() {
             />
           )}
 
+          {/* 🔘 Action Buttons */}
           <View style={styles.actionRow}>
             <TouchableOpacity style={styles.actionButton} onPress={generatePDF}>
               <Ionicons name="document-text-outline" size={22} color="#fff" />
               <Text style={styles.actionText}>PDF</Text>
             </TouchableOpacity>
-
             <TouchableOpacity style={styles.actionButton} onPress={handleDataAnalysis}>
               <Ionicons name="analytics-outline" size={22} color="#fff" />
               <Text style={styles.actionText}>Analyze</Text>
@@ -274,7 +273,7 @@ export default function CollisionZone() {
           </View>
         </View>
 
-        {/* Pie Chart */}
+        {/* 📊 Pie Chart */}
         {showChart && chartData.length > 0 && (
           <View style={styles.chartContainer}>
             <Text style={styles.chartTitle}>Elephant Sightings by Location</Text>
@@ -294,7 +293,7 @@ export default function CollisionZone() {
           </View>
         )}
 
-        {/* Locations List */}
+        {/* 📋 Data List */}
         <FlatList
           data={filteredLocations}
           keyExtractor={(item) => item.id}
@@ -324,23 +323,20 @@ export default function CollisionZone() {
         />
       </View>
 
-      {/* Footer */}
-      <LinearGradient colors={["hsla(120, 16%, 94%, 1.00)", "#ecf4ecff"]} style={styles.footer}>
+      {/* Footer Navigation */}
+      <LinearGradient colors={["#f7fdf7", "#ecf4ec"]} style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
           <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
           <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
           <Ionicons name="arrow-back" size={24} color="#004d00" />
           <Text style={styles.footerText}>Back</Text>
@@ -355,7 +351,7 @@ const styles = StyleSheet.create({
   headerWrapper: { position: "relative", alignItems: "center", height: 180, zIndex: 1 },
   curve: { position: "absolute", top: 0, left: 0 },
   headerTextContainer: { position: "absolute", top: 80, alignItems: "center", width: "100%" },
-  headerTitle: { fontSize: 24, color: "#fff", textAlign: "center", fontWeight: "bold" },
+  headerTitle: { fontSize: 24, color: "#fff", fontWeight: "bold", textAlign: "center" },
   headerSubTitle: { fontSize: 14, color: "#fff", textAlign: "center" },
 
   filterContainer: {
@@ -363,49 +359,24 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     padding: 12,
     marginBottom: 15,
-    marginTop: -60,
+    marginTop: -80,
     elevation: 2,
     marginHorizontal: 10,
   },
-  searchBar: {
+  fullBox: { marginBottom: 10 },
+  inputRow: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 12,
-    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: "#ccc",
+    paddingHorizontal: 10,
     height: 45,
   },
-  searchInput: { flex: 1, marginLeft: 8, fontSize: 16, color: "#333" },
-  dateFilterBox: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    marginTop: 10,
-    marginHorizontal: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  dateFilterText: {
-    flex: 1,
-    color: "#333",
-    fontSize: 16,
-    marginLeft: 8,
-  },
-  filterIconButton: {
-    backgroundColor: "#4CAF50",
-    padding: 8,
-    borderRadius: 8,
-    marginLeft: 8,
-    elevation: 2,
-  },
+  textInput: { flex: 1, marginLeft: 8, fontSize: 16, color: "#333" },
+  searchButton: { backgroundColor: "#4CAF50", padding: 8, borderRadius: 10, marginLeft: 6 },
+  dateFilterText: { fontSize: 16, color: "#333", marginLeft: 8 },
   actionRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 12 },
   actionButton: {
     flex: 1,
@@ -416,7 +387,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 12,
     marginHorizontal: 4,
-    elevation: 2,
   },
   actionText: { color: "#fff", fontWeight: "bold", fontSize: 14, marginLeft: 6 },
   chartContainer: { alignItems: "center", marginBottom: 20 },
@@ -443,7 +413,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    paddingHorizontal: 10,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
