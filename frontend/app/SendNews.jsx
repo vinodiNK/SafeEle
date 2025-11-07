@@ -7,6 +7,9 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -64,6 +67,11 @@ export default function SendNews() {
   };
 
   return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
     <View style={styles.container}>
       {/* 🌿 Curved Header */}
       <View style={styles.headerWrapper}>
@@ -200,6 +208,8 @@ export default function SendNews() {
         </TouchableOpacity>
       </View>
     </View>
+     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

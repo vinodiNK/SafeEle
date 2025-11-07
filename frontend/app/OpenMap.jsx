@@ -137,35 +137,36 @@ export default function OpenMap() {
   }
 
   return (
-    <View style={styles.container}>
-      {/* 🌿 Curved Gradient Header */}
-      <View style={styles.headerWrapper}>
-        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-          <Defs>
-            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path
-            fill="url(#grad1)"
-            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
-          />
-        </Svg>
-         <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-          <Defs>
-            <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path
-            fill="url(#grad1)"
-            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
-          />
-        </Svg>
-        
-
+     <View style={styles.container}>
+          {/* 🌿 Header */}
+          <View style={styles.headerWrapper}>
+            <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+              <Defs>
+                <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                  <Stop offset="0%" stopColor="#4CAF50" />
+                  <Stop offset="100%" stopColor="#006400" />
+                </SvgGradient>
+              </Defs>
+              <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+            </Svg>
+            <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+              <Defs>
+                <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                  <Stop offset="0%" stopColor="#4CAF50" />
+                  <Stop offset="100%" stopColor="#006400" />
+                </SvgGradient>
+              </Defs>
+              <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+            </Svg>
+            <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+              <Defs>
+                <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                  <Stop offset="0%" stopColor="#4CAF50" />
+                  <Stop offset="100%" stopColor="#006400" />
+                </SvgGradient>
+              </Defs>
+              <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+            </Svg>
         {/* Header Text */}
         <View style={styles.headerContent}>
           <View style={styles.headerTop}>
@@ -295,10 +296,10 @@ const styles = StyleSheet.create({
 
   footer: {
     position: "absolute",
-    bottom: 20,
+    bottom: 25,
     left: 0,
     right: 0,
-    height: 70,
+    height: 60,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
