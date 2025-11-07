@@ -1,5 +1,5 @@
 // app/DriverProfile.jsx
-import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { doc, getDoc } from "firebase/firestore";
@@ -114,15 +114,15 @@ export default function DriverProfile() {
 
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
-            <Ionicons name="id-card-outline" size={22} color="#2E8B57" />
+            <MaterialCommunityIcons name="card-account-details-outline" size={24} color="#2E8B57" />
             <Text style={styles.infoText}>{userData.nic}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Ionicons name="call-outline" size={22} color="#2E8B57" />
+            <MaterialCommunityIcons name="phone-outline" size={24} color="#2E8B57" />
             <Text style={styles.infoText}>{userData.phone}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Ionicons name="mail-outline" size={22} color="#2E8B57" />
+            <MaterialIcons name="mail-outline" size={22} color="#2E8B57" />
             <Text style={styles.infoText}>{userData.email}</Text>
           </View>
           <View style={styles.infoRow}>
