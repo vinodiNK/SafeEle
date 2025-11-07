@@ -1,24 +1,39 @@
 // app/DriverProfile.jsx
-import { Entypo, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  FontAwesome5,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Svg, { Defs, Path, Stop, LinearGradient as SvgGradient } from "react-native-svg";
-import { auth, db } from "../firebaseConfig"; // 👈 import your Firebase config
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Svg, {
+  Defs,
+  Path,
+  Stop,
+  LinearGradient as SvgGradient,
+} from "react-native-svg";
+import { auth, db } from "../firebaseConfig";
 
 export default function DriverProfile() {
   const navigation = useNavigation();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Hide default top navigation header
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
-  // 🧠 Fetch driver data from Firestore
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -48,7 +63,9 @@ export default function DriverProfile() {
 
   if (loading) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+      <View
+        style={[styles.container, { justifyContent: "center", alignItems: "center" }]}
+      >
         <ActivityIndicator size="large" color="#2E8B57" />
         <Text style={{ color: "#2E8B57", marginTop: 10 }}>Loading Profile...</Text>
       </View>
@@ -57,7 +74,9 @@ export default function DriverProfile() {
 
   if (!userData) {
     return (
-      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+      <View
+        style={[styles.container, { justifyContent: "center", alignItems: "center" }]}
+      >
         <Text style={{ color: "red" }}>No profile data available.</Text>
       </View>
     );
@@ -67,7 +86,6 @@ export default function DriverProfile() {
     <View style={styles.container}>
       {/* 🚂 Curved Green Header */}
       <View style={styles.headerWrapper}>
-        {/* Decorative Curves */}
         <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
@@ -105,7 +123,7 @@ export default function DriverProfile() {
       <View style={styles.profileCard}>
         <Image
           source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/1995/1995574.png",
+            uri: "https://bussiness-app.s3.ap-south-1.amazonaws.com/images/users/user_pics/24960/original/1.png",
           }}
           style={styles.profileImage}
         />
@@ -114,17 +132,22 @@ export default function DriverProfile() {
 
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
-            <Ionicons name="id-card-outline" size={22} color="#2E8B57" />
+            {/* ✅ fixed icon */}
+            <MaterialCommunityIcons name="card-account-details-outline" size={24} color="#004d00" />
+
             <Text style={styles.infoText}>{userData.nic}</Text>
           </View>
+
           <View style={styles.infoRow}>
-            <Ionicons name="call-outline" size={22} color="#2E8B57" />
+            <MaterialCommunityIcons name="phone-outline" size={24} color="#004d00" />
             <Text style={styles.infoText}>{userData.phone}</Text>
           </View>
+
           <View style={styles.infoRow}>
-            <Ionicons name="mail-outline" size={22} color="#2E8B57" />
+            <MaterialIcons name="mail-outline" size={22} color="#2E8B57" />
             <Text style={styles.infoText}>{userData.email}</Text>
           </View>
+
           <View style={styles.infoRow}>
             <MaterialIcons name="location-on" size={22} color="#2E8B57" />
             <Text style={styles.infoText}>{userData.location}</Text>
@@ -159,13 +182,10 @@ export default function DriverProfile() {
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-                  onPress={() => navigation.navigate("DriverProfile")}
-                  style={styles.navButton}
-                >
-                  <FontAwesome5 name="user-alt" size={24} color="#004d00" />
-                  <Text style={styles.footerText}>Profile</Text>
-                </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("DriverProfile")} style={styles.navButton}>
+          <FontAwesome5 name="user-alt" size={24} color="#004d00" />
+          <Text style={styles.footerText}>Profile</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

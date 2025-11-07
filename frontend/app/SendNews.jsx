@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#d0f0d0",
     padding: 15,
     marginTop: 10,
-    color: "#2e7d32",
+    color: "#171817ff",
     textAlignVertical: "top",
   },
 
