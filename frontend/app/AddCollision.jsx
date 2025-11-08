@@ -57,7 +57,7 @@ export default function CollisionZone() {
     try {
       setLoading(true);
       const q = query(
-        collection(db, "elephant_locations"),
+        collection(db, "collisionZones"),
         orderBy("timestamp", "desc")
       );
       const querySnapshot = await getDocs(q);
@@ -94,7 +94,7 @@ export default function CollisionZone() {
       timestamp.setHours(hours, minutes, 0, 0);
 
       if (editId) {
-        const docRef = doc(db, "elephant_locations", editId);
+        const docRef = doc(db, "collisionZones", editId);
         await updateDoc(docRef, {
           locationName,
           latitude: parseFloat(latitude),
@@ -107,7 +107,7 @@ export default function CollisionZone() {
         );
         setEditId(null);
       } else {
-        await addDoc(collection(db, "elephant_locations"), {
+        await addDoc(collection(db, "collisionZones"), {
           locationName,
           latitude: parseFloat(latitude),
           longitude: parseFloat(longitude),
@@ -140,7 +140,7 @@ export default function CollisionZone() {
         style: "destructive",
         onPress: async () => {
           try {
-            await deleteDoc(doc(db, "elephant_locations", id));
+            await deleteDoc(doc(db, "collisionZones", id));
             fetchLocations();
           } catch (error) {
             console.error("Delete error:", error);

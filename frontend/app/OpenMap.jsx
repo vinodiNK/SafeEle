@@ -52,7 +52,7 @@ export default function OpenMap() {
 
   // Fetch elephant locations
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "elephant_locations"), (snapshot) => {
+    const unsubscribe = onSnapshot(collection(db, "collisionZones"), (snapshot) => {
       const locations = snapshot.docs.map((doc) => doc.data());
       setElephantLocations(locations);
     });

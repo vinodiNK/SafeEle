@@ -71,7 +71,7 @@ export default function WildLifeDashboard() {
   }, [navigation]);
 
   useEffect(() => {
-    const q = query(collection(db, "elephant_locations"), orderBy("timestamp", "desc"));
+    const q = query(collection(db, "collisionZones"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const locs = [];
       querySnapshot.forEach((doc) => {
@@ -154,23 +154,23 @@ export default function WildLifeDashboard() {
             </Animatable.View>
 
             {/* 👥 Guest Locations */}
-            <Animatable.View animation="fadeInUp" delay={200} duration={800}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate("GuestLocation")}
-              >
-                <Animated.View style={[styles.smallCard, styles.gradientCardOrange]}>
-                  <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
-                    <MaterialCommunityIcons name="account-group" size={42} color="#fff" />
-                  </Animated.View>
-                  <View style={styles.cardContent}>
-                    
-                    <Text style={styles.cardTitle}>Guest Locations</Text>
-                  </View>
-                  <Text style={styles.cardSubtitle}>Updates shared by guests</Text>
-                </Animated.View>
-              </TouchableOpacity>
-            </Animatable.View>
+           <Animatable.View animation="fadeInUp" delay={200} duration={800}>
+  <TouchableOpacity
+    activeOpacity={0.9}
+    onPress={() => navigation.navigate("GuestLocation")}
+  >
+    <Animated.View style={[styles.smallCard, styles.gradientCardOrange]}>
+      <Animated.View style={{ transform: [{ translateY: parallaxAnim }] }}>
+        <MaterialCommunityIcons name="map-marker-account" size={42} color="#fff" />
+      </Animated.View>
+      <View style={styles.cardContent}>
+        <Text style={styles.cardTitle}>Guest Locations</Text>
+      </View>
+      <Text style={styles.cardSubtitle}>Updates shared by guests</Text>
+    </Animated.View>
+  </TouchableOpacity>
+</Animatable.View>
+
           </View>
         </View>
       </ScrollView>
