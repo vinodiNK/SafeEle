@@ -172,7 +172,7 @@ export default function OpenMap() {
           <View style={styles.headerTop}>
             
           </View>
-          <Text style={styles.subtitle}>Real-Time Monitoring</Text>
+          <Text style={styles.subtitle}>Real-Time Elephant Monitoring</Text>
           
         </View>
       </View>

@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import AddCollision from "./app/";
 import CollisionZone from "./app/CollisionZone";
 import DriverProfile from "./app/DriverProfile";
+import GuestHome from "./app/GuestHome";
 import GuestLocation from "./app/GuestLocation";
 import Index from "./app/index"; // Landing page
 import LoginPage from "./app/Login";
@@ -73,6 +74,7 @@ export default function App() {
         <Stack.Screen name="WildProfile" component={WildProfile} />
          <Stack.Screen name="Profile" component={DriverProfile} />
         <Stack.Screen name="WildViewNews" component={WildViewNews} />
+        <Stack.Screen name="GuestHome" component={GuestHome} />
 
         {/* Driver news */}
         <Stack.Screen name="DriverNews" component={SendNews} />

@@ -44,7 +44,7 @@ export default function Index() {
       >
         <TouchableOpacity
           style={styles.guestButton}
-          onPress={() => navigation.navigate("UploadLocation")}
+          onPress={() => navigation.navigate("GuestHome")}
         >
           <Animatable.Text
             animation="fadeIn"
