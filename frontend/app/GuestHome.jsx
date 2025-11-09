@@ -4,7 +4,7 @@ import { useLayoutEffect } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import Svg, { Defs, LinearGradient, Path, Stop } from "react-native-svg";
-import ElephantImage from "../assets/elephant.png"; // 🐘 your elephant image
+import ElephantImage from "../assets/guestImg.png"; // 🐘 your elephant image
 
 export default function GuestHome() {
   const navigation = useNavigation();
@@ -84,7 +84,7 @@ export default function GuestHome() {
           style={styles.button}
           onPress={() => navigation.navigate("UploadLocation")}
         >
-          <Text style={styles.buttonText}>Report Elephant Location</Text>
+          <Text style={styles.buttonText}>   Continue ➜   </Text>
         </TouchableOpacity>
       </Animatable.View>
     </View>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: "#fff",
-    fontSize: 28,
+    fontSize: 38,
     fontWeight: "bold",
     marginTop: 80,
   },
@@ -117,53 +117,60 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     position: "absolute",
-    right: 90,
-    top: 50,
+    right: 50,
+    top: 70,
   },
   elephantImage: {
-    width: 160,
-    height: 160,
+    width: 360,
+    height: 360,
     marginVertical: 15,
   },
   messageBox: {
-    backgroundColor: "#e8f5e9",
-    margin: 20,
-    padding: 20,
-    borderRadius: 12,
-    borderLeftWidth: 5,
-    borderLeftColor: "#4CAF50",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
-  },
-  messageText: {
-    fontSize: 16,
-    color: "#333",
-    textAlign: "center",
-    lineHeight: 22,
-  },
+  backgroundColor: "#e8f5e9",
+  margin: 20,
+  padding: 25,
+  borderRadius: 25,
+  borderLeftWidth: 5,
+  borderLeftColor: "#4CAF50",
+  alignItems: "flex-start", // 👈 left align content
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  elevation: 4,
+  marginTop: -30,
+},
+messageText: {
+  fontSize: 18,
+  color: "#333",
+  textAlign: "left", // 👈 left align text
+  lineHeight: 26,
+},
   highlight: {
     color: "#2e7d32",
     fontWeight: "bold",
+    
   },
   button: {
-    backgroundColor: "#4CAF50",
-    paddingVertical: 15,
-    marginHorizontal: 60,
-    borderRadius: 30,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 6,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 16,
-    letterSpacing: 1,
-  },
+  backgroundColor: "#4CAF50",
+  paddingVertical: 20, // 🔼 Increased height
+  marginHorizontal: 60, // 🔼 Slightly wider
+  borderRadius: 25,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 4 },
+  shadowOpacity: 0.3,
+  shadowRadius: 5,
+  elevation: 6,
+  width: "90%", // ✅ makes it larger and consistent on all screens
+  alignSelf: "center",
+},
+
+buttonText: {
+  color: "#fff",
+  fontWeight: "bold",
+  fontSize: 22, // 🔼 bigger text
+  letterSpacing: 1,
+},
+
 });

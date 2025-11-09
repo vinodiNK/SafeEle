@@ -136,7 +136,7 @@ export default function StationMessage() {
       </View>
 
       {/* 🌿 Footer Navigation */}
-      <LinearGradient colors={["#eaf1eaff", "#e5ece5ff"]} style={styles.footer}>
+      <LinearGradient colors={["#f9fcf9ff", "rgba(229, 236, 229, 1)"]} style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
@@ -171,7 +171,7 @@ export default function StationMessage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#e8f5e9", alignItems: "center" },
+  container: { flex: 1, backgroundColor: "#f8f9f8fc", alignItems: "center" },
   headerWrapper: { alignItems: "center", justifyContent: "center", width: "100%" },
   curve: { position: "absolute", top: 0 },
   headerTitle: { fontSize: 26, fontWeight: "bold", color: "#fff", marginTop: 70 },

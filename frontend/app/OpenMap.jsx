@@ -69,47 +69,35 @@ export default function OpenMap() {
   }, []);
 
   // Fetch camera detections + alert driver
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "cameraLocation"), (snapshot) => {
-      const locations = snapshot.docs.map((doc) => doc.data());
-      setCameraLocations(locations);
-
-      if (locations.length > 0) {
-        const latest = locations.sort((a, b) => b.dateTime.seconds - a.dateTime.seconds)[0];
-        if (latest && latest.dateTime?.seconds !== lastCollisionAlertRef.current["camera"]) {
-          lastCollisionAlertRef.current["camera"] = latest.dateTime.seconds;
-
-          Alert.alert(
-            "🐘 Real-Time Elephant Detection",
-            `📍 Location: ${latest.locationName}\n🕒 Time: ${new Date(
-              latest.dateTime.seconds * 1000
-            ).toLocaleString()}`,
-            [{ text: "OK" }]
-          );
-        }
-      }
-    });
-    return unsubscribe;
-  }, []);
-
+  
   // Collision alert real-time
-  useEffect(() => {
-    if (!location) return;
-    elephantLocations.forEach((ele) => {
-      const distance = getDistance(location, ele);
-      const lastAlert = lastCollisionAlertRef.current[ele.id] || 0;
-      const now = Date.now();
-      if (distance <= COLLISION_RADIUS && now - lastAlert > 10000) {
-        lastCollisionAlertRef.current[ele.id] = now;
+  // 🚨 Collision alert for nearby elephant zones
+useEffect(() => {
+  if (!location || elephantLocations.length === 0) return;
 
-        Alert.alert(
-          "⚠️ Collision Warning!",
-          `Elephant detected within ${Math.floor(distance)} meters!`,
-          [{ text: "OK" }]
-        );
-      }
-    });
-  }, [location, elephantLocations]);
+  elephantLocations.forEach((zone, index) => {
+    // Skip if data is missing
+    if (!zone.latitude || !zone.longitude) return;
+
+    const distance = getDistance(location, zone);
+    const lastAlert = lastCollisionAlertRef.current[zone.id || index] || 0;
+    const now = Date.now();
+
+    // Alert if driver is within radius (1km = 1000m)
+    if (distance <= COLLISION_RADIUS && now - lastAlert > 10000) {
+      lastCollisionAlertRef.current[zone.id || index] = now;
+
+      Alert.alert(
+  "⚠️ Danger Ahead!",
+  `Elephant collision zone detected nearby within ${Math.floor(distance)} meters.  
+
+Please slow down and stay cautious! 🚆`,
+  [{ text: "Ok", style: "destructive" }]
+);
+    }
+  });
+}, [location, elephantLocations]);
+
 
   // Distance calculator (Haversine)
   const getDistance = (loc1, loc2) => {
@@ -225,22 +213,9 @@ export default function OpenMap() {
         ))}
 
         {/* Camera detections */}
-        {cameraLocations.map((cam, index) => (
-          <Marker
-            key={`camera-${index}`}
-            coordinate={{ latitude: cam.latitude, longitude: cam.longitude }}
-            title={`Camera: ${cam.cameraId}`}
-            description={`${cam.locationName} - ${new Date(
-              cam.dateTime?.seconds * 1000
-            ).toLocaleString()}`}
-          >
-            <Image
-              source={require("../assets/elephantRed.png")}
-              style={{ width: 45, height: 45 }}
-              resizeMode="contain"
-            />
-          </Marker>
-        ))}
+        
+          
+       
       </MapView>
 
       {/* 🧭 Footer Navigation */}

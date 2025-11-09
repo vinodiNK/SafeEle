@@ -202,7 +202,7 @@ export default function collisionZones() {
               onPress={() => setShowDatePicker(true)}
             >
               <Text style={styles.dateFilterText}>
-                {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
+                {dateFilter ? new Date(dateFilter).toDateString() :  "Search by Date"}
               </Text>
             </TouchableOpacity>
             {dateFilter ? (
@@ -303,7 +303,7 @@ export default function collisionZones() {
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
           <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#f7f3f3ff",
     height: 45,
     paddingHorizontal: 10,
   },
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
     color: "#777",
   },
   footer: {
-    position: "absolute",
+    
     bottom: 35,
     left: 0,
     right: 0,

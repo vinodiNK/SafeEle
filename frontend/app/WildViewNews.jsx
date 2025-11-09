@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   noData: { color: "#666", marginTop: 40, fontSize: 16, textAlign: "center" },
   footer: {
     position: "absolute",
-    bottom: 30,
+    bottom: 40,
     left: 0,
     right: 0,
     height: 70,

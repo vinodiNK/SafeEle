@@ -81,6 +81,9 @@ export default function StationViewNews({ route }) {
             d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
           />
         </Svg>
+
+        
+
         {/* Header Text */}
         <View style={styles.headerContent}>
           
@@ -156,7 +159,15 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
 
   // 🌿 Curved Header Styles
-  headerWrapper: { position: "absolute", top: 0, width: "100%", alignItems: "center" },
+  headerWrapper: {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 10, // 👈 makes sure it's above FlatList
+  alignItems: "center",
+},
+
   curve: { position: "absolute", top: 0 },
   headerContent: {
     position: "absolute",
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
 
   // 🧭 Footer
   footer: {
-    position: "absolute",
+    
     bottom:32,
     left: 15,
     right: 15,

@@ -2,8 +2,8 @@
 import {
   Entypo,
   FontAwesome5,
-  MaterialCommunityIcons,
-  MaterialIcons,
+  Ionicons,
+  MaterialIcons
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -132,26 +132,23 @@ export default function DriverProfile() {
 
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
-            {/* ✅ fixed icon */}
-            <MaterialCommunityIcons name="card-account-details-outline" size={24} color="#004d00" />
-
+            <Ionicons name="id-card-outline" size={22} color="#2E8B57" />
             <Text style={styles.infoText}>{userData.nic}</Text>
           </View>
 
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="phone-outline" size={24} color="#004d00" />
-            <Text style={styles.infoText}>{userData.phone}</Text>
-          </View>
+                      <Ionicons name="call-outline" size={22} color="#2E8B57" />
+                      <Text style={styles.infoText}>{userData.phone}</Text>
+                    </View>
 
-          <View style={styles.infoRow}>
-            <MaterialIcons name="mail-outline" size={22} color="#2E8B57" />
-            <Text style={styles.infoText}>{userData.email}</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <MaterialIcons name="location-on" size={22} color="#2E8B57" />
-            <Text style={styles.infoText}>{userData.location}</Text>
-          </View>
+         <View style={styles.infoRow}>
+                     <Ionicons name="mail-outline" size={22} color="#2E8B57" />
+                     <Text style={styles.infoText}>{userData.email}</Text>
+                   </View>
+                   <View style={styles.infoRow}>
+                     <MaterialIcons name="location-on" size={22} color="#2E8B57" />
+                     <Text style={styles.infoText}>{userData.location}</Text>
+                   </View>
         </View>
 
         {/* Logout Button */}

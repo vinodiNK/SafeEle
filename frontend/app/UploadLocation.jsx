@@ -59,7 +59,12 @@ export default function UploadLocation() {
         locationName: locationName || "Unknown Location",
         timestamp: Timestamp.now(),
       });
-      Alert.alert("Success", "Location updated successfully!");
+     Alert.alert(
+  "🎉 Thank You!",
+  "Your location has been successfully updated.",
+  [{ text: "OK", style: "default" }]
+);
+
     } catch (error) {
       console.error("Error uploading location:", error);
       Alert.alert("Error", "Failed to upload location.");
@@ -136,7 +141,7 @@ export default function UploadLocation() {
         <Text style={styles.buttonText}>Update Location</Text>
         
       </TouchableOpacity>
-      <Text style={styles.subtitle}>If you see an elephant near a railway track, you can report it here by updating the location.</Text>
+     
     </View>
   );
 }
@@ -195,7 +200,7 @@ const styles = StyleSheet.create({
   },
   map: { flex: 1, borderRadius: 15, marginHorizontal: 10, marginBottom: 10, marginTop: 170 },
   button: {
-    backgroundColor: "#28a745",
+    backgroundColor: "#006400",
     paddingVertical: 15,
     margin: 15,
     borderRadius: 50,
@@ -206,6 +211,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 6,
+    marginBottom: 50,
   },
   buttonText: {
     color: "#fff",

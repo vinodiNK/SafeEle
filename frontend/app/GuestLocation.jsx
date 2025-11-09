@@ -292,7 +292,7 @@ export default function GuestLocation() {
       />
 
       {/* Footer */}
-      <LinearGradient colors={["#f5faf5ff", "#f3f8f3ff"]} style={styles.footer}>
+      <LinearGradient colors={["#fbfdfbff", "rgba(243, 248, 243, 1)"]} style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
@@ -303,7 +303,7 @@ export default function GuestLocation() {
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Message")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
           <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
           <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
@@ -432,15 +432,15 @@ const styles = StyleSheet.create({
     color: "#777",
   },
   footer: {
-    position: "absolute",
+   
     bottom: 35,
     left: 0,
     right: 0,
-    height: 70,
+    height: 50,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
   },
-  navButton: { justifyContent: "center", alignItems: "center" },
+  navButton: { justifyContent: "center", alignItems: "center", },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
 });
