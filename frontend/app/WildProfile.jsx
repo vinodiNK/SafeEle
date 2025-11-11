@@ -1,5 +1,5 @@
 // app/DriverProfile.jsx
-import { Entypo, FontAwesome5, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { doc, getDoc } from "firebase/firestore";
@@ -114,21 +114,22 @@ export default function DriverProfile() {
 
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
-            <Ionicons name="id-card-outline" size={22} color="#2E8B57" />
-            <Text style={styles.infoText}>{userData.nic}</Text>
+            <Text style={styles.emoji}>🪪 : </Text>
+    <Text style={styles.infoText}>{userData.nic}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Ionicons name="call-outline" size={22} color="#2E8B57" />
-            <Text style={styles.infoText}>{userData.phone}</Text>
+           <Text style={styles.emoji}>📞 : </Text>
+    <Text style={styles.infoText}>{userData.phone}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Ionicons name="mail-outline" size={22} color="#2E8B57" />
-            <Text style={styles.infoText}>{userData.email}</Text>
+            <Text style={styles.emoji}>📧 : </Text>
+    <Text style={styles.infoText}>{userData.email}</Text>
           </View>
           <View style={styles.infoRow}>
-            <MaterialIcons name="location-on" size={22} color="#2E8B57" />
-            <Text style={styles.infoText}>{userData.location}</Text>
-          </View>
+          <Text style={styles.emoji}>📍 : </Text>
+    <Text style={styles.infoText}>{userData.location}</Text>
+</View>
+
         </View>
 
         {/* Logout Button */}
@@ -219,4 +220,22 @@ const styles = StyleSheet.create({
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+
+  infoContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  emoji: {
+    fontSize: 22,
+    marginRight: 8,
+  },
+  infoText: {
+    color: "#333",
+    fontSize: 16,
+  },
 });
