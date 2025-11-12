@@ -128,7 +128,7 @@ Please slow down and stay cautious! 🚆`,
      <View style={styles.container}>
           {/* 🌿 Header */}
           <View style={styles.headerWrapper}>
-            <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+            <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
               <Defs>
                 <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
                   <Stop offset="0%" stopColor="#4CAF50" />
@@ -146,7 +146,7 @@ Please slow down and stay cautious! 🚆`,
               </Defs>
               <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
             </Svg>
-            <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+            <Svg height="240" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
               <Defs>
                 <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
                   <Stop offset="0%" stopColor="#4CAF50" />
@@ -227,7 +227,7 @@ Please slow down and stay cautious! 🚆`,
 
         <TouchableOpacity onPress={() => navigation.navigate("OpenMap")} style={styles.navButton}>
           <Entypo name="location-pin" size={26} color="#004d00" />
-          <Text style={styles.footerTextActive}>Map</Text>
+          <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("SendNews")} style={styles.navButton}>
@@ -280,5 +280,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2, fontWeight: "bold" },
 });

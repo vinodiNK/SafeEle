@@ -109,10 +109,10 @@ export default function StationMessage() {
                 onValueChange={(value) => setStation(value)}
               >
                 <Picker.Item label="Station Name" value="" />
-                <Picker.Item label="Colombo Fort" value="Colombo Fort" />
-                <Picker.Item label="Kandy" value="Kandy" />
+                <Picker.Item label="Colombo Fort" value="Maho" />
+                <Picker.Item label="Kandy" value="Galgamuwa" />
                 <Picker.Item label="Anuradhapura" value="Anuradhapura" />
-                <Picker.Item label="Jaffna" value="Jaffna" />
+                <Picker.Item label="Jaffna" value="Amanpola" />
               </Picker>
             </View>
 

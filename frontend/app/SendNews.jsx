@@ -179,7 +179,7 @@ export default function SendNews() {
           onPress={() => navigation.navigate("index")}
           style={styles.navButton}
         >
-          <Entypo name="home" size={22} color="#004d00" />
+          <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
 
@@ -195,8 +195,8 @@ export default function SendNews() {
           onPress={() => navigation.navigate("SendNews")}
           style={styles.navButton}
         >
-          <MaterialIcons name="message" size={22} color="#004d00" />
-          <Text style={styles.footerTextActive}>Message</Text>
+          <MaterialIcons name="message" size={24} color="#004d00" />
+          <Text style={styles.footerText}>Message</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -291,6 +291,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2,fontWeight: "bold" },
  
 });
