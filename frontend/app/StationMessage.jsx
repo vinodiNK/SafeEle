@@ -244,13 +244,14 @@ const styles = StyleSheet.create({
 
   footer: {
    
-    bottom: 90,
+    bottom: 70,
     left: 0,
     right: 0,
     height: 70,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    backgroundColor: "#f9fcf9",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
   footerText: { color: "#004d00", fontSize: 12, marginTop: 2, fontWeight: "bold" },
