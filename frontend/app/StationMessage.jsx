@@ -1,5 +1,5 @@
 // app/StationMessage.jsx
-import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -74,6 +74,15 @@ export default function StationMessage() {
             </Svg>
 
             <Svg height="175" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+              <Defs>
+                <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                  <Stop offset="0%" stopColor="#4CAF50" />
+                  <Stop offset="100%" stopColor="#006400" />
+                </SvgGradient>
+              </Defs>
+              <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+            </Svg>
+            <Svg height="245" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
               <Defs>
                 <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
                   <Stop offset="0%" stopColor="#4CAF50" />
@@ -162,13 +171,15 @@ export default function StationMessage() {
               <Text style={styles.footerText}>News</Text>
             </TouchableOpacity>
 
+            
+            
             <TouchableOpacity
-              onPress={() => navigation.navigate("StationMessage")}
-              style={styles.navButton}
-            >
-              <MaterialIcons name="message" size={22} color="#004d00" />
-              <Text style={styles.footerTextActive}>Message</Text>
-            </TouchableOpacity>
+  onPress={() => navigation.navigate("StationMessage")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="comment-dots" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Message</Text>
+</TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => navigation.navigate("StationProfile")}
@@ -189,8 +200,8 @@ const styles = StyleSheet.create({
 
   headerWrapper: { backgroundColor: "transparent", overflow: "hidden" },
   curve: { position: "absolute", top: 0 },
-  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 40 },
-  subtitle: { color: "#071307ff", fontSize: 16, textAlign: "center", marginTop: 40 },
+  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 50 },
+  subtitle: { color: "#071307ff", fontSize: 16, textAlign: "center", marginTop: 50 },
 
   image: { width: "100%", height: 230, marginTop: 10, marginBottom: 10 },
 
@@ -232,8 +243,8 @@ const styles = StyleSheet.create({
   sendButtonText: { color: "white", fontWeight: "bold", fontSize: 16 },
 
   footer: {
-    position: "absolute",
-    bottom: 10,
+   
+    bottom: 90,
     left: 0,
     right: 0,
     height: 70,
@@ -242,6 +253,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2, fontWeight: "bold" },
   footerTextActive: { color: "#2E7D32", fontSize: 12, marginTop: 2, fontWeight: "bold" },
 });
