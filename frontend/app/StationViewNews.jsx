@@ -1,5 +1,5 @@
 // app/StationViewNews.jsx
-import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
@@ -44,7 +44,7 @@ export default function StationViewNews({ route }) {
     <View style={styles.container}>
       {/* 🌿 Curved Gradient Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -57,7 +57,7 @@ export default function StationViewNews({ route }) {
           />
         </Svg>
 
-        <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="175" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -69,7 +69,7 @@ export default function StationViewNews({ route }) {
             d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
           />
         </Svg>
-        <Svg height="310" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="260" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -94,7 +94,7 @@ export default function StationViewNews({ route }) {
 
       {/* 📰 News List */}
       <FlatList
-        contentContainerStyle={{ paddingTop: 200, paddingBottom: 100 }}
+        contentContainerStyle={{ paddingTop: 170, paddingBottom: 100 }}
         data={newsList}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={() => (
@@ -130,16 +130,16 @@ export default function StationViewNews({ route }) {
           style={styles.navButton}
         >
           <Entypo name="news" size={24} color="#004d00" />
-          <Text style={styles.footerTextActive}>News</Text>
+          <Text style={styles.footerText}>News</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity
-          onPress={() => navigation.navigate("StationMessage")}
-          style={styles.navButton}
-        >
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+  onPress={() => navigation.navigate("StationMessage")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="comment-dots" size={24} color="#004d00" />
+  <Text style={styles.footerText}>Message</Text>
+</TouchableOpacity>
 
        
 
@@ -181,13 +181,13 @@ const styles = StyleSheet.create({
     fontSize: 34,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: -5,
+    marginTop: -35,
   },
 
   // 📰 News List
   item: {
     backgroundColor: "#fff",
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
     marginBottom: 10,
     elevation: 2,
@@ -203,14 +203,14 @@ const styles = StyleSheet.create({
   // 🧭 Footer
   footer: {
     
-    bottom:32,
-    left: 15,
-    right: 15,
+    bottom:42,
+    left: 5,
+    right: 5,
     height: 60,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 14, marginTop: 2, fontWeight: "bold" },
 });

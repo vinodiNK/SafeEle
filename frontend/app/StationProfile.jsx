@@ -110,7 +110,7 @@ export default function DriverProfile() {
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>{userData.name}</Text>
-        <Text style={styles.profileRole}>Engine Driver</Text>
+        <Text style={styles.profileRole}>Station Master</Text>
 
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
