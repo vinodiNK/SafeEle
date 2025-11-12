@@ -1,5 +1,5 @@
 // app/DriverProfile.jsx
-import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { doc, getDoc } from "firebase/firestore";
@@ -68,7 +68,7 @@ export default function DriverProfile() {
       {/* 🚂 Curved Green Header */}
       <View style={styles.headerWrapper}>
         {/* Decorative Curves */}
-        <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -78,7 +78,7 @@ export default function DriverProfile() {
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="165" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -88,7 +88,7 @@ export default function DriverProfile() {
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -126,7 +126,7 @@ export default function DriverProfile() {
     <Text style={styles.infoText}>{userData.email}</Text>
                     </View>
                     <View style={styles.infoRow}>
-                      <Text style={styles.emoji}>📍</Text>
+                      <Text style={styles.emoji}>📍 : </Text>
     <Text style={styles.infoText}>{userData.location}</Text>
                     </View>
                   </View>
@@ -157,16 +157,17 @@ export default function DriverProfile() {
                 style={styles.navButton}
               >
                 <Entypo name="news" size={24} color="#004d00" />
-                <Text style={styles.footerTextActive}>News</Text>
+                <Text style={styles.footerText}>News</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity
-                onPress={() => navigation.navigate("StationMessage")}
-                style={styles.navButton}
-              >
-                <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
-                <Text style={styles.footerText}>Message</Text>
-              </TouchableOpacity>
+             <TouchableOpacity
+  onPress={() => navigation.navigate("StationMessage")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="comment-dots" size={24} color="#004d00" />
+  <Text style={[styles.footerText, { fontWeight: "bold" }]}>Message</Text>
+</TouchableOpacity>
+
       
              
       
@@ -188,10 +189,10 @@ const styles = StyleSheet.create({
   headerWrapper: { alignItems: "center", justifyContent: "center" },
   curve: { position: "absolute", top: 0 },
   headerTitle: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 100,
+    marginTop: 60,
     textShadowColor: "rgba(0,0,0,0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2,fontWeight: "bold" },
 
   infoContainer: {
     marginTop: 20,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 17,
   },
   emoji: {
     fontSize: 22,
@@ -248,6 +249,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     color: "#333",
-    fontSize: 16,
+    fontSize: 18,
   },
 });
