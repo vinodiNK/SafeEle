@@ -185,7 +185,7 @@ export default function DriverProfile() {
 
 // 🎨 Styles
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5", paddingBottom: 90 },
+  container: { flex: 1, backgroundColor: "#f5f5f5", paddingBottom: 100 },
   headerWrapper: { alignItems: "center", justifyContent: "center" },
   curve: { position: "absolute", top: 0 },
   headerTitle: {

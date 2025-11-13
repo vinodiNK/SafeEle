@@ -1,5 +1,5 @@
 // app/OpenMap.jsx
-import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -220,25 +220,41 @@ Please slow down and stay cautious! 🚆`,
 
       {/* 🧭 Footer Navigation */}
       <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
-          <Entypo name="home" size={22} color="#004d00" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+  onPress={() => navigation.navigate("index")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="home" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Home</Text>
+</TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("OpenMap")} style={styles.navButton}>
-          <Entypo name="location-pin" size={26} color="#004d00" />
-          <Text style={styles.footerText}>Map</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("SendNews")} style={styles.navButton}>
-          <MaterialIcons name="message" size={22} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+  onPress={() => navigation.navigate("OpenMap")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="map-marked-alt" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Map</Text>
+</TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("DriverProfile")} style={styles.navButton}>
-          <FontAwesome5 name="user-alt" size={20} color="#004d00" />
-          <Text style={styles.footerText}>Profile</Text>
-        </TouchableOpacity>
+
+       <TouchableOpacity
+  onPress={() => navigation.navigate("SendNews")}
+  style={styles.navButton}
+>
+  <FontAwesome name="envelope" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Message</Text>
+</TouchableOpacity>
+
+
+        <TouchableOpacity
+  onPress={() => navigation.navigate("DriverProfile")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="user-alt" size={20} color="#004d00" />
+  <Text style={styles.footerText}>Profile</Text>
+</TouchableOpacity>
+
       </View>
     </View>
   );
@@ -263,7 +279,7 @@ const styles = StyleSheet.create({
   },
   headerTextLeft: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
   headerTextRight: { color: "#e0f7e9", fontSize: 14, fontWeight: "bold" },
-  subtitle: { color: "#dff5df", fontSize: 28, textAlign: "center", marginTop: 10,fontWeight: "bold" },
+  subtitle: { color: "#dff5df", fontSize: 28, textAlign: "center", marginTop: -10,fontWeight: "bold" },
 
 
   map: { flex: 1, marginBottom: 90, marginTop: 180 },
