@@ -45,7 +45,7 @@ export default function WildViewNews() {
     <View style={styles.container}>
       {/* 🌿 Curved Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -55,7 +55,7 @@ export default function WildViewNews() {
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="235" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="175" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -64,7 +64,7 @@ export default function WildViewNews() {
           </Defs>
           <Path fill="url(#grad2)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
-        <Svg height="320" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -103,7 +103,7 @@ export default function WildViewNews() {
       )}
 
       {/* 🌿 Footer Navigation */}
-      <LinearGradient colors={["#eaf1eaff", "#e5ece5ff"]} style={styles.footer}>
+      <LinearGradient colors={["#f5fbf5ff", "#f5fbf5ff"]} style={styles.footer}>
         <TouchableOpacity
           onPress={() => navigation.navigate("WildlifeDashboard")}
           style={styles.navButton}
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 80,
+    marginTop: 50,
     textShadowColor: "rgba(0,0,0,0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
