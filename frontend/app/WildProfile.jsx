@@ -68,6 +68,16 @@ export default function DriverProfile() {
       {/* 🚂 Curved Green Header */}
       <View style={styles.headerWrapper}>
         {/* Decorative Curves */}
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+
         <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
@@ -78,17 +88,7 @@ export default function DriverProfile() {
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-          <Defs>
-            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-        </Svg>
-
-        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -144,7 +144,7 @@ export default function DriverProfile() {
       </View>
 
       {/* 🌿 Footer Navigation */}
-      <LinearGradient colors={["#eaf1eaff", "#e5ece5ff"]} style={styles.footer}>
+      <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
           <Entypo name="home" size={24} color="#004d00" />
           <Text style={styles.footerText}>Home</Text>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 100,
+    marginTop: 50,
     textShadowColor: "rgba(0,0,0,0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 25,
     elevation: 3,
-    marginTop: 60,
+    marginTop: 90,
   },
   profileImage: {
     width: 160,
@@ -236,6 +236,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     color: "#333",
-    fontSize: 16,
+    fontSize: 18,
   },
 });

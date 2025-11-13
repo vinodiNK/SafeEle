@@ -103,7 +103,7 @@ export default function WildViewNews() {
       )}
 
       {/* 🌿 Footer Navigation */}
-      <LinearGradient colors={["#f5fbf5ff", "#f5fbf5ff"]} style={styles.footer}>
+      <LinearGradient colors={["#f5f5f5", "#f5f5f5"]} style={styles.footer}>
         <TouchableOpacity
           onPress={() => navigation.navigate("WildlifeDashboard")}
           style={styles.navButton}
