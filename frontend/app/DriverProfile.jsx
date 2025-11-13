@@ -127,7 +127,7 @@ export default function DriverProfile() {
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>{userData.name}</Text>
-        <Text style={styles.profileRole}>Train Driver</Text>
+        <Text style={styles.profileRole}>Engine Driver</Text>
 
         <View style={styles.infoContainer}>
           <View style={styles.infoRow}>
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 100,
+    marginTop: 80,
     textShadowColor: "rgba(0,0,0,0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 25,
     elevation: 3,
-    marginTop: 60,
+    marginTop: 80,
   },
   profileImage: {
     width: 160,

@@ -86,7 +86,7 @@ export default function WildLifeDashboard() {
     <View style={styles.container}>
       {/* 🌿 Curved Gradient Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad1" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -105,7 +105,7 @@ export default function WildLifeDashboard() {
           <Path fill="url(#grad1)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   headerWrapper: { position: "relative", alignItems: "center", marginBottom: 30 },
   curve: { position: "absolute", top: 0, left: 0 },
   headerTextContainer: { position: "absolute", top: 80, alignItems: "center" },
-  headerTitle: { color: "#fff", fontSize: 28, fontWeight: "bold", letterSpacing: 1 },
+  headerTitle: { color: "#fff", fontSize: 28, fontWeight: "bold", letterSpacing: 1,marginTop:-30 },
   headerSubtitle: { color: "#e0f7e9", fontSize: 14, marginTop: 4 },
 
   // 🐘 Animated Image
@@ -279,5 +279,5 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2,fontWeight: "bold" },
 });
