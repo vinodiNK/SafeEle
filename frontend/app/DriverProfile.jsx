@@ -1,8 +1,6 @@
 // app/DriverProfile.jsx
 import {
-  Entypo,
-  FontAwesome5,
-  MaterialIcons
+  FontAwesome5
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -85,6 +83,16 @@ export default function DriverProfile() {
     <View style={styles.container}>
       {/* 🚂 Curved Green Header */}
       <View style={styles.headerWrapper}>
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
+        </Svg>
+
         <Svg height="170" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
@@ -95,17 +103,7 @@ export default function DriverProfile() {
           <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
         </Svg>
 
-        <Svg height="220" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
-          <Defs>
-            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path fill="url(#grad)" d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z" />
-        </Svg>
-
-        <Svg height="300" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -163,20 +161,28 @@ export default function DriverProfile() {
 
       {/* 🧭 Footer Navigation */}
       <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
-          <Entypo name="home" size={22} color="#004d00" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+         onPress={() => navigation.navigate("index")}
+         style={styles.navButton}
+       >
+         <FontAwesome5 name="home" size={24} color="#004d00" />
+         <Text style={styles.footerText}>Home</Text>
+       </TouchableOpacity>
+<TouchableOpacity
+  onPress={() => navigation.navigate("OpenMap")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="map-marked-alt" size={24} color="#004d00" />
+  <Text style={styles.footerText}>Map</Text>
+</TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("OpenMap")} style={styles.navButton}>
-          <Entypo name="location-pin" size={26} color="#004d00" />
-          <Text style={styles.footerTextActive}>Map</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("SendNews")} style={styles.navButton}>
-          <MaterialIcons name="message" size={22} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+         onPress={() => navigation.navigate("SendNews")}
+         style={styles.navButton}
+       >
+         <FontAwesome5 name="envelope" size={22} color="#004d00" />
+         <Text style={styles.footerText}>Message</Text>
+       </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("DriverProfile")} style={styles.navButton}>
           <FontAwesome5 name="user-alt" size={24} color="#004d00" />
@@ -236,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2,fontWeight: "bold" },
 
   infoContainer: {
     marginTop: 20,
@@ -253,6 +259,6 @@ const styles = StyleSheet.create({
   },
   infoText: {
     color: "#333",
-    fontSize: 16,
+    fontSize: 18,
   },
 });
