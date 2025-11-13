@@ -180,6 +180,23 @@ export default function CollisionZone() {
       {/* 🌿 Curved Header */}
       <View style={styles.headerWrapper}>
         <Svg
+          height="90"
+          width="100%"
+          viewBox="0 0 1440 320"
+          style={styles.curve}
+        >
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+        <Svg
           height="170"
           width="100%"
           viewBox="0 0 1440 320"
@@ -197,24 +214,7 @@ export default function CollisionZone() {
           />
         </Svg>
         <Svg
-          height="220"
-          width="100%"
-          viewBox="0 0 1440 320"
-          style={styles.curve}
-        >
-          <Defs>
-            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0%" stopColor="#4CAF50" />
-              <Stop offset="100%" stopColor="#006400" />
-            </SvgGradient>
-          </Defs>
-          <Path
-            fill="url(#grad)"
-            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
-          />
-        </Svg>
-        <Svg
-          height="300"
+          height="250"
           width="100%"
           viewBox="0 0 1440 320"
           style={styles.curve}
@@ -453,11 +453,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  headerTitle: { color: "#fff", fontSize: 20, fontWeight: "bold" },
+  headerTitle: { color: "#fff", fontSize: 20, fontWeight: "bold", marginTop: -30 },
   backButton: {
     backgroundColor: "rgba(255,255,255,0.2)",
     padding: 8,
     borderRadius: 20,
+    marginTop: -20,
   },
   formContainer: { padding: 20 },
   pageHeader: {
