@@ -1,5 +1,5 @@
 // app/SendNews.jsx
-import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -75,7 +75,7 @@ export default function SendNews() {
     <View style={styles.container}>
       {/* 🌿 Curved Header */}
       <View style={styles.headerWrapper}>
-        <Svg height="180" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+        <Svg height="90" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -87,7 +87,19 @@ export default function SendNews() {
             d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
           />
         </Svg>
-         <Svg height="265" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+         <Svg height="165" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
+          <Defs>
+            <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <Stop offset="0%" stopColor="#4CAF50" />
+              <Stop offset="100%" stopColor="#006400" />
+            </SvgGradient>
+          </Defs>
+          <Path
+            fill="url(#grad)"
+            d="M0,200 C480,80 960,300 1440,200 L1440,0 L0,0 Z"
+          />
+        </Svg>
+         <Svg height="250" width="100%" viewBox="0 0 1440 320" style={styles.curve}>
           <Defs>
             <SvgGradient id="grad" x1="0" y1="0" x2="1" y2="1">
               <Stop offset="0%" stopColor="#4CAF50" />
@@ -176,36 +188,39 @@ export default function SendNews() {
       {/* 🔹 Footer Navigation */}
       <View style={styles.footer}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
-          <Entypo name="home" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
+  onPress={() => navigation.navigate("index")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="home" size={24} color="#004d00" />
+  <Text style={styles.footerText}>Home</Text>
+</TouchableOpacity>
+
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("OpenMap")}
-          style={styles.navButton}
-        >
-          <Entypo name="location-pin" size={26} color="#004d00" />
-          <Text style={styles.footerText}>Map</Text>
-        </TouchableOpacity>
+  onPress={() => navigation.navigate("OpenMap")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="map-marked-alt" size={24} color="#004d00" />
+  <Text style={styles.footerText}>Map</Text>
+</TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SendNews")}
-          style={styles.navButton}
-        >
-          <MaterialIcons name="message" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("DriverProfile")}
-          style={styles.navButton}
-        >
-          <FontAwesome5 name="user-alt" size={20} color="#004d00" />
-          <Text style={styles.footerText}>Profile</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+  onPress={() => navigation.navigate("SendNews")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="envelope" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Message</Text>
+</TouchableOpacity>
+
+
+       <TouchableOpacity
+    onPress={() => navigation.navigate("DriverProfile")}
+    style={styles.navButton}
+  >
+    <FontAwesome5 name="user-alt" size={22} color="#004d00" />
+    <Text style={styles.footerText}>Profile</Text>
+  </TouchableOpacity>
       </View>
     </View>
      </ScrollView>
@@ -236,9 +251,9 @@ const styles = StyleSheet.create({
     color: "#071307ff",
     fontSize: 16,
     textAlign: "center",
-    marginTop: 15,
+    marginTop: 50,
   },
-  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: 10 },
+  title: { color: "white", fontSize: 30, fontWeight: "bold", textAlign: "center", marginTop: -20 },
 
   image: { width: "100%", height: 230, marginTop: 10, marginBottom: 10 },
 
