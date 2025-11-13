@@ -1,5 +1,5 @@
 // app/CollisionZone.jsx
-import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -401,12 +401,13 @@ export default function CollisionZone() {
         style={styles.footer}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("index")}
-          style={styles.navButton}
-        >
-          <Entypo name="home" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
+  onPress={() => navigation.navigate("index")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="home" size={24} color="#004d00" />
+  <Text style={styles.footerText}>Home</Text>
+</TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => navigation.navigate("AddCollision")}
           style={styles.navButton}
@@ -419,16 +420,17 @@ export default function CollisionZone() {
           <Text style={styles.footerText}>Add Data</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => Linking.openURL("https://www.google.com/maps")}
-          style={styles.navButton}
-        >
-          <Ionicons name="map-outline" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Map</Text>
-        </TouchableOpacity>
+  onPress={() => Linking.openURL("https://www.google.com/maps")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="map-marked-alt" size={24} color="#004d00" />
+  <Text style={styles.footerText}>Map</Text>
+</TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
-                  <Entypo name="news" size={24} color="#004d00" />
-                  <Text style={styles.footerText}>News</Text>
-                </TouchableOpacity>
+  <FontAwesome5 name="newspaper" size={24} color="#004d00" />
+  <Text style={styles.footerText}>News</Text>
+</TouchableOpacity>
       </LinearGradient>
     </View>
   );
@@ -537,5 +539,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2,fontWeight: "bold" },
 });
