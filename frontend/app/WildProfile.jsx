@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButton: { justifyContent: "center", alignItems: "center" },
-  footerText: { color: "#004d00", fontSize: 12, marginTop: 2 },
+  footerText: { color: "#004d00", fontSize: 12, marginTop: 2,fontWeight: "bold" },
 
   infoContainer: {
     marginTop: 20,
