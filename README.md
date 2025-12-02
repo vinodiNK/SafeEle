@@ -5,3 +5,4 @@
 
 ## 📸 App Screenshots
 ### Home Screen
+![Home Screen](screenshots/home.png)
