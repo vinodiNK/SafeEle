@@ -5,6 +5,4 @@
 
 ## 📸 App Screenshots
 ### Home Screen
-![Home Page](frontend/screenshots/home.jpeg)
-
-<img src="frontend/screenshots/home.jpeg" width="50%">
+<img src="frontend/screenshots/home.jpeg" width="20%" height="20%">
