@@ -1,4 +1,4 @@
-import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -178,41 +178,45 @@ export default function GuestLocation() {
           {/* Area Filter */}
           <View style={styles.fullBox}>
             <View style={styles.inputRow}>
-              <Ionicons name="search" size={20} color="#666" />
-              <TextInput
-                placeholder="Search by area..."
-                style={styles.textInput}
-                value={areaFilter}
-                onChangeText={setAreaFilter}
-                placeholderTextColor="#888"
-              />
+            <FontAwesome5 name="map-marker-alt" size={18} color="#666" />
+<TextInput
+  placeholder="Search by area..."
+  style={styles.textInput}
+  value={areaFilter}
+  onChangeText={setAreaFilter}
+  placeholderTextColor="#888"
+/>
+
               <TouchableOpacity style={styles.searchButton} onPress={applyFilter}>
-                <Ionicons name="search" size={22} color="#fff" />
-              </TouchableOpacity>
+  <FontAwesome5 name="search" size={20} color="#fff" />
+</TouchableOpacity>
+
             </View>
           </View>
 
           {/* Date Filter */}
           <View style={styles.fullBox}>
             <View style={styles.inputRow}>
-              <Ionicons name="calendar-outline" size={20} color="#666" />
-              <TouchableOpacity
-                style={{ flex: 1 }}
-                activeOpacity={0.8}
-                onPress={() => setShowDatePicker(true)}
-              >
-                <Text style={styles.dateFilterText}>
-                  {dateFilter ? new Date(dateFilter).toDateString() : "Search by Date"}
-                </Text>
-              </TouchableOpacity>
+              <FontAwesome5 name="calendar-alt" size={20} color="#666" />
+<TouchableOpacity
+  style={{ flex: 1 }}
+  activeOpacity={0.8}
+  onPress={() => setShowDatePicker(true)}
+>
+  <Text style={styles.dateFilterText}>
+    {dateFilter ? new Date(dateFilter).toDateString()  :  "Search by Date"}
+  </Text>
+</TouchableOpacity>
+
               {dateFilter && (
                 <TouchableOpacity onPress={() => setDateFilter(null)}>
                   <Ionicons name="close-circle" size={20} color="#666" />
                 </TouchableOpacity>
               )}
               <TouchableOpacity style={styles.searchButton} onPress={applyFilter}>
-                <Ionicons name="search" size={22} color="#fff" />
-              </TouchableOpacity>
+  <FontAwesome5 name="search" size={20} color="#fff" />
+</TouchableOpacity>
+
             </View>
           </View>
 
@@ -278,12 +282,13 @@ export default function GuestLocation() {
                   : item.timestamp}
               </Text>
               <TouchableOpacity
-                style={styles.mapButton}
-                onPress={() => openInMap(item.latitude, item.longitude)}
-              >
-                <Ionicons name="map-outline" size={18} color="#2e8b57" />
-                <Text style={styles.mapButtonText}> Open in Map</Text>
-              </TouchableOpacity>
+  style={styles.mapButton}
+  onPress={() => openInMap(item.latitude, item.longitude)}
+>
+  <FontAwesome5 name="map-marker-alt" size={18} color="#2e8b57" />
+  <Text style={styles.mapButtonText}> Open in Map</Text>
+</TouchableOpacity>
+
             </View>
           ))
         )}
@@ -294,25 +299,41 @@ export default function GuestLocation() {
         colors={["#fbfdfbff", "rgba(243, 248, 243, 1)"]}
         style={styles.footer}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("index")} style={styles.navButton}>
-          <Entypo name="home" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Home</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+  onPress={() => navigation.navigate("index")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="home" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Home</Text>
+</TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("AddCollision")} style={styles.navButton}>
-          <MaterialCommunityIcons name="plus-circle" size={26} color="#004d00" />
-          <Text style={styles.footerText}>Add Data</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("WildViewNews")} style={styles.navButton}>
-          <Ionicons name="chatbubble-ellipses-outline" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Message</Text>
-        </TouchableOpacity>
+        <TouchableOpacity
+  onPress={() => navigation.navigate("AddCollision")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="plus-circle" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Add Data</Text>
+</TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("WildlifeDashboard")} style={styles.navButton}>
-          <Ionicons name="arrow-back" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Back</Text>
-        </TouchableOpacity>
+
+      <TouchableOpacity
+  onPress={() => navigation.navigate("WildViewNews")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="envelope" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Message</Text>
+</TouchableOpacity>
+
+
+        <TouchableOpacity
+  onPress={() => navigation.navigate("WildlifeDashboard")}
+  style={styles.navButton}
+>
+  <FontAwesome5 name="arrow-left" size={22} color="#004d00" />
+  <Text style={styles.footerText}>Back</Text>
+</TouchableOpacity>
+
       </LinearGradient>
     </View>
   );

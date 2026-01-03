@@ -1,5 +1,5 @@
 // app/SendNews.jsx
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -205,13 +205,14 @@ export default function SendNews() {
 </TouchableOpacity>
 
 
-       <TouchableOpacity
+      <TouchableOpacity
   onPress={() => navigation.navigate("SendNews")}
   style={styles.navButton}
 >
-  <FontAwesome5 name="envelope" size={22} color="#004d00" />
+  <FontAwesome name="envelope" size={22} color="#004d00" />
   <Text style={styles.footerText}>Message</Text>
 </TouchableOpacity>
+
 
 
        <TouchableOpacity

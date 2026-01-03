@@ -161,13 +161,13 @@ export default function DriverProfile() {
 
       {/* 🧭 Footer Navigation */}
       <View style={styles.footer}>
-       <TouchableOpacity
-         onPress={() => navigation.navigate("index")}
-         style={styles.navButton}
-       >
-         <FontAwesome5 name="home" size={24} color="#004d00" />
-         <Text style={styles.footerText}>Home</Text>
-       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("index")}
+        style={styles.navButton}
+      >
+        <FontAwesome5 name="home" size={22} color="#004d00" />
+        <Text style={styles.footerText}>Home</Text>
+      </TouchableOpacity>
 <TouchableOpacity
   onPress={() => navigation.navigate("OpenMap")}
   style={styles.navButton}
@@ -184,10 +184,13 @@ export default function DriverProfile() {
          <Text style={styles.footerText}>Message</Text>
        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("DriverProfile")} style={styles.navButton}>
-          <FontAwesome5 name="user-alt" size={24} color="#004d00" />
-          <Text style={styles.footerText}>Profile</Text>
-        </TouchableOpacity>
+       <TouchableOpacity
+           onPress={() => navigation.navigate("DriverProfile")}
+           style={styles.navButton}
+         >
+           <FontAwesome5 name="user-alt" size={22} color="#004d00" />
+           <Text style={styles.footerText}>Profile</Text>
+         </TouchableOpacity>
       </View>
     </View>
   );
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 80,
+    marginTop: 60,
     textShadowColor: "rgba(0,0,0,0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,

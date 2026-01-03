@@ -1,5 +1,5 @@
 // app/CollisionZone.jsx
-import { FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -232,11 +232,12 @@ export default function CollisionZone() {
         </Svg>
         <View style={styles.headerContent}>
           <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.navigate("WildlifeDashboard")}
-          >
-            <Ionicons name="arrow-back" size={24} color="#fff" />
-          </TouchableOpacity>
+  style={styles.backButton}
+  onPress={() => navigation.navigate("WildlifeDashboard")}
+>
+  <FontAwesome5 name="arrow-left" size={22} color="#fff" />
+</TouchableOpacity>
+
           <Text style={styles.headerTitle}>Elephant Collision Data</Text>
           <View style={{ width: 24 }} />
         </View>
@@ -447,7 +448,7 @@ const styles = StyleSheet.create({
   headerContent: {
     position: "absolute",
     top: 70,
-    width: "90%",
+    width: "80%",
     alignSelf: "center",
     flexDirection: "row",
     justifyContent: "space-between",
