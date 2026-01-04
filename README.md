@@ -11,3 +11,8 @@
 |-----------|------------|
 | ![](frontend/screenshots/home.jpeg) | ![](frontend/screenshots/login.jpeg) |
 
+<p align="center">
+  <img src="frontend/screenshots/home.png" width="40%" />
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="frontend/screenshots/login.png" width="40%" />
+</p>
