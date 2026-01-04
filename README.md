@@ -17,21 +17,16 @@
   <img src="frontend/screenshots/login.jpeg" width="20%" />
 </p>
 
-<table align="center">
-  <tr>
-    <th>Home Page</th>
-    <th>Login Page</th>
-    <th>Dashboard</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="frontend/screenshots/home.jpeg" width="200"/>
-    </td>
-    <td align="center">
-      <img src="frontend/screenshots/login.jpeg" width="200"/>
-    </td>
-    <td align="center">
-      <img src="frontend/screenshots/driver dashboard.jpeg" width="200"/>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <b>Home Page</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <b>Login Page</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <b>Dashboard</b>
+</p>
+
+<p align="center">
+  <img src="frontend/screenshots/home.jpeg" width="180"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="frontend/screenshots/login.jpeg" width="180"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="frontend/screenshots/dashboard.jpeg" width="180"/>
+</p>
