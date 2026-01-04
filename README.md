@@ -5,4 +5,4 @@
 
 ## 📸 App Screenshots
 ### Home Screen
-<img src="frontend/screenshots/home.jpeg" width="20%" height="20%">
+<img src="frontend/screenshots/home.jpeg" width="20%" height="20%"> <img src="frontend/screenshots/login.jpeg" width="20%" height="20%">
