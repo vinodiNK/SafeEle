@@ -6,3 +6,8 @@
 ## 📸 App Screenshots
 ### Home Screen                                                                  ### Login Page
 <img src="frontend/screenshots/home.jpeg" width="20%" height="20%">             <img src="frontend/screenshots/login.jpeg" width="20%" height="20%">
+
+| Home Page | Login Page |
+|-----------|------------|
+| ![](frontend/screenshots/home.jpeg) | ![](frontend/screenshots/login.jpeg) |
+
