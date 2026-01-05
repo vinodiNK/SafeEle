@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img src="screenshots/home.jpeg" width="300" />
-  <img src="screenshots/login.jpeg" width="300" />
+  <img src="frontend/screenshots/home.jpeg" width="300" />
+  <img src="frontend/screenshots/login.jpeg" width="300" />
 </p>
 
