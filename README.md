@@ -5,18 +5,17 @@
 
 ## 📸 App Screenshots
 
-<div align="center">
+<p align="center">
+  <span style="display:inline-block; margin-right:40px; text-align:center;">
+    <b>Home Page</b><br>
+    <img src="screenshots/home.png" width="300" />
+  </span>
 
-  <div style="display:inline-block; margin: 0 20px;">
-    <h4>Home Page</h4>
-    <img src="frontend/screenshots/home.png" width="300" />
-  </div>
+  <span style="display:inline-block; text-align:center;">
+    <b>Login Page</b><br>
+    <img src="screenshots/login.png" width="300" />
+  </span>
+</p>
 
-  <div style="display:inline-block; margin: 0 20px;">
-    <h4>Login Page</h4>
-    <img src="frontend/screenshots/login.png" width="300" />
-  </div>
-
-</div>
 
 
