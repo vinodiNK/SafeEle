@@ -7,14 +7,11 @@
 
 <p align="center">
   <b>Home Page</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <b>Login Page</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <b>Driver Dashboard</b>
+  <b>Login Page</b>
 </p>
 
 <p align="center">
-  <img src="frontend/screenshots/home.jpeg" width="200"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="frontend/screenshots/login.jpeg" width="200"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="frontend/screenshots/driver dashboard.jpeg" width="200"/>
+  <img src="screenshots/home.jpeg" width="300" />
+  <img src="screenshots/login.jpeg" width="300" />
 </p>
+
