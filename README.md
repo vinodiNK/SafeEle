@@ -8,7 +8,7 @@
 <table align="center">
   <tr>
     <th align="center">Home Page</th>
-    <th width="40"></th>
+    <th width="100"></th>
     <th align="center">Login Page</th>
   </tr>
   <tr>
@@ -18,6 +18,23 @@
     <td></td>
     <td align="center">
       <img src="frontend/screenshots/login.jpeg" width="300" />
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th align="center">Driver Dashboard Page</th>
+    <th width="100"></th>
+    <th align="center"> Send New Page (Driver)</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/driverdashboard.jpeg" width="300" />
+    </td>
+    <td></td>
+    <td align="center">
+      <img src="frontend/screenshots/send news (driver).jpeg" width="300" />
     </td>
   </tr>
 </table>
