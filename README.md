@@ -12,9 +12,9 @@
 </p>
 
 <p align="center">
-  <img src="frontend/screenshots/home.jpeg" width="160"/>
+  <img src="frontend/screenshots/home.jpeg" width="200"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="frontend/screenshots/login.jpeg" width="200"/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="frontend/screenshots/login.jpeg" width="160"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="frontend/screenshots/driver dashboard.jpeg" width="160"/>
+  <img src="frontend/screenshots/driver dashboard.jpeg" width="200"/>
 </p>
