@@ -30,7 +30,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/driverdashboard.jpeg" width="300" />
+      <img src="frontend/screenshots/driver dashboard.jpeg" width="300" />
     </td>
     <td></td>
     <td align="center">
