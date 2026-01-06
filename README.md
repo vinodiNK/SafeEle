@@ -47,7 +47,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" />
+      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" height="100" />
     </td>
     <td></td>
     <td align="center">
@@ -70,6 +70,23 @@
     <td></td>
     <td align="center">
       <img src="frontend/screenshots/wildlife dashboard.jpeg" width="300" />
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th align="center">View Past Elephant Collision</th>
+    <th width="100"></th>
+    <th align="center">View Past Elephant Collision Zones Analysze Graph</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/past elephant collision.jpeg" width="300" />
+    </td>
+    <td></td>
+    <td align="center">
+      <img src="frontend/screenshots/past elephant collision zones analysze.jpeg" width="300" />
     </td>
   </tr>
 </table>
