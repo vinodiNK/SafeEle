@@ -24,7 +24,7 @@
 
 <table align="center">
   <tr>
-    <th align="center">Driver Dashboard Page</th>
+    <th align="center">Engine Driver Dashboard Page</th>
     <th width="100"></th>
     <th align="center"> Send New Page (Driver)</th>
   </tr>
@@ -35,6 +35,23 @@
     <td></td>
     <td align="center">
       <img src="frontend/screenshots/send news (driver).jpeg" width="300" />
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th align="center">Engine Driver Profile</th>
+    <th width="100"></th>
+    <th align="center"> Station Dashboard</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" />
+    </td>
+    <td></td>
+    <td align="center">
+      <img src="frontend/screenshots/station dashboard.jpeg" width="300" />
     </td>
   </tr>
 </table>
