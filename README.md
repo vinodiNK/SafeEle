@@ -43,7 +43,7 @@
   <tr>
     <th align="center">Past Collision Alert</th>
     <th width="100"></th>
-    <th align="center">Send News (driver)</th>
+    <th align="center">Send News to Station</th>
   </tr>
   <tr>
     <td align="center">
@@ -59,8 +59,8 @@
 
 <table align="center">
   <tr>
-    <th align="center"></th>
-    <th width="100">Engine Driver Profile</th>
+    <th align="center">Engine Driver Profile</th>
+    <th width="100"></th>
     <th align="center">Station Dashboard</th>
   </tr>
   <tr>
