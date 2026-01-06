@@ -47,7 +47,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" height="600" />
+      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" height="650" />
     </td>
     <td></td>
     <td align="center">
@@ -78,7 +78,7 @@
   <tr>
     <th align="center">View Past Elephant Collision</th>
     <th width="100"></th>
-    <th align="center">View Past Elephant Collision Zones Analysze Graph</th>
+    <th align="center">Past Elephant Collision Zones Analysze</th>
   </tr>
   <tr>
     <td align="center">
