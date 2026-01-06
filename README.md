@@ -82,7 +82,7 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/.jpeg" width="300" />
+      <img src="frontend/screenshots/send news (driver).jpeg" width="300" />
     </td>
     <td></td>
     <td align="center">
@@ -90,4 +90,70 @@
     </td>
   </tr>
 </table>
+
+<table align="center">
+  <tr>
+    <th align="center">Wildlife Dashboard</th>
+    <th width="100"></th>
+    <th align="center">Past Elephant Collision</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/wildlife dashboard.jpeg" width="300" />
+    </td>
+    <td></td>
+    <td align="center">
+      <img src="frontend/screenshots/past elephant collision.jpeg" width="300" />
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th align="center">Past Elephant Collision Zones Analysze</th>
+    <th width="100"></th>
+    <th align="center">Guest Updated Locations</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/past elephant collision zones analysze.jpg" width="300" />
+    </td>
+    <td></td>
+    <td align="center">
+      <img src="frontend/screenshots/guest updated locations.jpg" width="300" />
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th align="center">Guest Updated Location Analyze</th>
+    <th width="100"></th>
+    <th align="center">Add Vew Collision</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/guest updated location analyze.jpg" width="300" />
+    </td>
+    <td></td>
+    <td align="center">
+      <img src="frontend/screenshots/add new collision.jpeg" width="300" />
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th align="center"> Wildlife Officer Profile</th>
+    <th width="100"></th>
+   
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="frontend/screenshots/profile.jpeg" width="300" />
+    </td>
+    
+  </tr>
+</table>
+
 
