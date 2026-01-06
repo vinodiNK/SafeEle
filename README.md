@@ -26,7 +26,7 @@
   <tr>
     <th align="center">Engine Driver Dashboard Page</th>
     <th width="100"></th>
-    <th align="center"> Send New Page (Driver)</th>
+    <th align="center">Real Time Detection </th>
   </tr>
   <tr>
     <td align="center">
@@ -34,7 +34,7 @@
     </td>
     <td></td>
     <td align="center">
-      <img src="frontend/screenshots/send news (driver).jpeg" width="300" />
+      <img src="frontend/screenshots/real time detection.jpeg" width="300" />
     </td>
   </tr>
 </table>
@@ -43,15 +43,15 @@
   <tr>
     <th align="center">Past Collision Alert</th>
     <th width="100"></th>
-    <th align="center">Engine Driver Profile</th>
+    <th align="center">Send News (driver)</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/past collision alert" width="300" height="650" />
+      <img src="frontend/screenshots/past collision alert.jpeg" width="300" height="650" />
     </td>
     <td></td>
     <td align="center">
-      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" />
+      <img src="frontend/screenshots/send news (driver).jpeg" width="300" />
     </td>
   </tr>
 </table>
@@ -60,33 +60,33 @@
 <table align="center">
   <tr>
     <th align="center"></th>
-    <th width="100">Station Dashboard</th>
-    <th align="center">Station Master Profile</th>
+    <th width="100">Engine Driver Profile</th>
+    <th align="center">Station Dashboard</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/station dashboard.jpeg" width="300" />
+      <img src="frontend/screenshots/Engine Driver Profile.jpeg" width="300" />
     </td>
     <td></td>
     <td align="center">
-      <img src="frontend/screenshots/Station Profile.jpeg" width="300" />
+      <img src="frontend/screenshots/station dashboard.jpeg" width="300" />
     </td>
   </tr>
 </table>
 
 <table align="center">
   <tr>
-    <th align="center">wildlife dashboard</th>
+    <th align="center">Send News to Wildlife Dep</th>
     <th width="100"></th>
-    <th align="center">Past Elephant Collision Zones </th>
+    <th align="center">Station Profile </th>
   </tr>
   <tr>
     <td align="center">
-      <img src="frontend/screenshots/wildlife dashboard.jpeg" width="300" />
+      <img src="frontend/screenshots/.jpeg" width="300" />
     </td>
     <td></td>
     <td align="center">
-      <img src="frontend/screenshots/past elephant collision.jpeg" width="300" />
+      <img src="frontend/screenshots/Station Profile.jpeg" width="300" />
     </td>
   </tr>
 </table>
