@@ -9,6 +9,16 @@
 ### ‣ Lack of communication with engine driver, general people, wildlife department and station.
 ### ‣ Engine drivers haven’t idea about elephant crossings or high-risk zones.
 
+## Functional Requirements
+### ‣ The system should detect elephants near the railway tracks using sensor and camera. 
+### ‣ Use machine learning model  to identify, detected object elephant or not.
+### ‣ Engine drivers receive real-time alerts on elephant’s location. 
+### ‣ The engine driver can view past collision zones and general people updated location. 
+### ‣ The mobile app enables the engine driver to contact the stations. 
+### ‣ General people can report elephant’s locations through a mobile app.
+### ‣ The wildlife Department  can get information about the Elephant’s location and can add new collision data.
+### ‣ The station can view the news sent by the driver, and they can also send important updates to the wildlife officers.
+
 
 ## 📸 App Screenshots
 
