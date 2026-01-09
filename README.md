@@ -3,12 +3,6 @@
 ## React Native Mobile App
 ### SafeEle is a mobile application designed to prevent elephant–train collisions by providing real-time elephant detection alerts, location tracking, and safety notifications to train drivers, station masters, wildlife officers, and the public. The app integrates with an IoT-based detection system that uses sensors and machine learning model  to identify elephants near railway tracks and instantly share  warnings to all engine drivers. SafeEle enhances railway safety, protects wildlife, and supports quick decision-making with accurate, timely information.
 
-## Limitations of the existing system.
-### ‣ Lack of a real-time detection system to monitor elephants near railway tracks.
-### ‣ There is no system to warn the engine driver at the real  time.
-### ‣ Lack of communication with engine driver, general people, wildlife department and station.
-### ‣ Engine drivers haven’t idea about elephant crossings or high-risk zones.
-
 ## Functional Requirements
 ### ‣ The system should detect elephants near the railway tracks using sensor and camera. 
 ### ‣ Use machine learning model  to identify, detected object elephant or not.
@@ -19,6 +13,18 @@
 ### ‣ The wildlife Department  can get information about the Elephant’s location and can add new collision data.
 ### ‣ The station can view the news sent by the driver, and they can also send important updates to the wildlife officers.
 
+### Description 
+#### This mobile application has four main user roles: Engine Driver, Station Master, Wildlife Department, and General Public.
+
+### When the IoT system and the machine learning model detect an elephant near the railway track in real time, an alert message with the detected location is immediately sent to the engine driver.
+
+### The system also maintains a database of past elephant–train collision zones. If a train approaches a previous collision zone within 1000 meters, the mobile application sends an alert message to the engine driver showing the distance. This distance is updated every 5 seconds. Using this information, the engine driver can identify high-risk areas and reduce the train speed to avoid collisions.
+
+### The engine driver can communicate with the station master by sending special messages such as train delays, technical issues, or other important updates. The station master can then communicate with the wildlife department, especially in situations like elephant collisions or emergency incidents.
+
+### The wildlife department can view past collision details, track locations reported by the general public, and add new collision zones to the system.
+
+### If general public users spot an elephant near the railway track, they can update the location through the mobile application. This information is then shared with the engine driver, allowing them to be aware of elephant sighting locations in advance.
 
 ## 📸 App Screenshots
 
