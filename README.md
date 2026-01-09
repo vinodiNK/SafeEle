@@ -3,6 +3,13 @@
 ## React Native Mobile App
 ### SafeEle is a mobile application designed to prevent elephant–train collisions by providing real-time elephant detection alerts, location tracking, and safety notifications to train drivers, station masters, wildlife officers, and the public. The app integrates with an IoT-based detection system that uses sensors and machine learning model  to identify elephants near railway tracks and instantly share  warnings to all engine drivers. SafeEle enhances railway safety, protects wildlife, and supports quick decision-making with accurate, timely information.
 
+## Limitations of the existing system.
+### ‣ Lack of a real-time detection system to monitor elephants near railway tracks.
+### ‣ There is no system to warn the engine driver at the real  time.
+### ‣ Lack of communication with engine driver, general people, wildlife department and station.
+### ‣ Engine drivers haven’t idea about elephant crossings or high-risk zones.
+
+
 ## 📸 App Screenshots
 
 <table align="center">
